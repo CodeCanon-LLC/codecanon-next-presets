@@ -18,23 +18,23 @@ bun add @codecanon/next-presets
 - Install dependencies:
 
 ```bash
-npm install
+bun install
 ```
 
 - Run the playground:
 
 ```bash
-npm run play
+bun run play
 ```
 
 - Run the unit tests:
 
 ```bash
-npm run test
+bun run test
 ```
 
 - Build the library:
 
 ```bash
-npm run build
+bun run build
 ```
