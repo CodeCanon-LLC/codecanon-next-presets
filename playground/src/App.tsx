@@ -233,7 +233,7 @@ function DemoContent() {
               <div className="bg-muted-foreground/30 size-2.5 rounded-full" />
               <div className="bg-muted-foreground/30 size-2.5 rounded-full" />
             </div>
-            <div className="flex h-48">
+            <div className="flex">
               {/* Sidebar */}
               <div className="border-sidebar-border bg-sidebar flex w-36 flex-col gap-1 border-r p-2">
                 <div className="mb-2 flex items-center gap-1.5 px-1">
