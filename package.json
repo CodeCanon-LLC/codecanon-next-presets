@@ -14,9 +14,15 @@
     "url": "https://github.com//CodeCanon-LLC/codecanon-next-presets/issues"
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./styles.css": "./dist/styles.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": {
+      "style": "./dist/styles.css",
+      "default": "./dist/styles.css"
+    }
   },
   "types": "./dist/index.d.ts",
   "files": [
