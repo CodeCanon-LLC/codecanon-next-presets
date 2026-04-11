@@ -57,7 +57,7 @@ function DefaultAppPreviewCard({
 
       {/* Mock App Preview */}
       <div
-        data-theme={themeKey}
+        data-preset={themeKey}
         className={cn(
           "bg-background text-foreground flex-1 p-3",
           colorScheme === "dark" && "dark"
