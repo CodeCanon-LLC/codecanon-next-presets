@@ -36,6 +36,8 @@ Example from `violet-bloom.css`:
   /* ... more variables */
 }
 
+[data-preset="violet-bloom"] .dark,
+[data-preset="violet-bloom"] .scheme-dark,
 [data-preset="violet-bloom"].dark {
   --background: #1a1b1e;
   --foreground: #f0f0f0;

@@ -40,6 +40,8 @@
   --font-mono: Source Code Pro, monospace;
 }
 
+[data-preset="nature"] .dark,
+[data-preset="nature"] .scheme-dark,
 [data-preset="nature"].dark {
   --background: #1c2a1f;
   --foreground: #f0ebe5;

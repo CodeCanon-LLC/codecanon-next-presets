@@ -46,6 +46,8 @@
   --shadow-offset-y: 2px;
 }
 
+[data-preset="twitter"] .dark,
+[data-preset="twitter"] .scheme-dark,
 [data-preset="twitter"].dark {
   --background: #000000;
   --foreground: #e7e9ea;

@@ -48,6 +48,8 @@
   --spacing: 0.25rem;
 }
 
+[data-preset="darkmatter"] .dark,
+[data-preset="darkmatter"] .scheme-dark,
 [data-preset="darkmatter"].dark {
   --background: #121113;
   --foreground: #c1c1c1;

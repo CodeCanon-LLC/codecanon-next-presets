@@ -46,6 +46,8 @@
   --shadow-offset-y: 2px;
 }
 
+[data-preset="mocha-mousse"] .dark,
+[data-preset="mocha-mousse"] .scheme-dark,
 [data-preset="mocha-mousse"].dark {
   --background: #2d2521;
   --foreground: #f1f0e5;

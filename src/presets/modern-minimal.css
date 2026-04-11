@@ -40,6 +40,8 @@
   --font-mono: JetBrains Mono, monospace;
 }
 
+[data-preset="modern-minimal"] .dark,
+[data-preset="modern-minimal"] .scheme-dark,
 [data-preset="modern-minimal"].dark {
   --background: #171717;
   --foreground: #e5e5e5;

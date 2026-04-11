@@ -46,6 +46,8 @@
   --shadow-offset-y: 2px;
 }
 
+[data-preset="graphite"] .dark,
+[data-preset="graphite"] .scheme-dark,
 [data-preset="graphite"].dark {
   --background: #1a1a1a;
   --foreground: #d9d9d9;

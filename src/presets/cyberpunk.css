@@ -45,6 +45,8 @@
   --shadow-offset-y: 4px;
 }
 
+[data-preset="cyberpunk"] .dark,
+[data-preset="cyberpunk"] .scheme-dark,
 [data-preset="cyberpunk"].dark {
   --background: #0c0c1d;
   --foreground: #eceff4;

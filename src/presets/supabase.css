@@ -47,6 +47,8 @@
   --letter-spacing: 0.025em;
 }
 
+[data-preset="supabase"] .dark,
+[data-preset="supabase"] .scheme-dark,
 [data-preset="supabase"].dark {
   --background: #121212;
   --foreground: #e2e8f0;

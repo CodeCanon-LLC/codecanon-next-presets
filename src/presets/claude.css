@@ -37,6 +37,8 @@
   --radius: 0.5rem;
 }
 
+[data-preset="claude"] .dark,
+[data-preset="claude"] .scheme-dark,
 [data-preset="claude"].dark {
   --background: #262624;
   --foreground: #c3c0b6;

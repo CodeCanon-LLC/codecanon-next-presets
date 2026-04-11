@@ -46,6 +46,8 @@
   --shadow-offset-y: 1px;
 }
 
+[data-preset="vercel"] .dark,
+[data-preset="vercel"] .scheme-dark,
 [data-preset="vercel"].dark {
   --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);

@@ -46,6 +46,8 @@
   --shadow-offset-y: 4px;
 }
 
+[data-preset="catppuccin"] .dark,
+[data-preset="catppuccin"] .scheme-dark,
 [data-preset="catppuccin"].dark {
   --background: #181825;
   --foreground: #cdd6f4;

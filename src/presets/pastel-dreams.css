@@ -46,6 +46,8 @@
   --shadow-offset-y: 8px;
 }
 
+[data-preset="pastel-dreams"] .dark,
+[data-preset="pastel-dreams"] .scheme-dark,
 [data-preset="pastel-dreams"].dark {
   --background: #1c1917;
   --foreground: #e0e7ff;

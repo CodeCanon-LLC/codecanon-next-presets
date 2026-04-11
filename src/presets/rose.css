@@ -53,6 +53,8 @@
   --spacing: 0.25rem;
 }
 
+[data-preset="rose"] .dark,
+[data-preset="rose"] .scheme-dark,
 [data-preset="rose"].dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

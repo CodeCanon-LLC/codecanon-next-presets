@@ -48,6 +48,8 @@
   --spacing: 0.25rem;
 }
 
+[data-preset="amber-minimal"] .dark,
+[data-preset="amber-minimal"] .scheme-dark,
 [data-preset="amber-minimal"].dark {
   --background: #171717;
   --foreground: #e5e5e5;

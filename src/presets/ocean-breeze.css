@@ -46,6 +46,8 @@
   --shadow-offset-y: 4px;
 }
 
+[data-preset="ocean-breeze"] .dark,
+[data-preset="ocean-breeze"] .scheme-dark,
 [data-preset="ocean-breeze"].dark {
   --background: #0f172a;
   --foreground: #d1d5db;

@@ -46,6 +46,8 @@
   --shadow-offset-y: 4px;
 }
 
+[data-preset="clean-slate"] .dark,
+[data-preset="clean-slate"] .scheme-dark,
 [data-preset="clean-slate"].dark {
   --background: #0f172a;
   --foreground: #e2e8f0;

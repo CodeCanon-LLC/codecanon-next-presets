@@ -45,6 +45,8 @@
   --shadow-offset-y: 4px;
 }
 
+[data-preset="neo-brutalism"] .dark,
+[data-preset="neo-brutalism"] .scheme-dark,
 [data-preset="neo-brutalism"].dark {
   --background: #000000;
   --foreground: #ffffff;

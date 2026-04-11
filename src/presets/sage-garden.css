@@ -48,6 +48,8 @@
   --spacing: 0.23rem;
 }
 
+[data-preset="sage-garden"] .dark,
+[data-preset="sage-garden"] .scheme-dark,
 [data-preset="sage-garden"].dark {
   --background: #0a0a0a;
   --foreground: #f5f5f5;

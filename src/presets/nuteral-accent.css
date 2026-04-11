@@ -53,6 +53,8 @@
   --spacing: 0.25rem;
 }
 
+[data-preset="nuteral-accent"] .dark,
+[data-preset="nuteral-accent"] .scheme-dark,
 [data-preset="nuteral-accent"].dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
