@@ -58,34 +58,57 @@ function PresetPicker({ children }: PropsWithChildren) {
   )
 }
 
-function usePresetPicker() {
+function usePresetPicker(caller = "usePresetPicker") {
   const context = useContext(PresetsPickerContext)
 
   if (!context) {
-    throw new Error(
-      "useThemePresetsSheet must be used within a ThemePresetsSheetProvider"
-    )
+    throw new Error(`${caller} must be used within a PresetPicker`)
   }
 
   return context
 }
 
-function PresetPickerSheet({
+function PresetPickerThemeToggleGroup() {
+  const { theme, setTheme } = useTheme()
+
+  return (
+    <ToggleGroup
+      className="w-full border"
+      type="single"
+      value={theme ?? ""}
+      onValueChange={(value) => value && setTheme(value as Theme)}
+    >
+      <ToggleGroupItem className="flex-1" value="light">
+        <Sun />
+        Light
+      </ToggleGroupItem>
+      <ToggleGroupItem className="flex-1" value="dark">
+        <Moon />
+        Dark
+      </ToggleGroupItem>
+      <ToggleGroupItem className="flex-1" value="system">
+        <MonitorCog />
+        System
+      </ToggleGroupItem>
+    </ToggleGroup>
+  )
+}
+
+function PresetPickerContent({
   showDock,
   previewCard: AppPreviewCard = DefaultAppPreviewCard,
 }: {
   showDock?: boolean
   previewCard?: typeof DefaultAppPreviewCard
 }) {
+  const { open } = usePresetPicker("PresetPickerContent")
   const { preset, setPreset } = usePreset()
-  const { theme, setTheme } = useTheme()
-  const [query, setQuery] = useState("")
-  const { open, setOpen } = usePresetPicker()
   const [mounted, setMounted] = useBoolean(false)
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const [query, setQuery] = useState("")
   const queryLower = query.trim().toLowerCase()
   const scrollerRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map())
-  const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
   const filteredPresets = useMemo(
     () => PRESETS.filter(([, t]) => t?.toLowerCase().includes(queryLower)),
@@ -145,7 +168,66 @@ function PresetPickerSheet({
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen} modal={false}>
+    <>
+      <Input
+        type="text"
+        placeholder="Search themes..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        autoFocus
+      />
+      <Scroller className="min-h-0 flex-1" ref={scrollerRef}>
+        <div className="flex flex-col gap-1 overflow-y-auto">
+          {filteredPresets.length > 0 ? (
+            filteredPresets.map(([id, label], index) => (
+              <AppPreviewCard
+                key={id}
+                showDock={showDock ?? false}
+                ref={(el) => {
+                  if (!mounted && preset === id) {
+                    setMounted(true)
+                    el?.scrollIntoView({
+                      block: "center",
+                      behavior: "instant",
+                    })
+                  }
+
+                  if (el) {
+                    itemRefs.current.set(index, el)
+                  } else {
+                    itemRefs.current.delete(index)
+                  }
+                }}
+                active={preset === id}
+                highlighted={index === highlightedIndex}
+                label={label}
+                presetKey={id as PresetKeys}
+                onClick={() => {
+                  setPreset(id)
+                  setHighlightedIndex(index)
+                }}
+              />
+            ))
+          ) : (
+            <div className="text-muted-foreground py-8 text-center text-sm">
+              No themes found
+            </div>
+          )}
+        </div>
+      </Scroller>
+    </>
+  )
+}
+
+function PresetPickerSheet({
+  children,
+  ...props
+}: React.ComponentProps<typeof Sheet>) {
+  const { open, setOpen } = usePresetPicker("PresetPickerSheet")
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen} modal={false} {...props}>
       <SheetContent
         side="left"
         className={cn(
@@ -163,76 +245,17 @@ function PresetPickerSheet({
           </SheetTitle>
         </SheetHeader>
         <div className="flex min-h-0 flex-1 flex-col gap-4 px-4">
-          <ToggleGroup
-            className="w-full border"
-            type="single"
-            value={theme ?? ""}
-            onValueChange={(value) => value && setTheme(value as Theme)}
-          >
-            <ToggleGroupItem className="flex-1" value="light">
-              <Sun />
-              Light
-            </ToggleGroupItem>
-            <ToggleGroupItem className="flex-1" value="dark">
-              <Moon />
-              Dark
-            </ToggleGroupItem>
-            <ToggleGroupItem className="flex-1" value="system">
-              <MonitorCog />
-              System
-            </ToggleGroupItem>
-          </ToggleGroup>
-          <Input
-            type="text"
-            placeholder="Search themes..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            autoFocus
-          />
-          <Scroller className="min-h-0 flex-1" ref={scrollerRef}>
-            <div className="flex flex-col gap-1 overflow-y-auto">
-              {filteredPresets.length > 0 ? (
-                filteredPresets.map(([id, label], index) => (
-                  <AppPreviewCard
-                    key={id}
-                    showDock={showDock ?? false}
-                    ref={(el) => {
-                      if (!mounted && preset === id) {
-                        setMounted(true)
-                        el?.scrollIntoView({
-                          block: "center",
-                          behavior: "instant",
-                        })
-                      }
-
-                      if (el) {
-                        itemRefs.current.set(index, el)
-                      } else {
-                        itemRefs.current.delete(index)
-                      }
-                    }}
-                    active={preset === id}
-                    highlighted={index === highlightedIndex}
-                    label={label}
-                    presetKey={id as PresetKeys}
-                    onClick={() => {
-                      setPreset(id)
-                      setHighlightedIndex(index)
-                    }}
-                  />
-                ))
-              ) : (
-                <div className="text-muted-foreground py-8 text-center text-sm">
-                  No themes found
-                </div>
-              )}
-            </div>
-          </Scroller>
+          {children}
         </div>
       </SheetContent>
     </Sheet>
   )
 }
 
-export { PresetPicker, usePresetPicker, PresetPickerSheet }
+export {
+  PresetPicker,
+  usePresetPicker,
+  PresetPickerSheet,
+  PresetPickerContent,
+  PresetPickerThemeToggleGroup,
+}

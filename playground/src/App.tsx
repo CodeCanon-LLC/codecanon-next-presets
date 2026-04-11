@@ -6,6 +6,8 @@ import {
   useTheme,
   usePreset,
   PresetPickerSheet,
+  PresetPickerThemeToggleGroup,
+  PresetPickerContent,
 } from "@codecanon/next-presets"
 
 function OpenPickerButton() {
@@ -257,7 +259,10 @@ function App() {
       <PresetProvider>
         <PresetPicker>
           <DemoContent />
-          <PresetPickerSheet />
+          <PresetPickerSheet>
+            <PresetPickerThemeToggleGroup />
+            <PresetPickerContent />
+          </PresetPickerSheet>
         </PresetPicker>
       </PresetProvider>
     </ThemeProvider>
