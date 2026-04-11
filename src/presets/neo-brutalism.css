@@ -1,5 +1,7 @@
 /* Theme: Neo Brutalism */
-[data-preset="neo-brutalism"] {
+[data-preset="neo-brutalism"],
+[data-preset="neo-brutalism"].dark .scheme-light,
+:root[data-preset="neo-brutalism"] {
   --background: #ffffff;
   --foreground: #000000;
   --card: #ffffff;
@@ -77,48 +79,4 @@
   --sidebar-accent-foreground: #000000;
   --sidebar-border: #ffffff;
   --sidebar-ring: #ff6666;
-}
-
-[data-preset="neo-brutalism"] .scheme-light {
-  --background: #ffffff;
-  --foreground: #000000;
-  --card: #ffffff;
-  --card-foreground: #000000;
-  --popover: #ffffff;
-  --popover-foreground: #000000;
-  --primary: #ff3333;
-  --primary-foreground: #ffffff;
-  --secondary: #ffff00;
-  --secondary-foreground: #000000;
-  --muted: #f0f0f0;
-  --muted-foreground: #333333;
-  --accent: #0066ff;
-  --accent-foreground: #ffffff;
-  --destructive: #000000;
-  --destructive-foreground: #ffffff;
-  --border: #000000;
-  --input: #000000;
-  --ring: #ff3333;
-  --chart-1: #ff3333;
-  --chart-2: #ffff00;
-  --chart-3: #0066ff;
-  --chart-4: #00cc00;
-  --chart-5: #cc00cc;
-  --radius: 0px;
-  --sidebar: #f0f0f0;
-  --sidebar-foreground: #000000;
-  --sidebar-primary: #ff3333;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #0066ff;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #000000;
-  --sidebar-ring: #ff3333;
-  --font-sans: DM Sans, sans-serif;
-  --font-mono: Space Mono, monospace;
-  --shadow-color: hsl(0 0% 0%);
-  --shadow-opacity: 1;
-  --shadow-blur: 0px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 4px;
-  --shadow-offset-y: 4px;
 }

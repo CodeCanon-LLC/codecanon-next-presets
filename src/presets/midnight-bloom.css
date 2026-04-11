@@ -1,5 +1,7 @@
 /* Theme: Midnight Bloom */
-[data-preset="midnight-bloom"] {
+[data-preset="midnight-bloom"],
+[data-preset="midnight-bloom"].dark .scheme-light,
+:root[data-preset="midnight-bloom"] {
   --background: #f9f9f9;
   --foreground: #333333;
   --card: #ffffff;
@@ -78,49 +80,4 @@
   --sidebar-accent-foreground: #e5e5e5;
   --sidebar-border: #444444;
   --sidebar-ring: #6c5ce7;
-}
-
-[data-preset="midnight-bloom"] .scheme-light {
-  --background: #f9f9f9;
-  --foreground: #333333;
-  --card: #ffffff;
-  --card-foreground: #333333;
-  --popover: #ffffff;
-  --popover-foreground: #333333;
-  --primary: #6c5ce7;
-  --primary-foreground: #ffffff;
-  --secondary: #a1c9f2;
-  --secondary-foreground: #333333;
-  --muted: #c9c4b5;
-  --muted-foreground: #6e6e6e;
-  --accent: #8b9467;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #d4d4d4;
-  --input: #d4d4d4;
-  --ring: #6c5ce7;
-  --chart-1: #6c5ce7;
-  --chart-2: #8e44ad;
-  --chart-3: #4b0082;
-  --chart-4: #6495ed;
-  --chart-5: #4682b4;
-  --radius: 0.5rem;
-  --sidebar: #f9f9f9;
-  --sidebar-foreground: #333333;
-  --sidebar-primary: #6c5ce7;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #8b9467;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #d4d4d4;
-  --sidebar-ring: #6c5ce7;
-  --font-sans: Montserrat, sans-serif;
-  --font-serif: Playfair Display, serif;
-  --font-mono: Source Code Pro, monospace;
-  --shadow-color: hsl(0 0% 0%);
-  --shadow-opacity: 0.1;
-  --shadow-blur: 10px;
-  --shadow-spread: -2px;
-  --shadow-offset-x: 0px;
-  --shadow-offset-y: 5px;
 }

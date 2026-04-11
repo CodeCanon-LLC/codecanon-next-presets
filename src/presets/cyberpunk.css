@@ -1,5 +1,7 @@
 /* Theme: Cyberpunk */
-[data-preset="cyberpunk"] {
+[data-preset="cyberpunk"],
+[data-preset="cyberpunk"].dark .scheme-light,
+:root[data-preset="cyberpunk"] {
   --background: #f8f9fa;
   --foreground: #0c0c1d;
   --card: #ffffff;
@@ -77,48 +79,4 @@
   --sidebar-accent-foreground: #0c0c1d;
   --sidebar-border: #2e2e5e;
   --sidebar-ring: #ff00c8;
-}
-
-[data-preset="cyberpunk"] .scheme-light {
-  --background: #f8f9fa;
-  --foreground: #0c0c1d;
-  --card: #ffffff;
-  --card-foreground: #0c0c1d;
-  --popover: #ffffff;
-  --popover-foreground: #0c0c1d;
-  --primary: #ff00c8;
-  --primary-foreground: #ffffff;
-  --secondary: #f0f0ff;
-  --secondary-foreground: #0c0c1d;
-  --muted: #f0f0ff;
-  --muted-foreground: #0c0c1d;
-  --accent: #00ffcc;
-  --accent-foreground: #0c0c1d;
-  --destructive: #ff3d00;
-  --destructive-foreground: #ffffff;
-  --border: #dfe6e9;
-  --input: #dfe6e9;
-  --ring: #ff00c8;
-  --chart-1: #ff00c8;
-  --chart-2: #9000ff;
-  --chart-3: #00e5ff;
-  --chart-4: #00ffcc;
-  --chart-5: #ffe600;
-  --radius: 0.5rem;
-  --sidebar: #f0f0ff;
-  --sidebar-foreground: #0c0c1d;
-  --sidebar-primary: #ff00c8;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #00ffcc;
-  --sidebar-accent-foreground: #0c0c1d;
-  --sidebar-border: #dfe6e9;
-  --sidebar-ring: #ff00c8;
-  --font-sans: Outfit, sans-serif;
-  --font-mono: Fira Code, monospace;
-  --shadow-color: hsl(0 0% 0%);
-  --shadow-opacity: 0.1;
-  --shadow-blur: 8px;
-  --shadow-spread: -2px;
-  --shadow-offset-x: 0px;
-  --shadow-offset-y: 4px;
 }

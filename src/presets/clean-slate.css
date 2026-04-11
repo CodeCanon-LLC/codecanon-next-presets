@@ -1,5 +1,7 @@
 /* Theme: Clean Slate */
-[data-preset="clean-slate"] {
+[data-preset="clean-slate"],
+[data-preset="clean-slate"].dark .scheme-light,
+:root[data-preset="clean-slate"] {
   --background: #f8fafc;
   --foreground: #1e293b;
   --card: #ffffff;
@@ -78,49 +80,4 @@
   --sidebar-accent-foreground: #d1d5db;
   --sidebar-border: #4b5563;
   --sidebar-ring: #818cf8;
-}
-
-[data-preset="clean-slate"] .scheme-light {
-  --background: #f8fafc;
-  --foreground: #1e293b;
-  --card: #ffffff;
-  --card-foreground: #1e293b;
-  --popover: #ffffff;
-  --popover-foreground: #1e293b;
-  --primary: #6366f1;
-  --primary-foreground: #ffffff;
-  --secondary: #e5e7eb;
-  --secondary-foreground: #374151;
-  --muted: #f3f4f6;
-  --muted-foreground: #6b7280;
-  --accent: #e0e7ff;
-  --accent-foreground: #374151;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #d1d5db;
-  --input: #d1d5db;
-  --ring: #6366f1;
-  --chart-1: #6366f1;
-  --chart-2: #4f46e5;
-  --chart-3: #4338ca;
-  --chart-4: #3730a3;
-  --chart-5: #312e81;
-  --radius: 0.5rem;
-  --sidebar: #f3f4f6;
-  --sidebar-foreground: #1e293b;
-  --sidebar-primary: #6366f1;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e0e7ff;
-  --sidebar-accent-foreground: #374151;
-  --sidebar-border: #d1d5db;
-  --sidebar-ring: #6366f1;
-  --font-sans: Inter, sans-serif;
-  --font-serif: Merriweather, serif;
-  --font-mono: JetBrains Mono, monospace;
-  --shadow-color: hsl(0 0% 0%);
-  --shadow-opacity: 0.1;
-  --shadow-blur: 8px;
-  --shadow-spread: -1px;
-  --shadow-offset-x: 0px;
-  --shadow-offset-y: 4px;
 }

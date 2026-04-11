@@ -1,5 +1,7 @@
 /* Theme: Vintage Paper */
-[data-preset="vintage-paper"] {
+[data-preset="vintage-paper"],
+[data-preset="vintage-paper"].dark .scheme-light,
+:root[data-preset="vintage-paper"] {
   --background: #f5f1e6;
   --foreground: #4a3f35;
   --card: #fffcf5;
@@ -78,49 +80,4 @@
   --sidebar-accent-foreground: #ece5d8;
   --sidebar-border: #4a4039;
   --sidebar-ring: #c0a080;
-}
-
-[data-preset="vintage-paper"] .scheme-light {
-  --background: #f5f1e6;
-  --foreground: #4a3f35;
-  --card: #fffcf5;
-  --card-foreground: #4a3f35;
-  --popover: #fffcf5;
-  --popover-foreground: #4a3f35;
-  --primary: #a67c52;
-  --primary-foreground: #ffffff;
-  --secondary: #e2d8c3;
-  --secondary-foreground: #5c4d3f;
-  --muted: #ece5d8;
-  --muted-foreground: #7d6b56;
-  --accent: #d4c8aa;
-  --accent-foreground: #4a3f35;
-  --destructive: #b54a35;
-  --destructive-foreground: #ffffff;
-  --border: #dbd0ba;
-  --input: #dbd0ba;
-  --ring: #a67c52;
-  --chart-1: #a67c52;
-  --chart-2: #8d6e4c;
-  --chart-3: #735a3a;
-  --chart-4: #b3906f;
-  --chart-5: #c0a080;
-  --radius: 0.25rem;
-  --sidebar: #ece5d8;
-  --sidebar-foreground: #4a3f35;
-  --sidebar-primary: #a67c52;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #d4c8aa;
-  --sidebar-accent-foreground: #4a3f35;
-  --sidebar-border: #dbd0ba;
-  --sidebar-ring: #a67c52;
-  --font-sans: Libre Baskerville, serif;
-  --font-serif: Lora, serif;
-  --font-mono: IBM Plex Mono, monospace;
-  --shadow-color: hsl(28 13% 20%);
-  --shadow-opacity: 0.12;
-  --shadow-blur: 5px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 2px;
-  --shadow-offset-y: 3px;
 }

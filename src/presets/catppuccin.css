@@ -1,5 +1,7 @@
 /* Theme: Catppuccin */
-[data-preset="catppuccin"] {
+[data-preset="catppuccin"],
+[data-preset="catppuccin"].dark .scheme-light,
+:root[data-preset="catppuccin"] {
   --background: #eff1f5;
   --foreground: #4c4f69;
   --card: #ffffff;
@@ -77,49 +79,4 @@
   --sidebar-accent-foreground: #1e1e2e;
   --sidebar-border: #45475a;
   --sidebar-ring: #cba6f7;
-}
-
-[data-preset="catppuccin"] .scheme-light {
-  --background: #eff1f5;
-  --foreground: #4c4f69;
-  --card: #ffffff;
-  --card-foreground: #4c4f69;
-  --popover: #ccd0da;
-  --popover-foreground: #4c4f69;
-  --primary: #8839ef;
-  --primary-foreground: #ffffff;
-  --secondary: #ccd0da;
-  --secondary-foreground: #4c4f69;
-  --muted: #dce0e8;
-  --muted-foreground: #6c6f85;
-  --accent: #04a5e5;
-  --accent-foreground: #ffffff;
-  --destructive: #d20f39;
-  --destructive-foreground: #ffffff;
-  --border: #bcc0cc;
-  --input: #ccd0da;
-  --ring: #8839ef;
-  --chart-1: #8839ef;
-  --chart-2: #04a5e5;
-  --chart-3: #40a02b;
-  --chart-4: #fe640b;
-  --chart-5: #dc8a78;
-  --sidebar: #e6e9ef;
-  --sidebar-foreground: #4c4f69;
-  --sidebar-primary: #8839ef;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #04a5e5;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #bcc0cc;
-  --sidebar-ring: #8839ef;
-  --font-sans: Montserrat, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: Fira Code, monospace;
-  --radius: 0.35rem;
-  --shadow-color: hsl(240 30% 25%);
-  --shadow-opacity: 0.12;
-  --shadow-blur: 6px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 0px;
-  --shadow-offset-y: 4px;
 }

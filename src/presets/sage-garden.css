@@ -1,5 +1,7 @@
 /* Theme: Sage Garden */
-[data-preset="sage-garden"] {
+[data-preset="sage-garden"],
+[data-preset="sage-garden"].dark .scheme-light,
+:root[data-preset="sage-garden"] {
   --background: #f8f7f4;
   --foreground: #1a1f2e;
   --card: #ffffff;
@@ -80,51 +82,4 @@
   --sidebar-border: #2a2a2a;
   --sidebar-ring: #7c9082;
   --shadow-color: #000000;
-}
-
-[data-preset="sage-garden"] .scheme-light {
-  --background: #f8f7f4;
-  --foreground: #1a1f2e;
-  --card: #ffffff;
-  --card-foreground: #1a1f2e;
-  --popover: #ffffff;
-  --popover-foreground: #1a1f2e;
-  --primary: #7c9082;
-  --primary-foreground: #ffffff;
-  --secondary: #ced4bf;
-  --secondary-foreground: #1a1f2e;
-  --muted: #e8e6e1;
-  --muted-foreground: #6b7280;
-  --accent: #bfc9bb;
-  --accent-foreground: #1a1f2e;
-  --destructive: #c73e3a;
-  --destructive-foreground: #ffffff;
-  --border: #e8e6e1;
-  --input: #ffffff;
-  --ring: #7c9082;
-  --chart-1: #7c9082;
-  --chart-2: #a0aa88;
-  --chart-3: #8b9d83;
-  --chart-4: #6b7280;
-  --chart-5: #e8e6e1;
-  --sidebar: #fafaf8;
-  --sidebar-foreground: #1a1f2e;
-  --sidebar-primary: #7c9082;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8e6e1;
-  --sidebar-accent-foreground: #1a1f2e;
-  --sidebar-border: #e8e6e1;
-  --sidebar-ring: #7c9082;
-  --font-sans: Antic, ui-sans-serif, sans-serif, system-ui;
-  --font-serif: Signifier, Georgia, serif;
-  --font-mono: JetBrains Mono, Courier New, monospace;
-  --radius: 0.35rem;
-  --shadow-color: #1a1f2e;
-  --shadow-opacity: 0.04;
-  --shadow-blur: 2px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 0px;
-  --shadow-offset-y: 1px;
-  --letter-spacing: 0em;
-  --spacing: 0.23rem;
 }

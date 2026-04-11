@@ -27,7 +27,9 @@ Each preset has its own CSS file with three sections:
 Example from `violet-bloom.css`:
 
 ```css
-[data-preset="violet-bloom"] {
+[data-preset="violet-bloom"],
+[data-preset="violet-bloom"].dark .scheme-light,
+:root[data-preset="violet-bloom"] {
   --background: #fdfdfd;
   --foreground: #000000;
   --primary: #7033ff;
@@ -39,12 +41,6 @@ Example from `violet-bloom.css`:
   --foreground: #f0f0f0;
   --primary: #8c5cff;
   /* ... more variables */
-}
-
-[data-preset="violet-bloom"] .scheme-light {
-  --background: #fdfdfd;
-  --foreground: #000000;
-  /* ... forces light theme colors even in dark mode */
 }
 ```
 
@@ -102,7 +98,7 @@ Each theme also includes a `.scheme-light` selector that forces elements to use 
 Example structure:
 
 ```css
-[data-preset="violet-bloom"] .scheme-light {
+[data-preset="violet-bloom"].dark .scheme-light {
   --background: #fdfdfd;
   --foreground: #000000;
   /* ... all light theme variables */
@@ -115,5 +111,3 @@ Usage:
 <!-- This element will use light theme colors even in dark mode -->
 <div class="scheme-light">Always light themed content</div>
 ```
-
-See `SCHEME_LIGHT_EXAMPLE.md` for more detailed usage examples.

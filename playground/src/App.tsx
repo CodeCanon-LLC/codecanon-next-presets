@@ -62,7 +62,7 @@ function DemoCard({
   children,
 }: {
   title: string
-  description: string
+  description: React.ReactNode
   children: React.ReactNode
 }) {
   return (
@@ -162,6 +162,64 @@ function DemoContent() {
             </div>
           </div>
         </DemoCard>
+
+        {/* Always Light Mode */}
+        <div className="scheme-light">
+          <DemoCard
+            title="Always Light Mode"
+            description={
+              <>
+                Adding{" "}
+                <code className="bg-muted rounded-sm px-1">scheme-light</code>{" "}
+                forces light mode even when in dark mode
+              </>
+            }
+          >
+            <div className="flex flex-wrap gap-2">
+              <button className="bg-primary text-primary-foreground inline-flex h-8 items-center rounded-lg px-3 text-sm font-medium">
+                Primary
+              </button>
+              <button className="bg-secondary text-secondary-foreground inline-flex h-8 items-center rounded-lg px-3 text-sm font-medium">
+                Secondary
+              </button>
+              <button className="border-border bg-background hover:bg-muted inline-flex h-8 items-center rounded-lg border px-3 text-sm font-medium">
+                Outline
+              </button>
+              <button className="bg-destructive/10 text-destructive inline-flex h-8 items-center rounded-lg px-3 text-sm font-medium">
+                Destructive
+              </button>
+            </div>
+          </DemoCard>
+        </div>
+
+        {/* Always Dark Mode */}
+        <div className="scheme-dark">
+          <DemoCard
+            title="Always Dark Mode"
+            description={
+              <>
+                Adding{" "}
+                <code className="bg-muted rounded-sm px-1">scheme-dark</code>{" "}
+                forces dark mode even when in dark mode
+              </>
+            }
+          >
+            <div className="flex flex-wrap gap-2">
+              <button className="bg-primary text-primary-foreground inline-flex h-8 items-center rounded-lg px-3 text-sm font-medium">
+                Primary
+              </button>
+              <button className="bg-secondary text-secondary-foreground inline-flex h-8 items-center rounded-lg px-3 text-sm font-medium">
+                Secondary
+              </button>
+              <button className="border-border bg-background hover:bg-muted inline-flex h-8 items-center rounded-lg border px-3 text-sm font-medium">
+                Outline
+              </button>
+              <button className="bg-destructive/10 text-destructive inline-flex h-8 items-center rounded-lg px-3 text-sm font-medium">
+                Destructive
+              </button>
+            </div>
+          </DemoCard>
+        </div>
 
         {/* App preview */}
         <DemoCard

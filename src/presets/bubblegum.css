@@ -1,5 +1,7 @@
 /* Theme: Bubblegum */
-[data-preset="bubblegum"] {
+[data-preset="bubblegum"],
+[data-preset="bubblegum"].dark .scheme-light,
+:root[data-preset="bubblegum"] {
   --background: #f6e6ee;
   --foreground: #5b5b5b;
   --card: #fdedc9;
@@ -81,49 +83,4 @@
   --font-serif: Lora, serif;
   --font-mono: Fira Code, monospace;
   --shadow-color: #324859;
-}
-
-[data-preset="bubblegum"] .scheme-light {
-  --background: #f6e6ee;
-  --foreground: #5b5b5b;
-  --card: #fdedc9;
-  --card-foreground: #5b5b5b;
-  --popover: #ffffff;
-  --popover-foreground: #5b5b5b;
-  --primary: #d04f99;
-  --primary-foreground: #ffffff;
-  --secondary: #8acfd1;
-  --secondary-foreground: #333333;
-  --muted: #b2e1eb;
-  --muted-foreground: #7a7a7a;
-  --accent: #fbe2a7;
-  --accent-foreground: #333333;
-  --destructive: #f96f70;
-  --destructive-foreground: #ffffff;
-  --border: #d04f99;
-  --input: #e4e4e4;
-  --ring: #e670ab;
-  --chart-1: #e670ab;
-  --chart-2: #84d2e2;
-  --chart-3: #fbe2a7;
-  --chart-4: #f3a0ca;
-  --chart-5: #d7488e;
-  --sidebar: #f8d8ea;
-  --sidebar-foreground: #333333;
-  --sidebar-primary: #ec4899;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f9a8d4;
-  --sidebar-accent-foreground: #333333;
-  --sidebar-border: #f3e8ff;
-  --sidebar-ring: #ec4899;
-  --font-sans: Poppins, sans-serif;
-  --font-serif: Lora, serif;
-  --font-mono: Fira Code, monospace;
-  --radius: 0.4rem;
-  --shadow-color: hsl(325.78 58.18% 56.86% / 0.5);
-  --shadow-opacity: 1;
-  --shadow-blur: 0px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 3px;
-  --shadow-offset-y: 3px;
 }
