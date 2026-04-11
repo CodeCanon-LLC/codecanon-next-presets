@@ -15,26 +15,12 @@ bun add @codecanon/next-presets
 
 ## Development
 
-- Install dependencies:
-
 ```bash
 bun install
-```
-
-- Run the playground:
-
-```bash
-bun run play
-```
-
-- Run the unit tests:
-
-```bash
-bun run test
-```
-
-- Build the library:
-
-```bash
-bun run build
+bun run build        # compile library
+bun run dev          # watch mode
+bun test             # run tests
+bun run typecheck    # type-check core + react entry
+bun run format       # format with prettier
+bun run play         # start the React playground (playground/)
 ```
