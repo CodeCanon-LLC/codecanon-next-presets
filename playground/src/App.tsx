@@ -313,8 +313,11 @@ function DemoContent() {
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system">
-      <PresetProvider>
+    <ThemeProvider
+      themeKey="next-presets-plaground-theme"
+      defaultTheme="system"
+    >
+      <PresetProvider presetKey="next-presets-plaground-preset">
         <PresetPicker>
           <DemoContent />
           <PresetPickerSheet>

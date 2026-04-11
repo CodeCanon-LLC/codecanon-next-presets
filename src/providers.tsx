@@ -86,14 +86,13 @@ function ThemeProvider({
   themeKey = "theme",
   ...nextThemeProps
 }: ThemeProviderProps) {
-  const [theme = defaultTheme] = useLocalStorage<Theme>(themeKey, defaultTheme)
-
   return (
     <NextThemeProvider
       enableSystem
       enableColorScheme
       attribute="class"
-      defaultTheme={theme}
+      storageKey={themeKey}
+      defaultTheme={defaultTheme}
       {...nextThemeProps}
     >
       {children}
