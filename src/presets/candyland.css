@@ -39,7 +39,6 @@
   --font-mono: Roboto Mono, monospace;
 }
 
-[data-preset="candyland"] .dark,
 [data-preset="candyland"] .scheme-dark,
 [data-preset="candyland"].dark {
   --background: #1a1d23;

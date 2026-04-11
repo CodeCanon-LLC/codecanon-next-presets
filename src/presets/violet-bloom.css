@@ -48,7 +48,6 @@
   --spacing: 0.27rem;
 }
 
-[data-preset="violet-bloom"] .dark,
 [data-preset="violet-bloom"] .scheme-dark,
 [data-preset="violet-bloom"].dark {
   --background: #1a1b1e;

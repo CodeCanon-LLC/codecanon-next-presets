@@ -40,7 +40,6 @@
   --font-mono: JetBrains Mono, monospace;
 }
 
-[data-preset="northern-lights"] .dark,
 [data-preset="northern-lights"] .scheme-dark,
 [data-preset="northern-lights"].dark {
   --background: #1a1d23;

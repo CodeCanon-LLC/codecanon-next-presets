@@ -46,7 +46,6 @@
   --shadow-offset-y: 2px;
 }
 
-[data-preset="solar-dusk"] .dark,
 [data-preset="solar-dusk"] .scheme-dark,
 [data-preset="solar-dusk"].dark {
   --background: #1c1917;

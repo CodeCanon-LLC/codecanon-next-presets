@@ -46,7 +46,6 @@
   --shadow-offset-y: 2px;
 }
 
-[data-preset="bold-tech"] .dark,
 [data-preset="bold-tech"] .scheme-dark,
 [data-preset="bold-tech"].dark {
   --background: #0f172a;

@@ -37,7 +37,6 @@
   --radius: 0.5rem;
 }
 
-[data-preset="caffeine"] .dark,
 [data-preset="caffeine"] .scheme-dark,
 [data-preset="caffeine"].dark {
   --background: #111111;

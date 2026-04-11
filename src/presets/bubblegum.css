@@ -46,7 +46,6 @@
   --shadow-offset-y: 3px;
 }
 
-[data-preset="bubblegum"] .dark,
 [data-preset="bubblegum"] .scheme-dark,
 [data-preset="bubblegum"].dark {
   --background: #12242e;

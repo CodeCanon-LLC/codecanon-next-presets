@@ -48,7 +48,6 @@
   --spacing: 0.25rem;
 }
 
-[data-preset="notebook"] .dark,
 [data-preset="notebook"] .scheme-dark,
 [data-preset="notebook"].dark {
   --background: #2b2b2b;

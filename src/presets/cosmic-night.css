@@ -46,7 +46,6 @@
   --shadow-offset-y: 4px;
 }
 
-[data-preset="cosmic-night"] .dark,
 [data-preset="cosmic-night"] .scheme-dark,
 [data-preset="cosmic-night"].dark {
   --background: #0f0f1a;

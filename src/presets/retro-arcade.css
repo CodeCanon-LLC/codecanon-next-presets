@@ -45,7 +45,6 @@
   --shadow-offset-y: 2px;
 }
 
-[data-preset="retro-arcade"] .dark,
 [data-preset="retro-arcade"] .scheme-dark,
 [data-preset="retro-arcade"].dark {
   --background: #002b36;

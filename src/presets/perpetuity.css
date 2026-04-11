@@ -46,7 +46,6 @@
   --shadow-offset-y: 1px;
 }
 
-[data-preset="perpetuity"] .dark,
 [data-preset="perpetuity"] .scheme-dark,
 [data-preset="perpetuity"].dark {
   --background: #0a1a20;

@@ -37,7 +37,6 @@
   --radius: 0.5rem;
 }
 
-[data-preset="t3-chat"] .dark,
 [data-preset="t3-chat"] .scheme-dark,
 [data-preset="t3-chat"].dark {
   --background: #221d27;

@@ -38,7 +38,6 @@
   --radius: 0.5rem;
 }
 
-[data-preset="starry-night"] .dark,
 [data-preset="starry-night"] .scheme-dark,
 [data-preset="starry-night"].dark {
   --background: #181a24;

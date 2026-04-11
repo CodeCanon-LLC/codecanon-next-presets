@@ -46,7 +46,6 @@
   --shadow-offset-y: 3px;
 }
 
-[data-preset="quantum-rose"] .dark,
 [data-preset="quantum-rose"] .scheme-dark,
 [data-preset="quantum-rose"].dark {
   --background: #1a0922;

@@ -48,7 +48,6 @@
   --spacing: 0.25rem;
 }
 
-[data-preset="soft-pop"] .dark,
 [data-preset="soft-pop"] .scheme-dark,
 [data-preset="soft-pop"].dark {
   --background: #000000;

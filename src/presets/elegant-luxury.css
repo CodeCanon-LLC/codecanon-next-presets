@@ -46,7 +46,6 @@
   --shadow-offset-y: 1px;
 }
 
-[data-preset="elegant-luxury"] .dark,
 [data-preset="elegant-luxury"] .scheme-dark,
 [data-preset="elegant-luxury"].dark {
   --background: #1c1917;

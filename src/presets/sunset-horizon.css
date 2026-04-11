@@ -46,7 +46,6 @@
   --shadow-offset-y: 6px;
 }
 
-[data-preset="sunset-horizon"] .dark,
 [data-preset="sunset-horizon"] .scheme-dark,
 [data-preset="sunset-horizon"].dark {
   --background: #2a2024;

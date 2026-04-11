@@ -46,7 +46,6 @@
   --shadow-offset-y: 5px;
 }
 
-[data-preset="midnight-bloom"] .dark,
 [data-preset="midnight-bloom"] .scheme-dark,
 [data-preset="midnight-bloom"].dark {
   --background: #1a1d23;

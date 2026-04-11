@@ -46,7 +46,6 @@
   --shadow-offset-y: 1px;
 }
 
-[data-preset="tangerine"] .dark,
 [data-preset="tangerine"] .scheme-dark,
 [data-preset="tangerine"].dark {
   --background: #1c2433;

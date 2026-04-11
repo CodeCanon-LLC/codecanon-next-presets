@@ -46,7 +46,6 @@
   --shadow-offset-y: 3px;
 }
 
-[data-preset="vintage-paper"] .dark,
 [data-preset="vintage-paper"] .scheme-dark,
 [data-preset="vintage-paper"].dark {
   --background: #2d2621;

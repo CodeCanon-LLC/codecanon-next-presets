@@ -48,7 +48,6 @@
   --spacing: 0.25rem;
 }
 
-[data-preset="doom-64"] .dark,
 [data-preset="doom-64"] .scheme-dark,
 [data-preset="doom-64"].dark {
   --background: #1a1a1a;

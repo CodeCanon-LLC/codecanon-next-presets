@@ -53,7 +53,6 @@
   --spacing: 0.25rem;
 }
 
-[data-preset="anew"] .dark,
 [data-preset="anew"] .scheme-dark,
 [data-preset="anew"].dark {
   --background: oklch(0.145 0 0);

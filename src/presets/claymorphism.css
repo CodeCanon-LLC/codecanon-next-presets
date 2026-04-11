@@ -46,7 +46,6 @@
   --shadow-offset-y: 2px;
 }
 
-[data-preset="claymorphism"] .dark,
 [data-preset="claymorphism"] .scheme-dark,
 [data-preset="claymorphism"].dark {
   --background: #1e1b18;

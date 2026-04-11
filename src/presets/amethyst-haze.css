@@ -48,7 +48,6 @@
   --spacing: 0.25rem;
 }
 
-[data-preset="amethyst-haze"] .dark,
 [data-preset="amethyst-haze"] .scheme-dark,
 [data-preset="amethyst-haze"].dark {
   --background: #1a1823;

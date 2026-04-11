@@ -46,7 +46,6 @@
   --shadow-offset-y: 1px;
 }
 
-[data-preset="mono"] .dark,
 [data-preset="mono"] .scheme-dark,
 [data-preset="mono"].dark {
   --background: #0a0a0a;

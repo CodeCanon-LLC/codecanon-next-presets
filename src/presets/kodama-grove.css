@@ -46,7 +46,6 @@
   --shadow-offset-y: 3px;
 }
 
-[data-preset="kodama-grove"] .dark,
 [data-preset="kodama-grove"] .scheme-dark,
 [data-preset="kodama-grove"].dark {
   --background: #3a3529;
