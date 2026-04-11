@@ -39,7 +39,7 @@ function DefaultAppPreviewCard({
         highlighted &&
           !active &&
           "ring-accent-foreground ring-.5 ring-offset-1",
-        "h-49 w-67",
+        "h-49 w-67 max-w-11/12",
         "flex flex-col",
         className
       )}
