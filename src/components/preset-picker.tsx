@@ -68,12 +68,16 @@ function usePresetPicker(caller = "usePresetPicker") {
   return context
 }
 
-function PresetPickerThemeToggleGroup() {
+function PresetPickerThemeToggleGroup({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const { theme, setTheme } = useTheme()
 
   return (
     <ToggleGroup
-      className="w-full border"
+      {...(props as any)}
+      className={cn("w-full border", className)}
       type="single"
       value={theme ?? ""}
       onValueChange={(value) => value && setTheme(value as Theme)}
@@ -97,10 +101,12 @@ function PresetPickerThemeToggleGroup() {
 function PresetPickerContent({
   showDock,
   previewCard: AppPreviewCard = DefaultAppPreviewCard,
+  className,
+  ...props
 }: {
   showDock?: boolean
   previewCard?: typeof DefaultAppPreviewCard
-}) {
+} & React.ComponentProps<"div">) {
   const { open } = usePresetPicker("PresetPickerContent")
   const { preset, setPreset } = usePreset()
   const [mounted, setMounted] = useBoolean(false)
@@ -178,7 +184,10 @@ function PresetPickerContent({
         autoFocus
       />
       <Scroller className="min-h-0 flex-1" ref={scrollerRef}>
-        <div className="flex flex-col gap-1 overflow-y-auto">
+        <div
+          className={cn("flex flex-col gap-1 overflow-y-auto", className)}
+          {...props}
+        >
           {filteredPresets.length > 0 ? (
             filteredPresets.map(([id, label], index) => (
               <AppPreviewCard
