@@ -55,4 +55,7 @@ export const PRESETS = [
 
 export type PresetKeys = (typeof PRESETS)[number][0]
 
+/** A tuple of [id, label] describing a single preset — built-in or custom. */
+export type PresetTuple = readonly [string, string]
+
 export const DEFAULT_PRESET: PresetKeys = "nuteral"

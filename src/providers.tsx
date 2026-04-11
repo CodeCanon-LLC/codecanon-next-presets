@@ -5,7 +5,7 @@ import {
 } from "next-themes"
 import { createContext, useContext, useEffect, type ReactNode } from "react"
 import { useLocalStorage } from "~/hooks/use-local-storage"
-import { DEFAULT_PRESET, type PresetKeys } from "~/presets"
+import { DEFAULT_PRESET } from "~/presets"
 
 type ColorScheme = "dark" | "light"
 type Theme = ColorScheme | "system"
@@ -14,14 +14,17 @@ const DEFAULT_COLOR_SCHEME: ColorScheme = "dark"
 
 type PresetProviderProps = {
   children: ReactNode
-  defaultPreset?: PresetKeys
+  /** Initial preset when no stored value exists. Accepts built-in `PresetKeys` or any custom preset ID. */
+  defaultPreset?: string
   presetKey?: string
 }
 
 type PresetState = {
-  preset?: PresetKeys
+  /** The currently active preset ID. */
+  preset?: string
   resetPreset: () => void
-  setPreset: (preset: PresetKeys) => void
+  /** Switch to any preset by ID — built-in or custom. */
+  setPreset: (preset: string) => void
 }
 
 const initialState: PresetState = {
@@ -35,7 +38,7 @@ function PresetProvider({
   children,
   presetKey = "preset",
 }: PresetProviderProps) {
-  const [preset, setPreset, resetPreset] = useLocalStorage<PresetKeys>(
+  const [preset, setPreset, resetPreset] = useLocalStorage<string>(
     presetKey,
     DEFAULT_PRESET
   )

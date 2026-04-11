@@ -21,7 +21,7 @@ import {
   SheetTitle,
 } from "~/components/ui/sheet"
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group"
-import { PRESETS, type PresetKeys } from "~/presets"
+import { PRESETS, type PresetTuple } from "~/presets"
 import { cn } from "~/lib/utils"
 import { DefaultAppPreviewCard } from "./default-app-preview-card"
 
@@ -101,11 +101,17 @@ function PresetPickerThemeToggleGroup({
 function PresetPickerContent({
   showDock,
   previewCard: AppPreviewCard = DefaultAppPreviewCard,
+  presets = PRESETS,
   className,
   ...props
 }: {
   showDock?: boolean
   previewCard?: typeof DefaultAppPreviewCard
+  /**
+   * The list of presets to display. Defaults to the built-in `PRESETS`.
+   * Extend with custom presets by spreading: `[...PRESETS, ["my-brand", "My Brand"]]`
+   */
+  presets?: readonly PresetTuple[]
 } & React.ComponentProps<"div">) {
   const { open } = usePresetPicker("PresetPickerContent")
   const { preset, setPreset } = usePreset()
@@ -117,8 +123,8 @@ function PresetPickerContent({
   const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map())
 
   const filteredPresets = useMemo(
-    () => PRESETS.filter(([, t]) => t?.toLowerCase().includes(queryLower)),
-    [queryLower]
+    () => presets.filter(([, t]) => t?.toLowerCase().includes(queryLower)),
+    [queryLower, presets]
   )
 
   useEffect(() => {
@@ -168,8 +174,8 @@ function PresetPickerContent({
       setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev))
     } else if (e.key === "Enter") {
       e.preventDefault()
-      const id = filteredPresets[highlightedIndex]?.[0] as PresetKeys
-      setPreset(id)
+      const id = filteredPresets[highlightedIndex]?.[0]
+      if (id) setPreset(id)
     }
   }
 
@@ -211,7 +217,7 @@ function PresetPickerContent({
                 active={preset === id}
                 highlighted={index === highlightedIndex}
                 label={label}
-                presetKey={id as PresetKeys}
+                presetKey={id}
                 onClick={() => {
                   setPreset(id)
                   setHighlightedIndex(index)

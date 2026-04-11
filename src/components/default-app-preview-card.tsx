@@ -1,6 +1,5 @@
 import { usePreset, useTheme } from "~/providers"
 import { Card } from "~/components/ui/card"
-import type { PresetKeys } from "~/presets"
 import { titleCase } from "~/lib/format"
 import { EM_DASH } from "~/lib/symbols"
 import { cn } from "~/lib/utils"
@@ -17,7 +16,8 @@ function DefaultAppPreviewCard({
 }: {
   showDock?: boolean
   label?: string
-  presetKey?: PresetKeys
+  /** Built-in preset ID or any custom preset ID. */
+  presetKey?: string
   active?: boolean
   highlighted?: boolean
   ref?: React.Ref<HTMLDivElement>
