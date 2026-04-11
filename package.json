@@ -1,0 +1,88 @@
+{
+  "name": "@codecanon/next-presets",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Allow your user to choose from a list of shadcn presets",
+  "author": "CodeCanon LLC <codecanonllc@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com//CodeCanon-LLC/codecanon-next-presets#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com//CodeCanon-LLC/codecanon-next-presets.git"
+  },
+  "bugs": {
+    "url": "https://github.com//CodeCanon-LLC/codecanon-next-presets/issues"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build:css": "postcss src/presets/index.css -o dist/styles.css",
+    "build:js": "tsdown",
+    "build": "pnpm run build:js && pnpm run build:css",
+    "dev:css": "postcss src/presets/index.css -o dist/styles.css --watch",
+    "dev:js": "tsdown --watch",
+    "dev": "concurrently \"pnpm run dev:js\" \"pnpm run dev:css\"",
+    "play": "vite",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp && pnpm publish",
+    "prepublishOnly": "pnpm run build",
+    "format": "prettier --write .",
+    "knip": "knip"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "lucide-react": "^1.8.0",
+    "next-themes": "^0.4.6"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/vite": "^4.2.2",
+    "@tsconfig/strictest": "^2.0.8",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/browser-playwright": "^4.1.2",
+    "autoprefixer": "^10.4.27",
+    "bumpp": "^11.0.1",
+    "concurrently": "^9.2.1",
+    "husky": "^9.1.7",
+    "knip": "^6.4.0",
+    "lint-staged": "^16.4.0",
+    "postcss": "^8.5.9",
+    "postcss-cli": "^11.0.1",
+    "prettier": "^3.8.2",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4.2.2",
+    "tsdown": "^0.21.7",
+    "tw-animate-css": "^1.4.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2",
+    "vitest-browser-react": "^2.1.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "radix-ui": "^1.4.3",
+    "shadcn": "^4.2.0",
+    "tailwind-merge": "^3.5.0"
+  },
+  "inlinedDependencies": {
+    "@radix-ui/react-compose-refs": "1.1.2",
+    "@radix-ui/react-slot": "1.2.3"
+  }
+}
