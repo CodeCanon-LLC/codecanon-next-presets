@@ -1,5 +1,6 @@
 import {
   ThemeProvider as NextThemeProvider,
+  type ThemeProviderProps as NextThemeProviderProps,
   useTheme as useNextTheme,
 } from "next-themes"
 import { createContext, useContext, useEffect, type ReactNode } from "react"
@@ -74,18 +75,17 @@ function usePreset() {
   return context
 }
 
-type ThemePresetProviderProps = PresetProviderProps & {
-  children: ReactNode
+type ThemeProviderProps = NextThemeProviderProps & {
   defaultTheme?: Theme
   themeKey?: string
 }
 
-function ThemePresetProvider({
+function ThemeProvider({
   children,
   defaultTheme = DEFAULT_COLOR_SCHEME,
   themeKey = "theme",
-  ...presetProps
-}: ThemePresetProviderProps) {
+  ...nextThemeProps
+}: ThemeProviderProps) {
   const [theme = defaultTheme] = useLocalStorage<Theme>(themeKey, defaultTheme)
 
   return (
@@ -94,8 +94,9 @@ function ThemePresetProvider({
       enableColorScheme
       attribute="class"
       defaultTheme={theme}
+      {...nextThemeProps}
     >
-      <PresetProvider {...presetProps}>{children}</PresetProvider>
+      {children}
     </NextThemeProvider>
   )
 }
@@ -128,22 +129,5 @@ function useTheme() {
   }
 }
 
-function useThemePreset() {
-  const presetContext = usePreset()
-  const themeContext = useTheme()
-
-  return {
-    ...themeContext,
-    ...presetContext,
-  }
-}
-
-export type { ColorScheme, Theme }
-export {
-  DEFAULT_COLOR_SCHEME,
-  usePreset,
-  ThemePresetProvider,
-  PresetProvider,
-  useTheme,
-  useThemePreset,
-}
+export type { ColorScheme, Theme, ThemeProviderProps, PresetProviderProps }
+export { PresetProvider, usePreset, ThemeProvider, useTheme }

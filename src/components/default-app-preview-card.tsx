@@ -1,4 +1,4 @@
-import { useThemePreset } from "~/preset-provider"
+import { usePreset, useTheme } from "~/providers"
 import { Card } from "~/components/ui/card"
 import type { PresetKeys } from "~/presets"
 import { titleCase } from "~/lib/format"
@@ -22,7 +22,8 @@ function DefaultAppPreviewCard({
   highlighted?: boolean
   ref?: React.Ref<HTMLDivElement>
 } & React.ComponentProps<typeof Card>) {
-  const { colorScheme = "light", preset: activePresetKey } = useThemePreset()
+  const { preset: activePresetKey } = usePreset()
+  const { colorScheme = "light" } = useTheme()
 
   // Determine which theme to use for the preview
   const themeKey = presetKey || activePresetKey

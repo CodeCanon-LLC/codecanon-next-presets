@@ -1,18 +1,21 @@
 import {
-  ThemePresetProvider,
-  PresetPickerProvider,
+  ThemeProvider,
+  PresetProvider,
   PresetPicker,
-  usePresetPickerToggle,
-  useThemePreset,
+  usePresetPicker,
+  useTheme,
+  usePreset,
+  PresetPickerSheet,
 } from "@codecanon/next-presets"
 
 function OpenPickerButton() {
-  const toggle = usePresetPickerToggle()
-  const { preset, colorScheme } = useThemePreset()
+  const { toggleOpen } = usePresetPicker()
+  const { colorScheme } = useTheme()
+  const { preset } = usePreset()
 
   return (
     <button
-      onClick={toggle}
+      onClick={toggleOpen}
       className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
     >
       <svg
@@ -248,13 +251,17 @@ function DemoContent() {
   )
 }
 
-export function App() {
+function App() {
   return (
-    <ThemePresetProvider defaultTheme="system">
-      <PresetPickerProvider>
-        <DemoContent />
-        <PresetPicker />
-      </PresetPickerProvider>
-    </ThemePresetProvider>
+    <ThemeProvider defaultTheme="system">
+      <PresetProvider>
+        <PresetPicker>
+          <DemoContent />
+          <PresetPickerSheet />
+        </PresetPicker>
+      </PresetProvider>
+    </ThemeProvider>
   )
 }
+
+export { App }

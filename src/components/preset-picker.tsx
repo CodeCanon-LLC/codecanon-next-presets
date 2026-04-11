@@ -10,7 +10,7 @@ import {
 } from "react"
 import { useBoolean } from "~/hooks/use-boolean"
 
-import { useThemePreset, type Theme } from "~/preset-provider"
+import { usePreset, useTheme, type Theme } from "~/providers"
 import { Input } from "~/components/ui/input"
 import { Scroller } from "~/components/ui/scroller"
 import {
@@ -25,22 +25,41 @@ import { PRESETS, type PresetKeys } from "~/presets"
 import { cn } from "~/lib/utils"
 import { DefaultAppPreviewCard } from "./default-app-preview-card"
 
-const PresetsSheetContext = createContext<
-  [boolean, React.Dispatch<React.SetStateAction<boolean>>]
->([false, () => {}])
+type PresetPickerState = {
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  toggleOpen: () => void
+}
 
-export function PresetPickerProvider({ children }: PropsWithChildren) {
-  const context = useState(false)
+const PresetsPickerContext = createContext<PresetPickerState>({
+  open: false,
+  setOpen: () => {},
+  toggleOpen: () => {},
+})
+
+function PresetPicker({ children }: PropsWithChildren) {
+  const [open, setOpen] = useState(false)
+
+  const toggleOpen = () => setOpen((open) => !open)
+
+  const context: PresetPickerState = useMemo(
+    () => ({
+      open,
+      setOpen,
+      toggleOpen,
+    }),
+    [open]
+  )
 
   return (
-    <PresetsSheetContext.Provider value={context}>
+    <PresetsPickerContext.Provider value={context}>
       {children}
-    </PresetsSheetContext.Provider>
+    </PresetsPickerContext.Provider>
   )
 }
 
-export function usePresetPickerSheet() {
-  const context = useContext(PresetsSheetContext)
+function usePresetPicker() {
+  const context = useContext(PresetsPickerContext)
 
   if (!context) {
     throw new Error(
@@ -51,22 +70,17 @@ export function usePresetPickerSheet() {
   return context
 }
 
-export function usePresetPickerToggle() {
-  const [, setOpen] = usePresetPickerSheet()
-
-  return () => setOpen((open) => !open)
-}
-
-export function PresetPicker({
+function PresetPickerSheet({
   showDock,
   previewCard: AppPreviewCard = DefaultAppPreviewCard,
 }: {
   showDock?: boolean
   previewCard?: typeof DefaultAppPreviewCard
 }) {
-  const { preset, setPreset, theme, setTheme } = useThemePreset()
+  const { preset, setPreset } = usePreset()
+  const { theme, setTheme } = useTheme()
   const [query, setQuery] = useState("")
-  const [open, setOpen] = usePresetPickerSheet()
+  const { open, setOpen } = usePresetPicker()
   const [mounted, setMounted] = useBoolean(false)
   const queryLower = query.trim().toLowerCase()
   const scrollerRef = useRef<HTMLDivElement>(null)
@@ -145,7 +159,7 @@ export function PresetPicker({
         <SheetHeader>
           <SheetTitle className="flex gap-2">
             <Palette />
-            Theme Picker
+            Preset Picker
           </SheetTitle>
         </SheetHeader>
         <div className="flex min-h-0 flex-1 flex-col gap-4 px-4">
@@ -220,3 +234,5 @@ export function PresetPicker({
     </Sheet>
   )
 }
+
+export { PresetPicker, usePresetPicker, PresetPickerSheet }

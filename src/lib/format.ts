@@ -2,7 +2,7 @@
 // some value -> Some Value
 // some_value -> Some Value
 // SomeValue -> Some Value
-export function titleCase(str: string) {
+function titleCase(str: string) {
   if (!str) return ""
 
   // Replace underscores and hyphens with space
@@ -24,3 +24,5 @@ export function titleCase(str: string) {
     )
     .join(" ")
 }
+
+export { titleCase }
