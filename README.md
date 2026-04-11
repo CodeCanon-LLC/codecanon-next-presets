@@ -1,6 +1,6 @@
-# react-components-starter
+# @codecanon/next-presets
 
-A starter for creating a React component library.
+Allow your user to choose from a list of shadcn presets.
 
 ## Installation
 
