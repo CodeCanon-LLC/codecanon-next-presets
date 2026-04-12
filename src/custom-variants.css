@@ -19,16 +19,19 @@
  */
 @custom-variant preset-light {
   &,
+  :root&,
+  &.light,
+  &[data-preset-theme="light"],
   &.dark .scheme-light,
-  &[data-preset-theme="dark"] .scheme-light,
-  :root& {
+  &[data-preset-theme="dark"] .scheme-light {
     @slot;
   }
 }
 @custom-variant preset-dark {
   &.dark,
   &[data-preset-theme="dark"],
-  & .scheme-dark {
+  &.light .scheme-dark,
+  &[data-preset-theme="light"] .scheme-dark {
     @slot;
   }
 }

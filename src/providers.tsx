@@ -30,6 +30,7 @@ type PresetProviderProps = {
   /** Initial preset when no stored value exists. Accepts built-in `PresetKeys` or any custom preset ID. */
   defaultPreset?: string
   presetKey?: string
+  presetAttr?: string
 }
 
 type PresetState = {
@@ -50,6 +51,7 @@ const PresetContext = createContext<PresetState>(initialState)
 function PresetProvider({
   children,
   presetKey = DEFAULT_PRESET_KEY,
+  presetAttr = DEFAULT_PRESET_ATTR,
 }: PresetProviderProps) {
   const [preset, setPreset, resetPreset] = useLocalStorage<string>(
     presetKey,
@@ -63,11 +65,11 @@ function PresetProvider({
 
     // Set the data-preset attribute based on the current preset
     if (preset) {
-      root.setAttribute(DEFAULT_PRESET_ATTR, preset)
+      root.setAttribute(presetAttr, preset)
     } else {
-      root.removeAttribute(DEFAULT_PRESET_ATTR)
+      root.removeAttribute(presetAttr)
     }
-  }, [preset])
+  }, [preset, presetAttr])
 
   const presetContext: PresetState = {
     preset,
@@ -77,7 +79,7 @@ function PresetProvider({
 
   return (
     <PresetContext.Provider value={presetContext}>
-      <PresetScript presetKey={presetKey} />
+      <PresetScript presetKey={presetKey} presetAttr={presetAttr} />
       {children}
     </PresetContext.Provider>
   )
