@@ -1,4 +1,5 @@
 import {
+  type Attribute,
   ThemeProvider as NextThemeProvider,
   type ThemeProviderProps as NextThemeProviderProps,
   useTheme as useNextTheme,
@@ -11,11 +12,18 @@ import {
 } from "react"
 import { useLocalStorage } from "~/hooks/use-local-storage"
 import { DEFAULT_PRESET } from "~/presets"
-
-type ColorScheme = "dark" | "light"
-type Theme = ColorScheme | "system"
-
-const DEFAULT_COLOR_SCHEME: ColorScheme = "dark"
+import { PresetScript } from "./script"
+import {
+  THEME_DARK,
+  DEFAULT_THEME,
+  DEFAULT_PRESET_ATTR,
+  NEXT_THEME_PRESET_ATTR,
+  DEFAULT_PRESET_KEY,
+  DEFAULT_THEME_KEY,
+  type ColorScheme,
+  type Theme,
+  DEFAULT_COLOR_SCHEME,
+} from "./lib/constants"
 
 type PresetProviderProps = {
   children: ReactNode
@@ -41,7 +49,7 @@ const PresetContext = createContext<PresetState>(initialState)
 
 function PresetProvider({
   children,
-  presetKey = "preset",
+  presetKey = DEFAULT_PRESET_KEY,
 }: PresetProviderProps) {
   const [preset, setPreset, resetPreset] = useLocalStorage<string>(
     presetKey,
@@ -55,9 +63,9 @@ function PresetProvider({
 
     // Set the data-preset attribute based on the current preset
     if (preset) {
-      root.setAttribute("data-preset", preset)
+      root.setAttribute(DEFAULT_PRESET_ATTR, preset)
     } else {
-      root.removeAttribute("data-preset")
+      root.removeAttribute(DEFAULT_PRESET_ATTR)
     }
   }, [preset])
 
@@ -69,6 +77,7 @@ function PresetProvider({
 
   return (
     <PresetContext.Provider value={presetContext}>
+      <PresetScript presetKey={presetKey} />
       {children}
     </PresetContext.Provider>
   )
@@ -90,17 +99,25 @@ type ThemeProviderProps = NextThemeProviderProps & {
 
 function ThemeProvider({
   children,
-  defaultTheme = DEFAULT_COLOR_SCHEME,
-  themeKey = "theme",
+  defaultTheme = DEFAULT_THEME,
+  themeKey = DEFAULT_THEME_KEY,
+  attribute = "class",
   ...nextThemeProps
 }: ThemeProviderProps) {
+  // Always include data-preset-theme so preset CSS variables work correctly
+  // regardless of what dark mode attribute/class the consumer configures.
+  // next-themes manages this attribute (and its FOUC script) automatically.
+  const attrsArray: Attribute[] =
+    typeof attribute === "string" ? [attribute] : attribute || []
+  const attrs: Attribute[] = attrsArray.includes(NEXT_THEME_PRESET_ATTR)
+    ? attrsArray
+    : [NEXT_THEME_PRESET_ATTR, ...attrsArray]
+
   return (
     <NextThemeProvider
-      enableSystem
-      enableColorScheme
-      attribute="class"
       storageKey={themeKey}
       defaultTheme={defaultTheme}
+      attribute={attrs}
       {...nextThemeProps}
     >
       {children}
@@ -127,7 +144,7 @@ function useTheme() {
   const themeContext = useNextTheme() as UseTheme
   const colorScheme =
     (themeContext.resolvedTheme as ColorScheme) || DEFAULT_COLOR_SCHEME
-  const isDarkTheme = colorScheme === "dark"
+  const isDarkTheme = colorScheme === THEME_DARK
 
   return {
     ...themeContext,

@@ -1,0 +1,33 @@
+/**
+ * Dark/light mode variants for preset CSS variables.
+ *
+ * `data-preset-theme` is set by ThemeProvider via next-themes (always included
+ * in the attribute array), so it works regardless of what dark mode attribute
+ * or class the consumer configures.
+ *
+ * To write a custom preset:
+ *
+ *   [data-preset="my-preset"] {
+ *     @variant preset-light {
+ *       --primary: ...;  ← light mode vars (also applies to .scheme-light)
+ *     }
+ *
+ *     @variant preset-dark {
+ *       --primary: ...;  ← dark mode vars (also applies to .scheme-dark)
+ *     }
+ *   }
+ */
+@custom-variant preset-light {
+  &,
+  &[data-preset-theme="dark"] .scheme-light,
+  :root& {
+    @slot;
+  }
+}
+@custom-variant preset-dark {
+  &.dark,
+  &[data-preset-theme="dark"],
+  & .scheme-dark {
+    @slot;
+  }
+}
