@@ -3,7 +3,12 @@ import {
   type ThemeProviderProps as NextThemeProviderProps,
   useTheme as useNextTheme,
 } from "next-themes"
-import { createContext, useContext, useEffect, type ReactNode } from "react"
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  type ReactNode,
+} from "react"
 import { useLocalStorage } from "~/hooks/use-local-storage"
 import { DEFAULT_PRESET } from "~/presets"
 
@@ -44,7 +49,7 @@ function PresetProvider({
   )
 
   // Apply theme preset via data-preset attribute
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement
     if (!root) return
 
