@@ -19,6 +19,7 @@
  */
 @custom-variant preset-light {
   &,
+  &.dark .scheme-light,
   &[data-preset-theme="dark"] .scheme-light,
   :root& {
     @slot;
