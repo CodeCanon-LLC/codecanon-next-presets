@@ -80,7 +80,11 @@ function PresetProvider({
 
   return (
     <PresetContext.Provider value={presetContext}>
-      <PresetScript presetKey={presetKey} presetAttr={presetAttr} />
+      <PresetScript
+        presetKey={presetKey}
+        presetAttr={presetAttr}
+        defaultPreset={defaultPreset}
+      />
       {children}
     </PresetContext.Provider>
   )
