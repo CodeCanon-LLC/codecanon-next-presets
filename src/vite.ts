@@ -5,14 +5,14 @@ import { PRESETS } from "./config.js"
 
 const ALL_PRESET_IDS = new Set<string>(PRESETS.map(([id]) => id))
 
-export interface CodecanonPresetsOptions {
+export interface NextPresetsPluginOptions {
   /**
    * Preset IDs to include. Unlisted presets will be excluded from the
    * compiled CSS and from the `PRESETS` export (so `PresetPicker` only
    * shows the presets you list here).
    *
    * @example
-   * codecanonPresets({ presets: ['claude', 'anew', 'rose'] })
+   * nextPresetsPlugin({ presets: ['claude', 'anew', 'rose'] })
    */
   presets: string[]
 }
@@ -41,7 +41,7 @@ function validatePresets(requested: string[]): string[] {
   return valid
 }
 
-export function codecanonPresets(options: CodecanonPresetsOptions): Plugin {
+export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
   const selectedIds = validatePresets(options.presets)
 
   // Filtered PRESETS in original canonical order

@@ -186,12 +186,12 @@ Install the plugin in your `vite.config.ts`. It intercepts the `styles.css` impo
 
 ```typescript
 // vite.config.ts
-import { codecanonPresets } from "@codecanon/next-presets/vite"
+import { nextPresetsPlugin } from "@codecanon/next-presets/vite"
 import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [
-    codecanonPresets({
+    nextPresetsPlugin({
       presets: ["claude", "anew", "rose"],
     }),
   ],
