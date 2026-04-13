@@ -246,7 +246,8 @@ function PresetPickerSheet({
       <SheetContent
         side="left"
         className={cn(
-          "pointer-events-auto max-w-screen data-[side=left]:w-80 data-[side=right]:w-80 sm:max-w-md",
+          "bg-background pointer-events-auto",
+          "max-w-screen data-[side=left]:w-80 data-[side=right]:w-80 sm:max-w-md",
           "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left"
         )}
         onPointerDownOutside={(e) => e.preventDefault()}

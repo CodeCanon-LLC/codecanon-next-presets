@@ -1,48 +1,5 @@
 /* Theme: Mocha Mousse */
 [data-preset="mocha-mousse"] {
-  --background: #f1f0e5;
-  --foreground: #56453f;
-  --card: #f1f0e5;
-  --card-foreground: #56453f;
-  --popover: #ffffff;
-  --popover-foreground: #56453f;
-  --primary: #a37764;
-  --primary-foreground: #ffffff;
-  --secondary: #baab92;
-  --secondary-foreground: #ffffff;
-  --muted: #e4c7b8;
-  --muted-foreground: #8a655a;
-  --accent: #e4c7b8;
-  --accent-foreground: #56453f;
-  --destructive: #1f1a17;
-  --destructive-foreground: #ffffff;
-  --border: #baab92;
-  --input: #baab92;
-  --ring: #a37764;
-  --chart-1: #a37764;
-  --chart-2: #8a655a;
-  --chart-3: #c39e88;
-  --chart-4: #baab92;
-  --chart-5: #a28777;
-  --sidebar: #ebd6cb;
-  --sidebar-foreground: #56453f;
-  --sidebar-primary: #a37764;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #c39e88;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #a28777;
-  --sidebar-ring: #a37764;
-  --font-sans: DM Sans, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: Menlo, monospace;
-  --radius: 0.5rem;
-  --shadow-color: hsl(20 18% 51% / 0.4);
-  --shadow-opacity: 0.11;
-  --shadow-blur: 0px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 2px;
-  --shadow-offset-y: 2px;
-
   @variant preset-light {
     --background: #f1f0e5;
     --foreground: #56453f;
@@ -63,6 +20,11 @@
     --border: #baab92;
     --input: #baab92;
     --ring: #a37764;
+    --chart-1: #a37764;
+    --chart-2: #8a655a;
+    --chart-3: #c39e88;
+    --chart-4: #baab92;
+    --chart-5: #a28777;
     --sidebar: #ebd6cb;
     --sidebar-foreground: #56453f;
     --sidebar-primary: #a37764;
@@ -71,6 +33,16 @@
     --sidebar-accent-foreground: #ffffff;
     --sidebar-border: #a28777;
     --sidebar-ring: #a37764;
+    --font-sans: DM Sans, sans-serif;
+    --font-serif: Georgia, serif;
+    --font-mono: Menlo, monospace;
+    --radius: 0.5rem;
+    --shadow-color: hsl(20 18% 51% / 0.4);
+    --shadow-opacity: 0.11;
+    --shadow-blur: 0px;
+    --shadow-spread: 0px;
+    --shadow-offset-x: 2px;
+    --shadow-offset-y: 2px;
   }
 
   @variant preset-dark {

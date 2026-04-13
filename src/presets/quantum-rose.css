@@ -1,48 +1,5 @@
 /* Theme: Quantum Rose */
 [data-preset="quantum-rose"] {
-  --background: #fff0f8;
-  --foreground: #91185c;
-  --card: #fff7fc;
-  --card-foreground: #91185c;
-  --popover: #fff7fc;
-  --popover-foreground: #91185c;
-  --primary: #e6067a;
-  --primary-foreground: #ffffff;
-  --secondary: #ffd6ff;
-  --secondary-foreground: #91185c;
-  --muted: #ffe3f2;
-  --muted-foreground: #c04283;
-  --accent: #ffc1e3;
-  --accent-foreground: #91185c;
-  --destructive: #d13869;
-  --destructive-foreground: #ffffff;
-  --border: #ffc7e6;
-  --input: #ffd6ff;
-  --ring: #e6067a;
-  --chart-1: #e6067a;
-  --chart-2: #c44b97;
-  --chart-3: #9969b6;
-  --chart-4: #7371bf;
-  --chart-5: #5e84ff;
-  --sidebar: #ffedf6;
-  --sidebar-foreground: #91185c;
-  --sidebar-primary: #e6067a;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #ffc1e3;
-  --sidebar-accent-foreground: #91185c;
-  --sidebar-border: #ffddf0;
-  --sidebar-ring: #e6067a;
-  --font-sans: Poppins, sans-serif;
-  --font-serif: Playfair Display, serif;
-  --font-mono: Space Mono, monospace;
-  --radius: 0.5rem;
-  --shadow-color: hsl(330 70% 30% / 0.12);
-  --shadow-opacity: 0.18;
-  --shadow-blur: 0px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 0px;
-  --shadow-offset-y: 3px;
-
   @variant preset-light {
     --background: #fff0f8;
     --foreground: #91185c;
@@ -63,6 +20,11 @@
     --border: #ffc7e6;
     --input: #ffd6ff;
     --ring: #e6067a;
+    --chart-1: #e6067a;
+    --chart-2: #c44b97;
+    --chart-3: #9969b6;
+    --chart-4: #7371bf;
+    --chart-5: #5e84ff;
     --sidebar: #ffedf6;
     --sidebar-foreground: #91185c;
     --sidebar-primary: #e6067a;
@@ -71,6 +33,16 @@
     --sidebar-accent-foreground: #91185c;
     --sidebar-border: #ffddf0;
     --sidebar-ring: #e6067a;
+    --font-sans: Poppins, sans-serif;
+    --font-serif: Playfair Display, serif;
+    --font-mono: Space Mono, monospace;
+    --radius: 0.5rem;
+    --shadow-color: hsl(330 70% 30% / 0.12);
+    --shadow-opacity: 0.18;
+    --shadow-blur: 0px;
+    --shadow-spread: 0px;
+    --shadow-offset-x: 0px;
+    --shadow-offset-y: 3px;
   }
 
   @variant preset-dark {

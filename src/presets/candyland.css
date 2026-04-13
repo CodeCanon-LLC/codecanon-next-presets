@@ -1,41 +1,5 @@
 /* Theme: Candyland */
 [data-preset="candyland"] {
-  --background: #f7f9fa;
-  --foreground: #333333;
-  --card: #ffffff;
-  --card-foreground: #333333;
-  --popover: #ffffff;
-  --popover-foreground: #333333;
-  --primary: #ffc0cb;
-  --primary-foreground: #000000;
-  --secondary: #87ceeb;
-  --secondary-foreground: #000000;
-  --muted: #ddd9c4;
-  --muted-foreground: #6e6e6e;
-  --accent: #ffff00;
-  --accent-foreground: #000000;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #d4d4d4;
-  --input: #d4d4d4;
-  --ring: #ffc0cb;
-  --chart-1: #ffc0cb;
-  --chart-2: #87ceeb;
-  --chart-3: #ffff00;
-  --chart-4: #ff99cc;
-  --chart-5: #33cc33;
-  --radius: 0.5rem;
-  --sidebar: #f7f9fa;
-  --sidebar-foreground: #333333;
-  --sidebar-primary: #ffc0cb;
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: #ffff00;
-  --sidebar-accent-foreground: #000000;
-  --sidebar-border: #d4d4d4;
-  --sidebar-ring: #ffc0cb;
-  --font-sans: Poppins, sans-serif;
-  --font-mono: Roboto Mono, monospace;
-
   @variant preset-light {
     --background: #f7f9fa;
     --foreground: #333333;
@@ -56,6 +20,12 @@
     --border: #d4d4d4;
     --input: #d4d4d4;
     --ring: #ffc0cb;
+    --chart-1: #ffc0cb;
+    --chart-2: #87ceeb;
+    --chart-3: #ffff00;
+    --chart-4: #ff99cc;
+    --chart-5: #33cc33;
+    --radius: 0.5rem;
     --sidebar: #f7f9fa;
     --sidebar-foreground: #333333;
     --sidebar-primary: #ffc0cb;
@@ -64,6 +34,8 @@
     --sidebar-accent-foreground: #000000;
     --sidebar-border: #d4d4d4;
     --sidebar-ring: #ffc0cb;
+    --font-sans: Poppins, sans-serif;
+    --font-mono: Roboto Mono, monospace;
   }
 
   @variant preset-dark {

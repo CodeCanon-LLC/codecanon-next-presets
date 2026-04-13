@@ -1,39 +1,5 @@
 /* Theme: T3 Chat */
 [data-preset="t3-chat"] {
-  --background: #faf5fa;
-  --foreground: #501854;
-  --card: #faf5fa;
-  --card-foreground: #501854;
-  --popover: #ffffff;
-  --popover-foreground: #501854;
-  --primary: #a84370;
-  --primary-foreground: #ffffff;
-  --secondary: #f1c4e6;
-  --secondary-foreground: #77347c;
-  --muted: #f6e5f3;
-  --muted-foreground: #834588;
-  --accent: #f1c4e6;
-  --accent-foreground: #77347c;
-  --destructive: #ab4347;
-  --destructive-foreground: #ffffff;
-  --border: #efbdeb;
-  --input: #e7c1dc;
-  --ring: #db2777;
-  --chart-1: #d926a2;
-  --chart-2: #6c12b9;
-  --chart-3: #274754;
-  --chart-4: #e8c468;
-  --chart-5: #f4a462;
-  --sidebar: #f3e4f6;
-  --sidebar-foreground: #ac1668;
-  --sidebar-primary: #454554;
-  --sidebar-primary-foreground: #faf1f7;
-  --sidebar-accent: #f8f8f7;
-  --sidebar-accent-foreground: #454554;
-  --sidebar-border: #eceae9;
-  --sidebar-ring: #db2777;
-  --radius: 0.5rem;
-
   @variant preset-light {
     --background: #faf5fa;
     --foreground: #501854;
@@ -54,6 +20,11 @@
     --border: #efbdeb;
     --input: #e7c1dc;
     --ring: #db2777;
+    --chart-1: #d926a2;
+    --chart-2: #6c12b9;
+    --chart-3: #274754;
+    --chart-4: #e8c468;
+    --chart-5: #f4a462;
     --sidebar: #f3e4f6;
     --sidebar-foreground: #ac1668;
     --sidebar-primary: #454554;
@@ -62,6 +33,7 @@
     --sidebar-accent-foreground: #454554;
     --sidebar-border: #eceae9;
     --sidebar-ring: #db2777;
+    --radius: 0.5rem;
   }
 
   @variant preset-dark {

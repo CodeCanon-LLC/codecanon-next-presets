@@ -8,6 +8,8 @@ import {
   PresetPickerSheet,
   PresetPickerThemeToggleGroup,
   PresetPickerContent,
+  type PresetTuple,
+  PRESETS,
 } from "@codecanon/next-presets"
 
 function OpenPickerButton() {
@@ -311,6 +313,8 @@ function DemoContent() {
   )
 }
 
+const CUSTOM_PRESETS: PresetTuple[] = [["brown", "Brown"], ...PRESETS]
+
 function App() {
   return (
     <ThemeProvider
@@ -322,7 +326,7 @@ function App() {
           <DemoContent />
           <PresetPickerSheet>
             <PresetPickerThemeToggleGroup />
-            <PresetPickerContent />
+            <PresetPickerContent presets={CUSTOM_PRESETS} />
           </PresetPickerSheet>
         </PresetPicker>
       </PresetProvider>

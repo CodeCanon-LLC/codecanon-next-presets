@@ -1,50 +1,5 @@
 /* Theme: Notebook */
 [data-preset="notebook"] {
-  --background: #f9f9f9;
-  --foreground: #3a3a3a;
-  --card: #ffffff;
-  --card-foreground: #3a3a3a;
-  --popover: #ffffff;
-  --popover-foreground: #3a3a3a;
-  --primary: #606060;
-  --primary-foreground: #f0f0f0;
-  --secondary: #dedede;
-  --secondary-foreground: #3a3a3a;
-  --muted: #e3e3e3;
-  --muted-foreground: #505050;
-  --accent: #f3eac8;
-  --accent-foreground: #5d4037;
-  --destructive: #c87a7a;
-  --destructive-foreground: #ffffff;
-  --border: #747272;
-  --input: #ffffff;
-  --ring: #a0a0a0;
-  --chart-1: #333333;
-  --chart-2: #555555;
-  --chart-3: #777777;
-  --chart-4: #999999;
-  --chart-5: #bbbbbb;
-  --sidebar: #f0f0f0;
-  --sidebar-foreground: #3a3a3a;
-  --sidebar-primary: #606060;
-  --sidebar-primary-foreground: #f0f0f0;
-  --sidebar-accent: #f3eac8;
-  --sidebar-accent-foreground: #5d4037;
-  --sidebar-border: #c0c0c0;
-  --sidebar-ring: #a0a0a0;
-  --font-sans: Architects Daughter, sans-serif;
-  --font-serif: "Times New Roman", Times, serif;
-  --font-mono: "Courier New", Courier, monospace;
-  --radius: 0.625rem;
-  --shadow-color: #000000;
-  --shadow-opacity: 0.03;
-  --shadow-blur: 5px;
-  --shadow-spread: 0px;
-  --shadow-offset-x: 1px;
-  --shadow-offset-y: 4px;
-  --letter-spacing: 0.5px;
-  --spacing: 0.25rem;
-
   @variant preset-light {
     --background: #f9f9f9;
     --foreground: #3a3a3a;
@@ -65,6 +20,11 @@
     --border: #747272;
     --input: #ffffff;
     --ring: #a0a0a0;
+    --chart-1: #333333;
+    --chart-2: #555555;
+    --chart-3: #777777;
+    --chart-4: #999999;
+    --chart-5: #bbbbbb;
     --sidebar: #f0f0f0;
     --sidebar-foreground: #3a3a3a;
     --sidebar-primary: #606060;
@@ -73,6 +33,18 @@
     --sidebar-accent-foreground: #5d4037;
     --sidebar-border: #c0c0c0;
     --sidebar-ring: #a0a0a0;
+    --font-sans: Architects Daughter, sans-serif;
+    --font-serif: "Times New Roman", Times, serif;
+    --font-mono: "Courier New", Courier, monospace;
+    --radius: 0.625rem;
+    --shadow-color: #000000;
+    --shadow-opacity: 0.03;
+    --shadow-blur: 5px;
+    --shadow-spread: 0px;
+    --shadow-offset-x: 1px;
+    --shadow-offset-y: 4px;
+    --letter-spacing: 0.5px;
+    --spacing: 0.25rem;
   }
 
   @variant preset-dark {

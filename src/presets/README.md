@@ -18,30 +18,29 @@ When a user selects a preset, the `data-preset` attribute is set on the `<html>`
 
 ### CSS Structure
 
-Each preset has its own CSS file with three sections:
+Each preset has its own CSS file with two sections:
 
-1. **Light mode** - `[data-preset="theme-name"]`
-2. **Dark mode** - `[data-preset="theme-name"].dark`
-3. **Scheme light** - `[data-preset="theme-name"] .scheme-light`
+1. **Light mode** - `@variant preset-light`
+2. **Dark mode** - `@variant preset-dark`
 
 Example from `violet-bloom.css`:
 
 ```css
-[data-preset="violet-bloom"],
-[data-preset="violet-bloom"].dark .scheme-light,
-:root[data-preset="violet-bloom"] {
-  --background: #fdfdfd;
-  --foreground: #000000;
-  --primary: #7033ff;
-  /* ... more variables */
-}
+/* Theme: Violet Bloom */
+[data-preset="violet-bloom"] {
+  @variant preset-light {
+    --background: #fdfdfd;
+    --foreground: #000000;
+    --primary: #7033ff;
+    /* ... more variables */
+  }
 
-[data-preset="violet-bloom"] .scheme-dark,
-[data-preset="violet-bloom"].dark {
-  --background: #1a1b1e;
-  --foreground: #f0f0f0;
-  --primary: #8c5cff;
-  /* ... more variables */
+  @variant preset-dark {
+    --background: #1a1b1e;
+    --foreground: #f0f0f0;
+    --primary: #8c5cff;
+    /* ... more variables */
+  }
 }
 ```
 
@@ -54,14 +53,14 @@ The `default.css` file contains the base theme that's used when no `data-preset`
 If you modify `src/presets/index.ts`, you need to regenerate the CSS files:
 
 ```bash
-npm run generate:themes
+bun run generate:presets
 ```
 
 This will:
 
-1. Read all theme presets from `theme-presets.ts`
+1. Read all presets from `src/presets/index.ts`
 2. Generate individual CSS files for each theme
-3. Update `index.css` with imports for all themes (preserving default.css import)
+3. Update `src/presets/index.css` with imports for all themes (preserving default.css import)
 
 **Note:** The script will NOT regenerate `default.css` - that file must be manually maintained.
 
@@ -71,44 +70,10 @@ This will:
 - **Individual theme files** (`anew.css`, `violet-bloom.css`, etc.) - CSS variables for each theme preset
 - **index.css** - Auto-generated file that imports all theme CSS files (including default.css)
 - **README.md** - This documentation file
-- **SCHEME_LIGHT_EXAMPLE.md** - Usage examples for `.scheme-light` override
+- **index.ts** - List of preset tuples
 
 ## Adding a New Theme
 
-1. Add your theme to `src/config/theme-presets.ts`
+1. Add your theme to `src/presets/index.ts`
 2. Run `npm run generate:themes`
 3. The new theme CSS file will be automatically created and imported
-
-## Migration Notes
-
-This system replaces the previous JavaScript-based theme application (`applyThemeToElement` from `theme-utils.ts`). Benefits include:
-
-- **Better Performance** - CSS does the work instead of JavaScript
-- **Simpler Code** - No need to programmatically set inline styles
-- **Better Developer Experience** - Easier to debug with DevTools
-- **Standard Web Platform** - Uses native CSS features
-
-## Dark Mode
-
-Dark mode is controlled by the `.dark` class on the root element, managed by `next-themes`. Each theme provides both light and dark variants that automatically activate based on this class.
-
-## Scheme Light Override
-
-Each theme also includes a `.scheme-light` selector that forces elements to use the light theme colors regardless of the global dark mode setting. This is useful for components that should always appear in light mode.
-
-Example structure:
-
-```css
-[data-preset="violet-bloom"].dark .scheme-light {
-  --background: #fdfdfd;
-  --foreground: #000000;
-  /* ... all light theme variables */
-}
-```
-
-Usage:
-
-```html
-<!-- This element will use light theme colors even in dark mode -->
-<div class="scheme-light">Always light themed content</div>
-```

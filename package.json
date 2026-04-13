@@ -48,7 +48,8 @@
     "release": "bumpp && pnpm publish",
     "prepublishOnly": "pnpm run build",
     "format": "prettier --write .",
-    "knip": "knip"
+    "knip": "knip",
+    "generate:presets": "bun run scripts/generate-presets.ts"
   },
   "peerDependencies": {
     "react": "^19.2.0",
