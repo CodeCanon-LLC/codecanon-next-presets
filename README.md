@@ -29,7 +29,7 @@ npm install @codecanon/next-presets
 
 ### 1. Import the styles
 
-Add this to your global CSS file **before** your own theme variables so preset styles are available:
+Add this to your global CSS file **before** your own theme variables so preset styles are available **(import in order)**:
 
 ```css
 /* app/globals.css */
