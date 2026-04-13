@@ -50,12 +50,13 @@ const PresetContext = createContext<PresetState>(initialState)
 
 function PresetProvider({
   children,
+  defaultPreset = DEFAULT_PRESET,
   presetKey = DEFAULT_PRESET_KEY,
   presetAttr = DEFAULT_PRESET_ATTR,
 }: PresetProviderProps) {
   const [preset, setPreset, resetPreset] = useLocalStorage<string>(
     presetKey,
-    DEFAULT_PRESET
+    defaultPreset
   )
 
   // Apply theme preset via data-preset attribute

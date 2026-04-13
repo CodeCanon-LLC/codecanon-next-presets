@@ -321,7 +321,10 @@ function App() {
       themeKey="next-presets-plaground-theme"
       defaultTheme="system"
     >
-      <PresetProvider presetKey="next-presets-plaground-preset">
+      <PresetProvider
+        presetKey="next-presets-plaground-preset"
+        defaultPreset="codecanon"
+      >
         <PresetPicker>
           <DemoContent />
           <PresetPickerSheet>
