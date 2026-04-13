@@ -1,4 +1,5 @@
 export * from "./providers"
 export * from "./config"
+export * from "./lib/filter-presets"
 export * from "./components/preset-picker"
 export * from "./components/default-app-preview-card"

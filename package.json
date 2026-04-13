@@ -19,9 +19,17 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./vite": {
+      "types": "./dist/vite.d.mts",
+      "default": "./dist/vite.mjs"
+    },
     "./styles.css": {
       "style": "./dist/styles.css",
       "default": "./dist/styles.css"
+    },
+    "./components.css": {
+      "style": "./dist/components.css",
+      "default": "./dist/components.css"
     },
     "./custom-variants.css": {
       "style": "./dist/custom-variants.css",
@@ -30,6 +38,10 @@
     "./presets/*": {
       "style": "./dist/presets/*",
       "default": "./dist/presets/*"
+    },
+    "./default/*": {
+      "style": "./dist/default/*",
+      "default": "./dist/default/*"
     }
   },
   "types": "./dist/index.d.ts",
@@ -41,10 +53,10 @@
   },
   "scripts": {
     "build:presets": "bun run scripts/build-presets.ts",
-    "build:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css\" \"postcss '.presets/*.css' --dir dist/presets\" \"cp src/custom-variants.css dist/\"",
+    "build:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css\" \"postcss src/styles/components.css -o dist/components.css\" \"postcss '.presets-root/*.css' --dir dist/default\" \"postcss '.presets-scoped/*.css' --dir dist/presets\" \"cp src/styles/custom-variants.css dist/\"",
     "build:js": "tsdown",
     "build": "pnpm run build:js && pnpm run build:css",
-    "dev:css": "concurrently \"postcss src/styles.css -o dist/styles.css --watch\" \"cp src/custom-variants.css dist/\"",
+    "dev:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css --watch\" \"postcss src/styles/components.css -o dist/components.css --watch\" \"postcss '.presets-root/*.css' --dir dist/default --watch\" \"postcss '.presets-scoped/*.css' --dir dist/presets --watch\" \"cp src/styles/custom-variants.css dist/\"",
     "dev:js": "tsdown --watch",
     "dev": "concurrently \"pnpm run dev:js\" \"pnpm run dev:css\"",
     "play": "vite",
