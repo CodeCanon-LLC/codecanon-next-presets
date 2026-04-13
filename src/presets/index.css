@@ -2,9 +2,10 @@
 @import "./default.css";
 
 /* Theme presets */
-@import "./anew.css";
 @import "./nuteral.css";
 @import "./nuteral-accent.css";
+@import "./codecanon.css";
+@import "./anew.css";
 @import "./red.css";
 @import "./rose.css";
 @import "./orange.css";

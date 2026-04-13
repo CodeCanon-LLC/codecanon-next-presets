@@ -1,6 +1,7 @@
 export const PRESETS = [
   ["nuteral", "Nuteral"],
   ["nuteral-accent", "Nuteral (Accent)"],
+  ["codecanon", "CodeCanon"],
   ["anew", "Anew"],
   ["red", "Red"],
   ["rose", "Rose"],
