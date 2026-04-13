@@ -272,11 +272,7 @@ function PresetPickerSheet({
 function PresetPickerToggleButton(props: React.ComponentProps<typeof Button>) {
   const { toggleOpen } = usePresetPicker()
 
-  return (
-    <Button {...props} onClick={toggleOpen}>
-      <Palette />
-    </Button>
-  )
+  return <Button {...props} onClick={toggleOpen} />
 }
 
 export {
