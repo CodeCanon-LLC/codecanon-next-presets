@@ -3,12 +3,11 @@ import { useState, useEffect, useCallback } from "react"
 function useLocalStorage<T>(
   key: string,
   initialValue: T
-): [T, (value: T | ((prev: T) => T)) => void, () => void] {
+): [T, React.Dispatch<React.SetStateAction<T>>, () => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key)
       if (item) return JSON.parse(item) as T
-      window.localStorage.setItem(key, JSON.stringify(initialValue))
       return initialValue
     } catch {
       return initialValue

@@ -303,10 +303,7 @@ function App() {
       themeKey="next-presets-plaground-theme"
       defaultTheme="system"
     >
-      <PresetProvider
-        presetKey="next-presets-plaground-preset"
-        defaultPreset="codecanon"
-      >
+      <PresetProvider presetKey="next-presets-plaground-preset">
         <PresetPicker>
           <DemoContent />
           <PresetPickerSheet>

@@ -1,6 +1,3 @@
-/* Default theme (used when no data-preset is set) */
-@import "./default.css";
-
 /* Theme presets */
 @import "./nuteral.css";
 @import "./nuteral-accent.css";

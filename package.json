@@ -26,6 +26,10 @@
     "./custom-variants.css": {
       "style": "./dist/custom-variants.css",
       "default": "./dist/custom-variants.css"
+    },
+    "./presets/*": {
+      "style": "./dist/presets/*",
+      "default": "./dist/presets/*"
     }
   },
   "types": "./dist/index.d.ts",
@@ -36,7 +40,8 @@
     "access": "public"
   },
   "scripts": {
-    "build:css": "concurrently \"postcss src/styles.css -o dist/styles.css\" \"cp src/custom-variants.css dist/\"",
+    "build:presets": "bun run scripts/build-presets.ts",
+    "build:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css\" \"postcss '.presets/*.css' --dir dist/presets\" \"cp src/custom-variants.css dist/\"",
     "build:js": "tsdown",
     "build": "pnpm run build:js && pnpm run build:css",
     "dev:css": "concurrently \"postcss src/styles.css -o dist/styles.css --watch\" \"cp src/custom-variants.css dist/\"",

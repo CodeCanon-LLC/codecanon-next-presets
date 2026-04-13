@@ -11,7 +11,6 @@ import {
   type ReactNode,
 } from "react"
 import { useLocalStorage } from "~/hooks/use-local-storage"
-import { DEFAULT_PRESET } from "~/presets"
 import { PresetScript } from "./script"
 import {
   THEME_DARK,
@@ -35,10 +34,10 @@ type PresetProviderProps = {
 
 type PresetState = {
   /** The currently active preset ID. */
-  preset?: string
+  preset?: string | undefined
   resetPreset: () => void
   /** Switch to any preset by ID — built-in or custom. */
-  setPreset: (preset: string) => void
+  setPreset: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 const initialState: PresetState = {
@@ -50,13 +49,12 @@ const PresetContext = createContext<PresetState>(initialState)
 
 function PresetProvider({
   children,
-  defaultPreset = DEFAULT_PRESET,
   presetKey = DEFAULT_PRESET_KEY,
   presetAttr = DEFAULT_PRESET_ATTR,
 }: PresetProviderProps) {
-  const [preset, setPreset, resetPreset] = useLocalStorage<string>(
+  const [preset, setPreset, resetPreset] = useLocalStorage<string | undefined>(
     presetKey,
-    defaultPreset
+    undefined
   )
 
   // Apply theme preset via data-preset attribute
@@ -80,11 +78,7 @@ function PresetProvider({
 
   return (
     <PresetContext.Provider value={presetContext}>
-      <PresetScript
-        presetKey={presetKey}
-        presetAttr={presetAttr}
-        defaultPreset={defaultPreset}
-      />
+      <PresetScript presetKey={presetKey} presetAttr={presetAttr} />
       {children}
     </PresetContext.Provider>
   )

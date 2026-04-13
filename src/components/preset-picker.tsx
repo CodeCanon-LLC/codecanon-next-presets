@@ -21,7 +21,7 @@ import {
   SheetTitle,
 } from "~/components/ui/sheet"
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group"
-import { PRESETS, type PresetTuple } from "~/presets"
+import { PRESETS, type PresetTuple } from "~/config"
 import { cn } from "~/lib/utils"
 import { DefaultAppPreviewCard } from "./default-app-preview-card"
 import { Button } from "./ui/button"

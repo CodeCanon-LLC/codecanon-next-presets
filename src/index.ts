@@ -1,4 +1,4 @@
 export * from "./providers"
-export * from "./presets"
+export * from "./config"
 export * from "./components/preset-picker"
 export * from "./components/default-app-preview-card"

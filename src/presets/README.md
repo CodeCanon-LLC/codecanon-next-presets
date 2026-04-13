@@ -1,6 +1,6 @@
 # Preset System
 
-This directory contains CSS files for all presets defined in `src/presets/index.ts`, plus the default base preset.
+This directory contains CSS files for all presets defined in `src/config.ts`, plus the default base preset.
 
 ## How It Works
 
@@ -50,7 +50,7 @@ The `default.css` file contains the base theme that's used when no `data-preset`
 
 ## Regenerating Preset Files
 
-If you modify `src/presets/index.ts`, you need to regenerate the CSS files:
+If you modify `src/config.ts`, you need to regenerate the CSS files:
 
 ```bash
 bun run generate:presets
@@ -58,9 +58,9 @@ bun run generate:presets
 
 This will:
 
-1. Read all presets from `src/presets/index.ts`
+1. Read all presets from `src/config.ts`
 2. Generate individual CSS files for each theme
-3. Update `src/presets/index.css` with imports for all themes (preserving default.css import)
+3. Update `src/config.css` with imports for all themes (preserving default.css import)
 
 **Note:** The script will NOT regenerate `default.css` - that file must be manually maintained.
 
@@ -74,6 +74,6 @@ This will:
 
 ## Adding a New Theme
 
-1. Add your theme to `src/presets/index.ts`
+1. Add your theme to `src/config.ts`
 2. Run `npm run generate:themes`
 3. The new theme CSS file will be automatically created and imported
