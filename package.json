@@ -74,6 +74,7 @@
     "lint-staged": "^16.4.0",
     "postcss": "^8.5.9",
     "postcss-cli": "^11.0.1",
+    "postcss-nesting": "^14.0.0",
     "prettier": "^3.8.2",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "shadcn": "^4.2.0",
@@ -96,5 +97,11 @@
   "inlinedDependencies": {
     "@radix-ui/react-compose-refs": "1.1.2",
     "@radix-ui/react-slot": "1.2.3"
-  }
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead",
+    "not op_mini all"
+  ]
 }
