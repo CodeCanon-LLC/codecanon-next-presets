@@ -26,8 +26,6 @@ import {
 
 type PresetProviderProps = {
   children: ReactNode
-  /** Initial preset when no stored value exists. Accepts built-in `PresetKeys` or any custom preset ID. */
-  defaultPreset?: string
   presetKey?: string
   presetAttr?: string
 }
