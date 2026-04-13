@@ -63,3 +63,18 @@ export type PresetKeys = (typeof PRESETS)[number][0]
 
 /** A tuple of [id, label] describing a single preset — built-in or custom. */
 export type PresetTuple = readonly [string, string]
+
+/**
+ * Returns a filtered subset of the PRESETS array containing only the
+ * preset IDs listed in `ids`, preserving the original order.
+ *
+ * Use this with the `presets` prop on `PresetPicker` when importing
+ * preset CSS selectively instead of the full `styles.css`.
+ *
+ * @example
+ * <PresetPicker presets={filterPresets(['claude', 'anew', 'rose'])} />
+ */
+export function filterPresets(ids: string[]): typeof PRESETS {
+  const set = new Set(ids)
+  return PRESETS.filter(([id]) => set.has(id)) as unknown as typeof PRESETS
+}
