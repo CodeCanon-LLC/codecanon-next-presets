@@ -1,11 +1,17 @@
 /**
  * Dark/light mode variants for preset CSS variables.
  *
- * `data-preset-theme` is set by ThemeProvider via next-themes (always included
- * in the attribute array), so it works regardless of what dark mode attribute
- * or class the consumer configures.
+ * Supports all common next-themes configurations out of the box:
+ *   - class-based:      class="dark" / class="light"
+ *   - data-theme:       data-theme="dark" / data-theme="light"
+ *   - data-preset-theme: data-preset-theme="dark" / data-preset-theme="light"
+ *     (set automatically by the library's ThemeProvider)
  *
- * To write a custom preset:
+ * To write a custom preset, import this file in your Tailwind CSS entry point:
+ *
+ *   @import "@codecanon/next-presets/custom-variants.css";
+ *
+ * Then define your preset:
  *
  *   [data-preset="my-preset"] {
  *     @variant preset-light {
@@ -22,16 +28,20 @@
   :root&,
   &.light,
   &[data-preset-theme="light"],
+  &[data-theme="light"],
   &.dark .scheme-light,
-  &[data-preset-theme="dark"] .scheme-light {
+  &[data-preset-theme="dark"] .scheme-light,
+  &[data-theme="dark"] .scheme-light {
     @slot;
   }
 }
 @custom-variant preset-dark {
   &.dark,
   &[data-preset-theme="dark"],
+  &[data-theme="dark"],
   &.light .scheme-dark,
-  &[data-preset-theme="light"] .scheme-dark {
+  &[data-preset-theme="light"] .scheme-dark,
+  &[data-theme="light"] .scheme-dark {
     @slot;
   }
 }

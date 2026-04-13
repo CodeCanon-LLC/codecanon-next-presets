@@ -22,6 +22,10 @@
     "./styles.css": {
       "style": "./dist/styles.css",
       "default": "./dist/styles.css"
+    },
+    "./custom-variants.css": {
+      "style": "./dist/custom-variants.css",
+      "default": "./dist/custom-variants.css"
     }
   },
   "types": "./dist/index.d.ts",
