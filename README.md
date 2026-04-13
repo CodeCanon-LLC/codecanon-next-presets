@@ -182,7 +182,6 @@ Add the import **before** your custom preset files so the variant definitions ar
 
 ```css
 /* app/globals.css */
-@import "@codecanon/next-presets/custom-variants.css";
 @import "./my-brand-preset.css"; /* your custom preset file */
 @import "@codecanon/next-presets/styles.css";
 ```
@@ -234,6 +233,8 @@ If you want your brand preset to be default add the `:root` selector and import 
 
 ```css
 /* my-brand-preset.css */
+@import "@codecanon/next-presets/custom-variants.css";
+
 :root, /* <---- this will apply your preset as default fallback when no preset is selected */
 [data-preset="my-brand"] {
   @variant preset-light {
@@ -246,7 +247,6 @@ If you want your brand preset to be default add the `:root` selector and import 
 
 ```css
 /* app/globals.css */
-@import "@codecanon/next-presets/custom-variants.css";
 @import "./my-brand-preset.css";
 @import "@codecanon/next-presets/styles.css";
 ```
