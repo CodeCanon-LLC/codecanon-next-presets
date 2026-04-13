@@ -28,13 +28,13 @@ function validatePresets(requested: string[]): string[] {
     } else {
       console.warn(
         `[codecanon-presets] Unknown preset ID "${id}" — skipping. ` +
-          `Valid IDs: ${[...ALL_PRESET_IDS].join(", ")}`,
+          `Valid IDs: ${[...ALL_PRESET_IDS].join(", ")}`
       )
     }
   }
   if (valid.length === 0) {
     console.error(
-      `[codecanon-presets] No valid preset IDs provided — falling back to all ${PRESETS.length} presets.`,
+      `[codecanon-presets] No valid preset IDs provided — falling back to all ${PRESETS.length} presets.`
     )
     return PRESETS.map(([id]) => id)
   }
@@ -56,7 +56,7 @@ export function codecanonPresets(options: CodecanonPresetsOptions): Plugin {
 
   const componentsPath = toUrl(join(distDir, "components.css"))
   const presetPaths = filteredPresets.map(([id]) =>
-    toUrl(join(distDir, "presets", `${id}.css`)),
+    toUrl(join(distDir, "presets", `${id}.css`))
   )
 
   const virtualCssContent = [

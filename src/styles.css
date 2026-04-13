@@ -1,8 +1,3 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-
-@import "./custom-variants.css";
+@import "./styles/components.css";
+@import "./styles/custom-variants.css";
 @import "./presets/index.css";
-
-@source "./";

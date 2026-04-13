@@ -18,10 +18,10 @@
 ## Installation
 
 ```bash
+bun add @codecanon/next-presets
+pnpm add @codecanon/next-presets
 npm install @codecanon/next-presets
-# pnpm add @codecanon/next-presets
-# yarn add @codecanon/next-presets
-# bun add @codecanon/next-presets
+yarn add @codecanon/next-presets
 ```
 
 ---
@@ -141,12 +141,12 @@ export default function Page() {
 
 ### Exports
 
-| Export          | Type                          | Description                                              |
-| --------------- | ----------------------------- | -------------------------------------------------------- |
-| `PRESETS`       | `readonly [string, string][]` | All 50+ built-in preset tuples `[id, label]`             |
-| `filterPresets` | `(ids: string[]) => typeof PRESETS` | Returns a subset of `PRESETS` in canonical order   |
-| `PresetKeys`    | `type`                        | Union of all built-in preset IDs                         |
-| `PresetTuple`   | `type`                        | `readonly [string, string]` — describes one preset entry |
+| Export          | Type                                | Description                                              |
+| --------------- | ----------------------------------- | -------------------------------------------------------- |
+| `PRESETS`       | `readonly [string, string][]`       | All 50+ built-in preset tuples `[id, label]`             |
+| `filterPresets` | `(ids: string[]) => typeof PRESETS` | Returns a subset of `PRESETS` in canonical order         |
+| `PresetKeys`    | `type`                              | Union of all built-in preset IDs                         |
+| `PresetTuple`   | `type`                              | `readonly [string, string]` — describes one preset entry |
 
 ---
 
@@ -199,6 +199,7 @@ export default defineConfig({
 ```
 
 The plugin:
+
 - Replaces `styles.css` with a virtual bundle containing only `components.css` + the selected preset files
 - Overrides the `PRESETS` export so `PresetPicker` only shows the selected presets
 - Warns at startup if an unknown preset ID is passed; falls back to all presets if none are valid
@@ -217,8 +218,8 @@ Skip `styles.css` entirely and import only what you need. `components.css` is pr
 
 ```css
 /* app/globals.css */
-@import "@codecanon/next-presets/components.css";
 @import "@codecanon/next-presets/default/nuteral.css";
+@import "@codecanon/next-presets/components.css";
 
 /* only the presets you want in the picker */
 @import "@codecanon/next-presets/presets/nuteral.css";
@@ -241,13 +242,13 @@ const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
 
 ### CSS export reference
 
-| Import path                                    | Contents                                              |
-| ---------------------------------------------- | ----------------------------------------------------- |
-| `@codecanon/next-presets/styles.css`           | All-in-one: components + all 50+ presets              |
-| `@codecanon/next-presets/components.css`       | Pre-compiled Tailwind/shadcn/custom-variants only     |
-| `@codecanon/next-presets/default/{id}.css`     | Single preset — `:root` scoped (initial default)      |
-| `@codecanon/next-presets/presets/{id}.css`     | Single preset — `[data-preset]` scoped (for switcher) |
-| `@codecanon/next-presets/custom-variants.css`  | `@custom-variant` definitions for preset authoring    |
+| Import path                                   | Contents                                              |
+| --------------------------------------------- | ----------------------------------------------------- |
+| `@codecanon/next-presets/styles.css`          | All-in-one: components + all 50+ presets              |
+| `@codecanon/next-presets/components.css`      | Pre-compiled Tailwind/shadcn/custom-variants only     |
+| `@codecanon/next-presets/default/{id}.css`    | Single preset — `:root` scoped (initial default)      |
+| `@codecanon/next-presets/presets/{id}.css`    | Single preset — `[data-preset]` scoped (for switcher) |
+| `@codecanon/next-presets/custom-variants.css` | `@custom-variant` definitions for preset authoring    |
 
 ---
 
@@ -273,6 +274,8 @@ Add the import **before** your custom preset files so the variant definitions ar
 
 ```css
 /* my-brand-preset.css */
+@import "@codecanon/next-presets/custom-variants.css";
+
 [data-preset="my-brand"] {
   @variant preset-light {
     --background: oklch(0.98 0.01 240);
@@ -435,11 +438,11 @@ This is useful for marketing sections, embedded previews, or UI components that 
 ## Development
 
 ```bash
-pnpm install
-pnpm run build        # compile library (JS + CSS)
-pnpm run dev          # watch mode
-pnpm test             # run tests
-pnpm run typecheck    # type-check
-pnpm run format       # format with prettier
-pnpm run play         # start the React playground
+bun install
+bun run build        # compile library (JS + CSS)
+bun run dev          # watch mode
+bun test             # run tests
+bun run typecheck    # type-check
+bun run format       # format with prettier
+bun run play         # start the React playground
 ```
