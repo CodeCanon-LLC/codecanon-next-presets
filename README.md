@@ -8,6 +8,7 @@
 - [Setup](#setup)
 - [Basic Usage](#basic-usage)
 - [API Reference](#api-reference)
+- [Reducing Bundle Size](#reducing-bundle-size)
 - [Extending with Custom Presets](#extending-with-custom-presets)
 - [Forcing Light or Dark in a Sub-tree](#forcing-light-or-dark-in-a-sub-tree)
 - [Development](#development)
@@ -33,9 +34,11 @@ Add this to your global CSS file **before** your own theme variables so preset s
 
 ```css
 /* app/globals.css */
-@import "@codecanon/next-presets/presets/nuteral.css";
+@import "@codecanon/next-presets/default/nuteral.css";
 @import "@codecanon/next-presets/styles.css";
 ```
+
+The `default/` import sets the chosen preset as the `:root` fallback — the initial look before JavaScript applies the `data-preset` attribute. `styles.css` includes all preset definitions alongside Tailwind and shadcn base styles.
 
 > **Tailwind CSS v4 users:** place the `@import` before your `@import "tailwindcss"` line, or at the top of your entry CSS, so the preset tokens are in scope when Tailwind processes your file.
 
@@ -138,23 +141,26 @@ export default function Page() {
 
 ### Exports
 
-| Export        | Type                          | Description                                              |
-| ------------- | ----------------------------- | -------------------------------------------------------- |
-| `PRESETS`     | `readonly [string, string][]` | All 50+ built-in preset tuples `[id, label]`             |
-| `PresetKeys`  | `type`                        | Union of all built-in preset IDs                         |
-| `PresetTuple` | `type`                        | `readonly [string, string]` — describes one preset entry |
+| Export          | Type                          | Description                                              |
+| --------------- | ----------------------------- | -------------------------------------------------------- |
+| `PRESETS`       | `readonly [string, string][]` | All 50+ built-in preset tuples `[id, label]`             |
+| `filterPresets` | `(ids: string[]) => typeof PRESETS` | Returns a subset of `PRESETS` in canonical order   |
+| `PresetKeys`    | `type`                        | Union of all built-in preset IDs                         |
+| `PresetTuple`   | `type`                        | `readonly [string, string]` — describes one preset entry |
 
 ---
 
-## Setting default preset
+## Setting a Default Preset
+
+Change the `default/` import to whichever preset you want as the initial `:root` fallback:
 
 ```diff
--@import "@codecanon/next-presets/presets/nuteral.css";
-+@import "@codecanon/next-presets/presets/codecanon.css";
-@import "@codecanon/next-presets/styles.css";
+-@import "@codecanon/next-presets/default/nuteral.css";
++@import "@codecanon/next-presets/default/codecanon.css";
+ @import "@codecanon/next-presets/styles.css";
 ```
 
-This under the hood applies your preset light/dark variants to root:
+This applies your preset's light/dark variables to `:root` so the page renders correctly before JavaScript runs:
 
 ```css
 :root {
@@ -167,6 +173,83 @@ This under the hood applies your preset light/dark variants to root:
   }
 }
 ```
+
+---
+
+## Reducing Bundle Size
+
+By default `styles.css` includes all 50+ preset definitions. If your app only uses a handful of presets you can strip the rest from the compiled CSS and from the `PresetPicker` UI.
+
+### Option A — Vite plugin (recommended)
+
+Install the plugin in your `vite.config.ts`. It intercepts the `styles.css` import and the main package import automatically — no changes to your existing code needed.
+
+```typescript
+// vite.config.ts
+import { codecanonPresets } from "@codecanon/next-presets/vite"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [
+    codecanonPresets({
+      presets: ["claude", "anew", "rose"],
+    }),
+  ],
+})
+```
+
+The plugin:
+- Replaces `styles.css` with a virtual bundle containing only `components.css` + the selected preset files
+- Overrides the `PRESETS` export so `PresetPicker` only shows the selected presets
+- Warns at startup if an unknown preset ID is passed; falls back to all presets if none are valid
+
+Your existing CSS and JS imports stay unchanged:
+
+```css
+/* app/globals.css — no changes needed */
+@import "@codecanon/next-presets/default/nuteral.css";
+@import "@codecanon/next-presets/styles.css";
+```
+
+### Option B — Manual selective imports (any bundler)
+
+Skip `styles.css` entirely and import only what you need. `components.css` is pre-compiled and does not require Tailwind to be installed on the consumer side.
+
+```css
+/* app/globals.css */
+@import "@codecanon/next-presets/components.css";
+@import "@codecanon/next-presets/default/nuteral.css";
+
+/* only the presets you want in the picker */
+@import "@codecanon/next-presets/presets/nuteral.css";
+@import "@codecanon/next-presets/presets/claude.css";
+@import "@codecanon/next-presets/presets/anew.css";
+```
+
+Then filter the `PRESETS` array so `PresetPicker` shows only those presets:
+
+```tsx
+import { filterPresets, PresetPickerContent } from "@codecanon/next-presets"
+
+const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
+
+// Inside your picker:
+<PresetPickerContent presets={MY_PRESETS} />
+```
+
+`filterPresets` returns the matching entries in their original canonical order.
+
+### CSS export reference
+
+| Import path                                    | Contents                                              |
+| ---------------------------------------------- | ----------------------------------------------------- |
+| `@codecanon/next-presets/styles.css`           | All-in-one: components + all 50+ presets              |
+| `@codecanon/next-presets/components.css`       | Pre-compiled Tailwind/shadcn/custom-variants only     |
+| `@codecanon/next-presets/default/{id}.css`     | Single preset — `:root` scoped (initial default)      |
+| `@codecanon/next-presets/presets/{id}.css`     | Single preset — `[data-preset]` scoped (for switcher) |
+| `@codecanon/next-presets/custom-variants.css`  | `@custom-variant` definitions for preset authoring    |
+
+---
 
 ## Extending with Custom Presets
 
@@ -229,13 +312,13 @@ Add the import **before** your custom preset files so the variant definitions ar
 
 The `@variant preset-light` / `@variant preset-dark` directives expand to cover all common next-themes configurations: `.dark` / `.light` classes, `data-theme="dark"` / `data-theme="light"` attributes, and `data-preset-theme="dark"` / `data-preset-theme="light"` (set by the library's `ThemeProvider`). You do not need to manage selectors yourself.
 
-If you want your brand preset to be default add the `:root` selector and import `@codecanon/next-presets/styles.css` after your definition as such...
+If you want your brand preset to be the default, add `:root` to the selector and import `custom-variants.css` at the top of your file:
 
 ```css
 /* my-brand-preset.css */
 @import "@codecanon/next-presets/custom-variants.css";
 
-:root, /* <---- this will apply your preset as default fallback when no preset is selected */
+:root, /* applies your preset as the default fallback when no preset is selected */
 [data-preset="my-brand"] {
   @variant preset-light {
   }
