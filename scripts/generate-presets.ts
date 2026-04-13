@@ -8,7 +8,9 @@ const INDEX_CSS = join(PRESETS_DIR, "index.css")
 // Parse the PRESETS array from index.ts
 function parsePresets(): [string, string][] {
   const content = readFileSync(INDEX_TS, "utf-8")
-  const match = content.match(/export const PRESETS\s*=\s*\[([\s\S]*?)\]\s*as const/)
+  const match = content.match(
+    /export const PRESETS\s*=\s*\[([\s\S]*?)\]\s*as const/
+  )
   if (!match) throw new Error("Could not find PRESETS array in index.ts")
 
   const entries: [string, string][] = []
@@ -18,6 +20,28 @@ function parsePresets(): [string, string][] {
     entries.push([m[1], m[2]])
   }
   return entries
+}
+
+function parseDefaultPreset(): string {
+  const content = readFileSync(INDEX_TS, "utf-8")
+  const match = content.match(/export const DEFAULT_PRESET[^=]*=\s*"([^"]+)"/)
+  if (!match) throw new Error("Could not find DEFAULT_PRESET in index.ts")
+  return match[1]
+}
+
+function generateDefaultCss(defaultId: string): string {
+  const sourcePath = join(PRESETS_DIR, `${defaultId}.css`)
+  if (!existsSync(sourcePath))
+    throw new Error(`Preset file not found: ${defaultId}.css`)
+
+  const source = readFileSync(sourcePath, "utf-8")
+  const replaced = source.replace(`[data-preset="${defaultId}"]`, ":root")
+  return (
+    `/* Generated Default Theme */\n` +
+    `/* Selected theme "${defaultId}" set by \`DEFAULT_PRESET\` in src/presets/index.ts */\n` +
+    `/* This is the base theme that's used when no data-preset is set */\n` +
+    `\n${replaced}`
+  )
 }
 
 function skeletonCss(id: string, name: string): string {
@@ -58,6 +82,10 @@ for (const [id, name] of presets) {
     skipped++
   }
 }
+
+const defaultId = parseDefaultPreset()
+writeFileSync(join(PRESETS_DIR, "default.css"), generateDefaultCss(defaultId))
+console.log(`  updated  default.css (from ${defaultId}.css)`)
 
 writeFileSync(INDEX_CSS, generateIndexCss(presets))
 console.log(`  updated  index.css`)
