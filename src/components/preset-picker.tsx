@@ -24,6 +24,7 @@ import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group"
 import { PRESETS, type PresetTuple } from "~/presets"
 import { cn } from "~/lib/utils"
 import { DefaultAppPreviewCard } from "./default-app-preview-card"
+import { Button } from "./ui/button"
 
 type PresetPickerState = {
   open: boolean
@@ -268,10 +269,21 @@ function PresetPickerSheet({
   )
 }
 
+function PresetPickerToggleButton(props: React.ComponentProps<typeof Button>) {
+  const { toggleOpen } = usePresetPicker()
+
+  return (
+    <Button {...props} onClick={toggleOpen}>
+      <Palette />
+    </Button>
+  )
+}
+
 export {
   PresetPicker,
   usePresetPicker,
   PresetPickerSheet,
   PresetPickerContent,
   PresetPickerThemeToggleGroup,
+  PresetPickerToggleButton,
 }
