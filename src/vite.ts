@@ -1,6 +1,7 @@
-import { join } from "node:path"
+import { basename, join } from "node:path"
 import { fileURLToPath } from "node:url"
-import type { Plugin } from "vite"
+import { existsSync, readFileSync, writeFileSync } from "node:fs"
+import type { Plugin, UserConfig } from "vite"
 import { PRESETS } from "./config.js"
 
 const ALL_PRESET_IDS = new Set<string>(PRESETS.map(([id]) => id))
@@ -17,8 +18,24 @@ export interface NextPresetsPluginOptions {
   presets: string[]
 }
 
-const VIRTUAL_CSS_ID = "\0virtual:@codecanon/next-presets/filtered.css"
-const VIRTUAL_JS_ID = "\0virtual:@codecanon/next-presets/filtered.js"
+function patchBundledPresetsModule(
+  code: string,
+  filteredPresets: readonly (readonly [string, string])[]
+): string {
+  const replacement = `const PRESETS = ${JSON.stringify(filteredPresets)};`
+  return code.replace(/const PRESETS = \[[\s\S]*?\];/, replacement)
+}
+
+function resolveRuntimeDistDir(): string {
+  const currentDir = fileURLToPath(new URL(".", import.meta.url))
+  const candidates = [currentDir, join(currentDir, "..", "dist")]
+  for (const dir of candidates) {
+    if (existsSync(join(dir, "index.js"))) {
+      return dir
+    }
+  }
+  return currentDir
+}
 
 function validatePresets(requested: string[]): string[] {
   const valid: string[] = []
@@ -43,15 +60,11 @@ function validatePresets(requested: string[]): string[] {
 
 export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
   const selectedIds = validatePresets(options.presets)
-
-  // Filtered PRESETS in original canonical order
   const filteredPresets = PRESETS.filter(([id]) => selectedIds.includes(id))
 
   // Derive the dist/ directory from the location of this compiled file at runtime.
-  // When published, this file lives at dist/vite.js, so import.meta.url points there.
-  const distDir = fileURLToPath(new URL(".", import.meta.url))
-
-  // Use forward slashes in CSS @import paths (required on Windows too)
+  // When published, this file lives at dist/vite.mjs, so import.meta.url points there.
+  const distDir = resolveRuntimeDistDir()
   const toUrl = (p: string) => p.replace(/\\/g, "/")
 
   const componentsPath = toUrl(join(distDir, "components.css"))
@@ -59,41 +72,56 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
     toUrl(join(distDir, "presets", `${id}.css`))
   )
 
-  const virtualCssContent = [
-    `@import "${componentsPath}";`,
-    ...presetPaths.map((p) => `@import "${p}";`),
-  ].join("\n")
+  // Write filtered CSS to a real file on disk. Tailwind CSS v4's bundler
+  // resolves @import paths via Vite's alias system and then reads the result
+  // from disk — it does not go through Vite's virtual-module load hooks.
+  // The alias in config() below points styles.css here.
+  const filteredCssPath = join(distDir, "_filtered.css")
+  writeFileSync(
+    filteredCssPath,
+    [componentsPath, ...presetPaths]
+      .filter(existsSync)
+      .map((p) => readFileSync(p, "utf8"))
+      .join("\n"),
+    "utf8"
+  )
 
-  // Absolute path to dist/index.js — avoids re-triggering resolveId (loop guard)
+  // Patched dist/index.js with PRESETS filtered to the selected subset.
   const distIndexPath = toUrl(join(distDir, "index.js"))
-  const virtualJsContent = [
-    `export * from "${distIndexPath}";`,
-    `export const PRESETS = ${JSON.stringify(filteredPresets)};`,
-  ].join("\n")
+  const filteredJsPath = join(distDir, "_filtered.js")
+  writeFileSync(
+    filteredJsPath,
+    patchBundledPresetsModule(
+      readFileSync(distIndexPath, "utf8"),
+      filteredPresets
+    ),
+    "utf8"
+  )
 
   return {
     name: "codecanon-presets",
     enforce: "pre",
 
-    resolveId(id, importer) {
-      if (id === "@codecanon/next-presets/styles.css") {
-        return VIRTUAL_CSS_ID
+    config(): UserConfig {
+      return {
+        resolve: {
+          // Vite's alias resolver runs before plugin resolveId hooks AND before
+          // @tailwindcss/vite's internal CSS bundler, so this intercepts the
+          // import regardless of plugin registration order.
+          alias: [
+            // Redirect @codecanon/next-presets/styles.css to the filtered file.
+            {
+              find: /^@codecanon\/next-presets\/styles\.css(\?.*)?$/,
+              replacement: filteredCssPath,
+            },
+            // Redirect @codecanon/next-presets to the filtered file.
+            {
+              find: /^@codecanon\/next-presets(\?.*)?$/,
+              replacement: filteredJsPath,
+            },
+          ],
+        },
       }
-      // Guard: don't intercept when the importer is the virtual JS module itself
-      if (id === "@codecanon/next-presets" && importer !== VIRTUAL_JS_ID) {
-        return VIRTUAL_JS_ID
-      }
-      return undefined
-    },
-
-    load(id) {
-      if (id === VIRTUAL_CSS_ID) {
-        return virtualCssContent
-      }
-      if (id === VIRTUAL_JS_ID) {
-        return virtualJsContent
-      }
-      return undefined
     },
   }
 }
