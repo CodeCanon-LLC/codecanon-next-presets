@@ -1,8 +1,15 @@
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
-import { existsSync, readFileSync, writeFileSync } from "node:fs"
+import {
+  existsSync,
+  readdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs"
 import type { Plugin, UserConfig } from "vite"
 import { PRESETS, type PresetTuple } from "./config.js"
+import { createHash } from "node:crypto"
 
 const PRESETS_BY_ID = Object.fromEntries(PRESETS)
 const PRESET_IDS = Object.keys(PRESETS_BY_ID)
@@ -22,6 +29,13 @@ export interface NextPresetsPluginOptions {
   presets?: string[]
   include?: string[]
   exclude?: string[]
+}
+
+function hashConfig(config: NextPresetsPluginOptions) {
+  return createHash("sha256")
+    .update(JSON.stringify(config))
+    .digest("hex")
+    .slice(0, 8) // short hash is enough
 }
 
 function patchBundledPresetsModule(
@@ -86,21 +100,44 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
     options.include || options.presets || []
   ).filter(([id]) => !excludePresets[id])
 
+  const hash = hashConfig(options)
+
   // Derive the dist/ directory from the location of this compiled file at runtime.
   // When published, this file lives at dist/vite.mjs, so import.meta.url points there.
   const distDir = resolveRuntimeDistDir()
 
-  const filteredJsPath = join(distDir, "_filtered.js")
+  // Hash is embedded in the filenames so that a config change produces a
+  // different alias replacement path. Vite includes the resolved alias in its
+  // optimizer cache key, so a path change triggers automatic cache invalidation
+  // — no manual cache-clearing or --force flag needed.
+  const filteredCssPath = join(distDir, `_filtered.${hash}.css`)
+  const distIndexPath = toUrl(join(distDir, "index.js"))
+
+  const filteredJsPath = join(distDir, `_filtered.${hash}.js`)
+
   const componentsPath = toUrl(join(distDir, "components.css"))
   const presetPaths = includePresets.map(([id]) =>
     toUrl(join(distDir, "presets", `${id}.css`))
   )
 
+  // Remove stale filtered files from previous configs so dist doesn't fill up.
+  try {
+    for (const file of readdirSync(distDir)) {
+      if (
+        /^_filtered\.[0-9a-f]+\.(js|css)$/.test(file) &&
+        !file.includes(hash)
+      ) {
+        unlinkSync(join(distDir, file))
+      }
+    }
+  } catch {
+    // Non-fatal: stale files are harmless if cleanup fails.
+  }
+
   // Write filtered CSS to a real file on disk. Tailwind CSS v4's bundler
   // resolves @import paths via Vite's alias system and then reads the result
   // from disk — it does not go through Vite's virtual-module load hooks.
   // The alias in config() below points styles.css here.
-  const filteredCssPath = join(distDir, "_filtered.css")
   writeFileSync(
     filteredCssPath,
     [componentsPath, ...presetPaths]
@@ -111,7 +148,6 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
   )
 
   // Patched dist/index.js with PRESETS filtered to the selected subset.
-  const distIndexPath = toUrl(join(distDir, "index.js"))
   writeFileSync(
     filteredJsPath,
     patchBundledPresetsModule(
