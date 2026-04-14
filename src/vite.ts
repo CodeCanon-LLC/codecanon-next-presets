@@ -1,26 +1,32 @@
-import { basename, join } from "node:path"
+import { join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { existsSync, readFileSync, writeFileSync } from "node:fs"
 import type { Plugin, UserConfig } from "vite"
-import { PRESETS } from "./config.js"
+import { PRESETS, type PresetTuple } from "./config.js"
 
-const ALL_PRESET_IDS = new Set<string>(PRESETS.map(([id]) => id))
+const PRESETS_BY_ID = Object.fromEntries(PRESETS)
+const PRESET_IDS = Object.keys(PRESETS_BY_ID)
 
+/**
+ * Preset IDs to include. Unlisted presets will be excluded from the
+ * compiled CSS and from the `PRESETS` export (so `PresetPicker` only
+ * shows the presets you list here).
+ *
+ * @example
+ * nextPresetsPlugin({
+ *  include: ['claude', 'anew', 'rose']
+ *  exclude: ['rose']
+ * })
+ */
 export interface NextPresetsPluginOptions {
-  /**
-   * Preset IDs to include. Unlisted presets will be excluded from the
-   * compiled CSS and from the `PRESETS` export (so `PresetPicker` only
-   * shows the presets you list here).
-   *
-   * @example
-   * nextPresetsPlugin({ presets: ['claude', 'anew', 'rose'] })
-   */
-  presets: string[]
+  presets?: string[]
+  include?: string[]
+  exclude?: string[]
 }
 
 function patchBundledPresetsModule(
   code: string,
-  filteredPresets: readonly (readonly [string, string])[]
+  filteredPresets: PresetTuple[]
 ): string {
   const replacement = `const PRESETS = ${JSON.stringify(filteredPresets)};`
   return code.replace(/const PRESETS = \[[\s\S]*?\];/, replacement)
@@ -37,38 +43,56 @@ function resolveRuntimeDistDir(): string {
   return currentDir
 }
 
-function validatePresets(requested: string[]): string[] {
-  const valid: string[] = []
+function validatePresets(
+  requested: string[],
+  fallback: PresetTuple[] = PRESETS
+): PresetTuple[] {
+  const valid: PresetTuple[] = []
+
   for (const id of requested) {
-    if (ALL_PRESET_IDS.has(id)) {
-      valid.push(id)
+    const name = PRESETS_BY_ID[id]
+
+    if (name) {
+      valid.push([id, name])
     } else {
       console.warn(
         `[codecanon-presets] Unknown preset ID "${id}" — skipping. ` +
-          `Valid IDs: ${[...ALL_PRESET_IDS].join(", ")}`
+          `Valid IDs: ${[...PRESET_IDS].join(", ")}`
       )
     }
   }
-  if (valid.length === 0) {
-    console.error(
-      `[codecanon-presets] No valid preset IDs provided — falling back to all ${PRESETS.length} presets.`
-    )
-    return PRESETS.map(([id]) => id)
+  if (!valid.length) {
+    if (fallback.length) {
+      console.error(
+        `[codecanon-presets] No valid preset IDs provided — falling back to all ${fallback.length} presets.`
+      )
+    }
+
+    return fallback
   }
+
   return valid
 }
 
+function toUrl(p: string) {
+  return p.replace(/\\/g, "/")
+}
+
 export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
-  const selectedIds = validatePresets(options.presets)
-  const filteredPresets = PRESETS.filter(([id]) => selectedIds.includes(id))
+  const excludePresets = Object.fromEntries(
+    validatePresets(options.exclude || [], [])
+  )
+  const includePresets = validatePresets(
+    options.include || options.presets || []
+  ).filter(([id]) => !excludePresets[id])
 
   // Derive the dist/ directory from the location of this compiled file at runtime.
   // When published, this file lives at dist/vite.mjs, so import.meta.url points there.
   const distDir = resolveRuntimeDistDir()
-  const toUrl = (p: string) => p.replace(/\\/g, "/")
 
+  const filteredJsPath = join(distDir, "_filtered.js")
   const componentsPath = toUrl(join(distDir, "components.css"))
-  const presetPaths = filteredPresets.map(([id]) =>
+  const presetPaths = includePresets.map(([id]) =>
     toUrl(join(distDir, "presets", `${id}.css`))
   )
 
@@ -88,12 +112,11 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
 
   // Patched dist/index.js with PRESETS filtered to the selected subset.
   const distIndexPath = toUrl(join(distDir, "index.js"))
-  const filteredJsPath = join(distDir, "_filtered.js")
   writeFileSync(
     filteredJsPath,
     patchBundledPresetsModule(
       readFileSync(distIndexPath, "utf8"),
-      filteredPresets
+      includePresets
     ),
     "utf8"
   )
