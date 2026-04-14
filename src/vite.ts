@@ -93,6 +93,13 @@ function toUrl(p: string) {
 }
 
 export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
+  const hasInclude = !!(options.include?.length || options.presets?.length)
+  const hasExclude = !!options.exclude?.length
+
+  if (!hasInclude && !hasExclude) {
+    return { name: "codecanon-presets" }
+  }
+
   const excludePresets = Object.fromEntries(
     validatePresets(options.exclude || [], [])
   )
