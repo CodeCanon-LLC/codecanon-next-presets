@@ -1,7 +1,7 @@
 {
   "name": "@codecanon/next-presets",
   "type": "module",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Allow your user to choose from a list of shadcn presets",
   "author": "CodeCanon LLC <codecanonllc@gmail.com>",
   "license": "MIT",
