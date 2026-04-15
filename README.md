@@ -132,7 +132,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, [])
 
   async function handlePresetChange(preset: string | undefined) {
-    setDbPreset(preset)          // optimistic update — no visual delay
+    setDbPreset(preset) // optimistic update — no visual delay
     await saveUserPreset(preset) // persist to DB in the background
   }
 
@@ -151,10 +151,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
 3. **User picks a preset** — `onPresetChange` fires immediately. Update your state optimistically (as shown above) so the UI switches with no delay while the DB write happens in the background.
 4. **localStorage stays in sync** — every preset change (user-initiated or controlled) is written to localStorage, so the next page load is fast regardless of DB latency.
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `preset` | `string \| undefined` | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
-| `onPresetChange` | `(preset: string \| undefined) => void` | Fires when the user selects a new preset. Use this to persist the value to your database. |
+| Prop             | Type                                    | Description                                                                                                       |
+| ---------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `preset`         | `string \| undefined`                   | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
+| `onPresetChange` | `(preset: string \| undefined) => void` | Fires when the user selects a new preset. Use this to persist the value to your database.                         |
 
 ---
 
@@ -162,20 +162,20 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ### Providers
 
-| Component        | Props                                                             | Description                                                  |
-| ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------ |
-| `ThemeProvider`  | `defaultTheme`, `themeKey`, `attribute`, …(all next-themes props) | Wraps next-themes; always adds `data-preset-theme` attribute |
-| `PresetProvider` | `presetKey`, `presetAttr`, `preset`, `onPresetChange`             | Persists selected preset; sets `data-preset` on `<html>`     |
+| Component        | Props                                                               | Description                                                  |
+| ---------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `ThemeProvider`  | `defaultTheme`, `storageKey`, `attribute`, …(all next-themes props) | Wraps next-themes; always adds `data-preset-theme` attribute |
+| `PresetProvider` | `storageKey`, `attribute`, `preset`, `onPresetChange`               | Persists selected preset; sets `data-preset` on `<html>`     |
 
 ### Picker Components
 
-| Component                      | Key Props                                                 | Description                                |
-| ------------------------------ | --------------------------------------------------------- | ------------------------------------------ |
-| `PresetPicker`                 | —                                                         | Context provider for open/close state      |
-| `PresetPickerSheet`            | —                                                         | Slide-out panel (wraps Radix Dialog)       |
-| `PresetPickerContent`          | `presets`, `previewCard`, `showDock`                      | Searchable, keyboard-navigable preset list |
-| `PresetPickerThemeToggleGroup` | —                                                         | Light / Dark / System toggle buttons       |
-| `DefaultAppPreviewCard`        | `presetKey`, `label`, `active`, `highlighted`, `showDock` | Miniature app preview shown per preset     |
+| Component                      | Key Props                                             | Description                                |
+| ------------------------------ | ----------------------------------------------------- | ------------------------------------------ |
+| `PresetPicker`                 | —                                                     | Context provider for open/close state      |
+| `PresetPickerSheet`            | —                                                     | Slide-out panel (wraps Radix Dialog)       |
+| `PresetPickerContent`          | `presets`, `card`, `variant`                          | Searchable, keyboard-navigable preset list |
+| `PresetPickerThemeToggleGroup` | —                                                     | Light / Dark / System toggle buttons       |
+| `PresetPreviewCard`            | `preset`, `label`, `active`, `highlighted`, `variant` | Miniature app preview shown per preset     |
 
 ### Hooks
 
@@ -288,13 +288,14 @@ const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
 
 ### CSS export reference
 
-| Import path                                   | Contents                                              |
-| --------------------------------------------- | ----------------------------------------------------- |
-| `@codecanon/next-presets/styles.css`          | All-in-one: components + all 50+ presets              |
-| `@codecanon/next-presets/components.css`      | Pre-compiled Tailwind/shadcn/custom-variants only     |
-| `@codecanon/next-presets/default/{id}.css`    | Single preset — `:root` scoped (initial default)      |
-| `@codecanon/next-presets/presets/{id}.css`    | Single preset — `[data-preset]` scoped (for switcher) |
-| `@codecanon/next-presets/custom-variants.css` | `@custom-variant` definitions for preset authoring    |
+| Import path                                   | Contents                                                         |
+| --------------------------------------------- | ---------------------------------------------------------------- |
+| `@codecanon/next-presets/styles.css`          | All-in-one: components + all 50+ presets                         |
+| `@codecanon/next-presets/components.css`      | Pre-compiled Tailwind/shadcn/custom-variants only                |
+| `@codecanon/next-presets/presets.css`         | All 50+ presets combined - `[data-preset]` scoped (for switcher) |
+| `@codecanon/next-presets/default/{id}.css`    | Single preset — `:root` scoped (initial default)                 |
+| `@codecanon/next-presets/presets/{id}.css`    | Single preset — `[data-preset]` scoped (for switcher)            |
+| `@codecanon/next-presets/custom-variants.css` | `@custom-variant` definitions for preset authoring               |
 
 ---
 

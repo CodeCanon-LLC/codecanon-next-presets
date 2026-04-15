@@ -23,7 +23,10 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group"
 import { PRESETS, type PresetTuple } from "~/config"
 import { cn } from "~/lib/utils"
-import { DefaultAppPreviewCard } from "./default-app-preview-card"
+import {
+  PresetPreviewCard,
+  type PresetPreviewCardVariant,
+} from "./preset-preview-card"
 import { Button } from "./ui/button"
 
 type PresetPickerState = {
@@ -100,14 +103,14 @@ function PresetPickerThemeToggleGroup({
 }
 
 function PresetPickerContent({
-  showDock,
-  previewCard: AppPreviewCard = DefaultAppPreviewCard,
+  card: Card = PresetPreviewCard,
   presets = PRESETS,
+  variant,
   className,
   ...props
 }: {
-  showDock?: boolean
-  previewCard?: typeof DefaultAppPreviewCard
+  variant?: PresetPreviewCardVariant
+  card?: typeof PresetPreviewCard
   /**
    * The list of presets to display. Defaults to the built-in `PRESETS`.
    * Extend with custom presets by spreading: `[...PRESETS, ["my-brand", "My Brand"]]`
@@ -197,9 +200,16 @@ function PresetPickerContent({
         >
           {filteredPresets.length > 0 ? (
             filteredPresets.map(([id, label], index) => (
-              <AppPreviewCard
+              <Card
                 key={id}
-                showDock={showDock ?? false}
+                variant={variant}
+                highlighted={index === highlightedIndex}
+                preset={id}
+                label={label}
+                onClick={() => {
+                  setPreset(id)
+                  setHighlightedIndex(index)
+                }}
                 ref={(el) => {
                   if (!mounted && preset === id) {
                     setMounted(true)
@@ -214,14 +224,6 @@ function PresetPickerContent({
                   } else {
                     itemRefs.current.delete(index)
                   }
-                }}
-                active={preset === id}
-                highlighted={index === highlightedIndex}
-                label={label}
-                presetKey={id}
-                onClick={() => {
-                  setPreset(id)
-                  setHighlightedIndex(index)
                 }}
               />
             ))

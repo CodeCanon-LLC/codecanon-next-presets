@@ -4,11 +4,15 @@ export default defineConfig([
   {
     platform: "browser",
     entry: ["src/index.ts"],
-    external: ["react", "react-dom"],
+    deps: {
+      neverBundle: ["react", "react-dom"],
+    },
   },
   {
     platform: "node",
     entry: ["src/vite.ts"],
-    external: ["vite", "path", "url"],
+    deps: {
+      neverBundle: ["vite", "path", "url"],
+    },
   },
 ])

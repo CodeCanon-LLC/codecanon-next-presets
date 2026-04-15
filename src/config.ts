@@ -54,6 +54,8 @@ export const PRESETS = [
   ["sage-garden", "Sage Garden"],
 ] as const satisfies [string, string][]
 
+export const PRESET_BY_ID = Object.fromEntries(PRESETS)
+
 /**
  * ---------------------------------------------------------
  * Type Definitions

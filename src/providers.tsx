@@ -27,8 +27,8 @@ import {
 
 type PresetProviderProps = {
   children: ReactNode
-  presetKey?: string
-  presetAttr?: string
+  storageKey?: string
+  attribute?: `data-${string}`
   /**
    * Externally controlled preset value. When provided, this takes precedence
    * over the localStorage value. Useful when the preset is persisted in a
@@ -64,28 +64,28 @@ const PresetContext = createContext<PresetState>(initialState)
 
 function PresetProvider({
   children,
-  presetKey = DEFAULT_PRESET_KEY,
-  presetAttr = DEFAULT_PRESET_ATTR,
+  storageKey = DEFAULT_PRESET_KEY,
+  attribute = DEFAULT_PRESET_ATTR,
   preset: controlledPreset,
   onPresetChange,
 }: PresetProviderProps) {
-  const [localPreset, setLocalPreset, resetLocalPreset] = useLocalStorage<string | undefined>(
-    presetKey,
-    undefined
-  )
+  const [localPreset, setLocalPreset, resetLocalPreset] = useLocalStorage<
+    string | undefined
+  >(storageKey, undefined)
 
   // Controlled preset takes precedence; fall back to localStorage while
   // the controlled value is unavailable (e.g. DB not yet loaded).
-  const activePreset = controlledPreset !== undefined ? controlledPreset : localPreset
+  const activePreset =
+    controlledPreset !== undefined ? controlledPreset : localPreset
 
   // Keep localStorage in sync with the controlled value so that subsequent
   // page loads render the correct preset immediately (without DB round-trip).
   useEffect(() => {
     if (controlledPreset === undefined) return
     try {
-      window.localStorage.setItem(presetKey, JSON.stringify(controlledPreset))
+      window.localStorage.setItem(storageKey, JSON.stringify(controlledPreset))
     } catch {}
-  }, [controlledPreset, presetKey])
+  }, [controlledPreset, storageKey])
 
   // Apply theme preset via data-preset attribute
   useLayoutEffect(() => {
@@ -93,11 +93,11 @@ function PresetProvider({
     if (!root) return
 
     if (activePreset) {
-      root.setAttribute(presetAttr, activePreset)
+      root.setAttribute(attribute, activePreset)
     } else {
-      root.removeAttribute(presetAttr)
+      root.removeAttribute(attribute)
     }
-  }, [activePreset, presetAttr])
+  }, [activePreset, attribute])
 
   const presetContext: PresetState = {
     preset: activePreset,
@@ -107,14 +107,14 @@ function PresetProvider({
     },
     setPreset: (value) => {
       const next = value instanceof Function ? value(activePreset) : value
-      setLocalPreset(next)   // always update localStorage immediately
+      setLocalPreset(next) // always update localStorage immediately
       onPresetChange?.(next) // notify parent (e.g., to persist to DB)
     },
   }
 
   return (
     <PresetContext.Provider value={presetContext}>
-      <PresetScript presetKey={presetKey} presetAttr={presetAttr} />
+      <PresetScript storageKey={storageKey} attribute={attribute} />
       {children}
     </PresetContext.Provider>
   )
@@ -131,13 +131,12 @@ function usePreset() {
 
 type ThemeProviderProps = NextThemeProviderProps & {
   defaultTheme?: Theme
-  themeKey?: string
 }
 
 function ThemeProvider({
   children,
   defaultTheme = DEFAULT_THEME,
-  themeKey = DEFAULT_THEME_KEY,
+  storageKey = DEFAULT_THEME_KEY,
   attribute = "class",
   ...nextThemeProps
 }: ThemeProviderProps) {
@@ -152,7 +151,7 @@ function ThemeProvider({
 
   return (
     <NextThemeProvider
-      storageKey={themeKey}
+      storageKey={storageKey}
       defaultTheme={defaultTheme}
       attribute={attrs}
       {...nextThemeProps}

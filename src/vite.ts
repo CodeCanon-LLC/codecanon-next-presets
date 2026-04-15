@@ -8,11 +8,10 @@ import {
   writeFileSync,
 } from "node:fs"
 import type { Plugin, UserConfig } from "vite"
-import { PRESETS, type PresetTuple } from "./config.js"
+import { PRESET_BY_ID, PRESETS, type PresetTuple } from "./config.js"
 import { createHash } from "node:crypto"
 
-const PRESETS_BY_ID = Object.fromEntries(PRESETS)
-const PRESET_IDS = Object.keys(PRESETS_BY_ID)
+const PRESET_IDS = Object.keys(PRESET_BY_ID)
 
 /**
  * Preset IDs to include. Unlisted presets will be excluded from the

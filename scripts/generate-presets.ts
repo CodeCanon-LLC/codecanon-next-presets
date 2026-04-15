@@ -3,7 +3,7 @@ import { join } from "node:path"
 import { PRESETS } from "../src/config.ts"
 
 const PRESETS_DIR = join(import.meta.dirname, "../src/presets")
-const INDEX_CSS = join(PRESETS_DIR, "index.css")
+const PRESETS_CSS = join(import.meta.dirname, "../src/styles/presets.css")
 
 function skeletonCss(id: string, name: string): string {
   return `/* Theme: ${name} */
@@ -20,8 +20,10 @@ function skeletonCss(id: string, name: string): string {
 }
 
 function generateIndexCss(presets: [string, string][]): string {
-  const imports = presets.map(([id]) => `@import "./${id}.css";`).join("\n")
-  return `/* Theme presets */\n${imports}`
+  const imports = presets
+    .map(([id]) => `@import "../presets/${id}.css";`)
+    .join("\n")
+  return `@import "./custom-variants.css";\n\n/* Theme presets */\n${imports}`
 }
 
 let created = 0
@@ -38,7 +40,7 @@ for (const [id, name] of PRESETS) {
   }
 }
 
-writeFileSync(INDEX_CSS, generateIndexCss([...PRESETS]))
-console.log(`  updated  index.css`)
+writeFileSync(PRESETS_CSS, generateIndexCss([...PRESETS]))
+console.log(`  updated  presets.css`)
 
 console.log(`\nDone — ${created} created, ${skipped} already existed.`)

@@ -3,30 +3,45 @@ import { Card } from "~/components/ui/card"
 import { titleCase } from "~/lib/format"
 import { EM_DASH } from "~/lib/symbols"
 import { cn } from "~/lib/utils"
+import { PRESET_BY_ID } from "../config"
 
-function DefaultAppPreviewCard({
-  presetKey,
-  label = titleCase(presetKey || ""),
-  active,
-  showDock,
+type PresetPreviewCardVariant = "default" | "dock"
+
+function PresetPreviewCard({
+  // Built-in preset ID or any custom preset ID.
+  preset,
+  label: labelProp,
+  // Optional if preset provided
+  active: activeProp,
+
+  // View props
   highlighted,
-  className,
+  variant = "default",
   ref,
+  className,
   ...props
 }: {
-  showDock?: boolean
+  // Built-in preset ID or any custom preset ID.
+  preset?: string
   label?: string
-  /** Built-in preset ID or any custom preset ID. */
-  presetKey?: string
+  // Optional if preset provided
   active?: boolean
+
+  // View props
   highlighted?: boolean
+  variant?: PresetPreviewCardVariant | undefined
   ref?: React.Ref<HTMLDivElement>
 } & React.ComponentProps<typeof Card>) {
-  const { preset: activePresetKey } = usePreset()
+  const { preset: activePreset } = usePreset()
   const { colorScheme = "light" } = useTheme()
 
   // Determine which theme to use for the preview
-  const themeKey = presetKey || activePresetKey
+  const active = preset ? preset === activePreset : activeProp
+  const label =
+    labelProp ||
+    (preset ? PRESET_BY_ID[preset] || titleCase(preset || "") : "Preset")
+
+  const isVariantDock = variant === "dock"
 
   return (
     <div
@@ -57,7 +72,7 @@ function DefaultAppPreviewCard({
 
       {/* Mock App Preview */}
       <div
-        data-preset={themeKey}
+        data-preset={preset}
         className={cn(
           "bg-background text-foreground flex-1 p-3",
           colorScheme === "dark" && "dark"
@@ -65,12 +80,15 @@ function DefaultAppPreviewCard({
       >
         {/* Mock Sidebar */}
         <div
-          className={cn("flex h-full gap-2", showDock && "flex-col-reverse")}
+          className={cn(
+            "flex h-full gap-2",
+            isVariantDock && "flex-col-reverse"
+          )}
         >
           <div
             className={cn(
               "bg-sidebar text-sidebar-foreground border-sidebar-border flex w-16 flex-col gap-1 rounded p-2",
-              showDock && "mx-auto flex-row"
+              isVariantDock && "mx-auto flex-row"
             )}
           >
             {/* Mock sidebar items */}
@@ -79,7 +97,7 @@ function DefaultAppPreviewCard({
                 key={i}
                 className={cn(
                   "h-2 rounded",
-                  showDock ? "w-2" : "h-2",
+                  isVariantDock ? "w-2" : "h-2",
                   i === 1 ? "bg-primary" : "bg-sidebar-accent opacity-50"
                 )}
               />
@@ -122,4 +140,4 @@ function DefaultAppPreviewCard({
   )
 }
 
-export { DefaultAppPreviewCard }
+export { PresetPreviewCard, type PresetPreviewCardVariant }

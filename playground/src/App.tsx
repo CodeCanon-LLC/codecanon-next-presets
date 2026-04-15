@@ -300,10 +300,10 @@ const CUSTOM_PRESETS: PresetTuple[] = [["brown", "Brown"], ...PRESETS]
 function App() {
   return (
     <ThemeProvider
-      themeKey="next-presets-plaground-theme"
+      storageKey="next-presets-plaground-theme"
       defaultTheme="system"
     >
-      <PresetProvider presetKey="next-presets-plaground-preset">
+      <PresetProvider storageKey="next-presets-plaground-preset">
         <PresetPicker>
           <DemoContent />
           <PresetPickerSheet>

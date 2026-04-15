@@ -2,28 +2,28 @@ import { memo } from "react"
 import { DEFAULT_PRESET_ATTR, DEFAULT_PRESET_KEY } from "./lib/constants"
 
 interface PresetScriptProps {
-  presetKey?: string
-  presetAttr?: string
+  storageKey?: string
+  attribute?: string
 }
 
 function presetScript({
-  presetKey = DEFAULT_PRESET_KEY,
-  presetAttr = DEFAULT_PRESET_ATTR,
+  storageKey = DEFAULT_PRESET_KEY,
+  attribute = DEFAULT_PRESET_ATTR,
 }: PresetScriptProps) {
   try {
-    const p = localStorage.getItem(presetKey)
-    if (p) document.documentElement.setAttribute(presetAttr, JSON.parse(p))
+    const p = localStorage.getItem(storageKey)
+    if (p) document.documentElement.setAttribute(attribute, JSON.parse(p))
   } catch {}
 }
 
 const PresetScript = memo(
   ({
-    presetKey = DEFAULT_PRESET_KEY,
-    presetAttr = DEFAULT_PRESET_ATTR,
+    storageKey = DEFAULT_PRESET_KEY,
+    attribute = DEFAULT_PRESET_ATTR,
   }: PresetScriptProps) => {
     const args = {
-      presetKey,
-      presetAttr,
+      storageKey,
+      attribute,
     }
 
     return (
