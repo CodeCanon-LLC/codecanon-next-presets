@@ -63,7 +63,7 @@ function validatePresets(
   const valid: PresetTuple[] = []
 
   for (const id of requested) {
-    const name = PRESETS_BY_ID[id]
+    const name = PRESET_BY_ID[id]
 
     if (name) {
       valid.push([id, name])
