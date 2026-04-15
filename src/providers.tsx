@@ -7,6 +7,7 @@ import {
 import {
   createContext,
   useContext,
+  useEffect,
   useLayoutEffect,
   type ReactNode,
 } from "react"
@@ -28,6 +29,22 @@ type PresetProviderProps = {
   children: ReactNode
   presetKey?: string
   presetAttr?: string
+  /**
+   * Externally controlled preset value. When provided, this takes precedence
+   * over the localStorage value. Useful when the preset is persisted in a
+   * database — pass `undefined` (or omit the prop) while the database value
+   * is loading so localStorage can provide a fast initial value with no flash.
+   *
+   * localStorage is always updated on user interactions so the next page load
+   * renders the correct preset instantly, without waiting for the database.
+   */
+  preset?: string
+  /**
+   * Called whenever the user selects a new preset. Use this to persist the
+   * new value to your database. localStorage is always updated immediately,
+   * independently of this callback.
+   */
+  onPresetChange?: (preset: string | undefined) => void
 }
 
 type PresetState = {
@@ -49,29 +66,50 @@ function PresetProvider({
   children,
   presetKey = DEFAULT_PRESET_KEY,
   presetAttr = DEFAULT_PRESET_ATTR,
+  preset: controlledPreset,
+  onPresetChange,
 }: PresetProviderProps) {
-  const [preset, setPreset, resetPreset] = useLocalStorage<string | undefined>(
+  const [localPreset, setLocalPreset, resetLocalPreset] = useLocalStorage<string | undefined>(
     presetKey,
     undefined
   )
+
+  // Controlled preset takes precedence; fall back to localStorage while
+  // the controlled value is unavailable (e.g. DB not yet loaded).
+  const activePreset = controlledPreset !== undefined ? controlledPreset : localPreset
+
+  // Keep localStorage in sync with the controlled value so that subsequent
+  // page loads render the correct preset immediately (without DB round-trip).
+  useEffect(() => {
+    if (controlledPreset === undefined) return
+    try {
+      window.localStorage.setItem(presetKey, JSON.stringify(controlledPreset))
+    } catch {}
+  }, [controlledPreset, presetKey])
 
   // Apply theme preset via data-preset attribute
   useLayoutEffect(() => {
     const root = document.documentElement
     if (!root) return
 
-    // Set the data-preset attribute based on the current preset
-    if (preset) {
-      root.setAttribute(presetAttr, preset)
+    if (activePreset) {
+      root.setAttribute(presetAttr, activePreset)
     } else {
       root.removeAttribute(presetAttr)
     }
-  }, [preset, presetAttr])
+  }, [activePreset, presetAttr])
 
   const presetContext: PresetState = {
-    preset,
-    resetPreset,
-    setPreset,
+    preset: activePreset,
+    resetPreset: () => {
+      resetLocalPreset()
+      onPresetChange?.(undefined)
+    },
+    setPreset: (value) => {
+      const next = value instanceof Function ? value(activePreset) : value
+      setLocalPreset(next)   // always update localStorage immediately
+      onPresetChange?.(next) // notify parent (e.g., to persist to DB)
+    },
   }
 
   return (

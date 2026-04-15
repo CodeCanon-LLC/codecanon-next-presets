@@ -7,6 +7,7 @@
 - [Installation](#installation)
 - [Setup](#setup)
 - [Basic Usage](#basic-usage)
+- [Controlled Preset (Database-backed)](#controlled-preset-database-backed)
 - [API Reference](#api-reference)
 - [Reducing Bundle Size](#reducing-bundle-size)
 - [Extending with Custom Presets](#extending-with-custom-presets)
@@ -112,6 +113,51 @@ export default function Page() {
 
 ---
 
+## Controlled Preset (Database-backed)
+
+`PresetProvider` supports a **controlled mode** for cases where the active preset is stored in a database. Pass `preset` and `onPresetChange` to take control of the value:
+
+```tsx
+// app/providers.tsx
+"use client"
+
+import { useState, useEffect } from "react"
+import { PresetProvider } from "@codecanon/next-presets"
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  const [dbPreset, setDbPreset] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    fetchUserPreset().then(setDbPreset)
+  }, [])
+
+  async function handlePresetChange(preset: string | undefined) {
+    setDbPreset(preset)          // optimistic update — no visual delay
+    await saveUserPreset(preset) // persist to DB in the background
+  }
+
+  return (
+    <PresetProvider preset={dbPreset} onPresetChange={handlePresetChange}>
+      {children}
+    </PresetProvider>
+  )
+}
+```
+
+**How it works:**
+
+1. **Fast initial render** — on first load, `preset` is `undefined` (DB not yet fetched). `PresetProvider` falls back to the localStorage value so the page renders with the correct preset immediately, with no flash.
+2. **DB value takes over** — once `preset` resolves to a string, it becomes the authoritative value and overrides localStorage.
+3. **User picks a preset** — `onPresetChange` fires immediately. Update your state optimistically (as shown above) so the UI switches with no delay while the DB write happens in the background.
+4. **localStorage stays in sync** — every preset change (user-initiated or controlled) is written to localStorage, so the next page load is fast regardless of DB latency.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `preset` | `string \| undefined` | Controlled preset ID. Omit (or pass `undefined`) to use localStorage only — useful while the DB value is loading. |
+| `onPresetChange` | `(preset: string \| undefined) => void` | Fires when the user selects a new preset. Use this to persist the value to your database. |
+
+---
+
 ## API Reference
 
 ### Providers
@@ -119,7 +165,7 @@ export default function Page() {
 | Component        | Props                                                             | Description                                                  |
 | ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------ |
 | `ThemeProvider`  | `defaultTheme`, `themeKey`, `attribute`, …(all next-themes props) | Wraps next-themes; always adds `data-preset-theme` attribute |
-| `PresetProvider` | `presetKey`, `presetAttr`                                         | Persists selected preset; sets `data-preset` on `<html>`     |
+| `PresetProvider` | `presetKey`, `presetAttr`, `preset`, `onPresetChange`             | Persists selected preset; sets `data-preset` on `<html>`     |
 
 ### Picker Components
 
