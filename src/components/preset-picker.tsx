@@ -45,9 +45,10 @@ import {
 
 type PresetPickerContextValue = {
   open: boolean
+  modal: boolean
+  presets: readonly PresetTuple[]
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   toggleOpen: () => void
-  presets: readonly PresetTuple[]
 }
 
 const PresetPickerContext = createContext<PresetPickerContextValue | null>(null)
@@ -67,6 +68,7 @@ function PresetPickerSheet({
   children,
   presets = PRESETS,
   onOpenChange,
+  modal = false,
   ...props
 }: {
   children: React.ReactNode
@@ -76,15 +78,15 @@ function PresetPickerSheet({
   const toggleOpen = () => setOpen((v) => !v)
 
   const context = useMemo<PresetPickerContextValue>(
-    () => ({ open, presets, setOpen, toggleOpen }),
-    [open, presets]
+    () => ({ open, modal, presets, setOpen, toggleOpen }),
+    [open, modal, presets]
   )
 
   return (
     <PresetPickerContext.Provider value={context}>
       <TooltipProvider>
         <Sheet
-          modal={false}
+          modal={modal}
           {...props}
           open={open}
           onOpenChange={(open) => {
@@ -108,6 +110,8 @@ function PresetPickerContent({
   className,
   ...props
 }: React.ComponentProps<typeof SheetContent>) {
+  const { modal } = usePresetPicker("PresetPickerContent")
+
   return (
     <SheetContent
       side="left"
@@ -117,8 +121,12 @@ function PresetPickerContent({
         "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
         className
       )}
-      onPointerDownOutside={(e) => e.preventDefault()}
-      onInteractOutside={(e) => e.preventDefault()}
+      {...(modal
+        ? {}
+        : {
+            onPointerDownOutside: (e) => e.preventDefault(),
+            onInteractOutside: (e) => e.preventDefault(),
+          })}
       {...props}
     >
       <SheetContentClose />
