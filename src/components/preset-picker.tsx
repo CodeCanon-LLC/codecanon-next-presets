@@ -66,21 +66,35 @@ function usePresetPicker(caller = "usePresetPicker") {
 function PresetPickerSheet({
   children,
   presets = PRESETS,
+  onOpenChange,
+  ...props
 }: {
   children: React.ReactNode
   presets?: readonly PresetTuple[]
-}) {
+} & Omit<React.ComponentProps<typeof Sheet>, "open">) {
   const [open, setOpen] = useState(false)
   const toggleOpen = () => setOpen((v) => !v)
 
   const context = useMemo<PresetPickerContextValue>(
-    () => ({ open, setOpen, toggleOpen, presets }),
+    () => ({ open, presets, setOpen, toggleOpen }),
     [open, presets]
   )
 
   return (
     <PresetPickerContext.Provider value={context}>
-      <TooltipProvider>{children}</TooltipProvider>
+      <TooltipProvider>
+        <Sheet
+          modal={false}
+          {...props}
+          open={open}
+          onOpenChange={(open) => {
+            setOpen(open)
+            onOpenChange?.(open)
+          }}
+        >
+          {children}
+        </Sheet>
+      </TooltipProvider>
     </PresetPickerContext.Provider>
   )
 }
@@ -91,34 +105,31 @@ function PresetPickerSheet({
 
 function PresetPickerContent({
   children,
+  className,
   ...props
-}: React.ComponentProps<typeof Sheet>) {
-  const { open, setOpen } = usePresetPicker("PresetPickerContent")
-
+}: React.ComponentProps<typeof SheetContent>) {
   return (
-    <Sheet open={open} onOpenChange={setOpen} modal={false} {...props}>
-      <SheetContent
-        side="left"
-        className={cn(
-          "bg-background pointer-events-auto",
-          "max-w-screen data-[side=left]:w-80 data-[side=right]:w-80 sm:max-w-md",
-          "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left"
-        )}
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-      >
-        <SheetContentClose />
-        <SheetHeader>
-          <SheetTitle className="flex gap-2">
-            <Palette />
-            Preset Picker
-          </SheetTitle>
-        </SheetHeader>
-        <div className="flex min-h-0 flex-1 flex-col gap-4 px-4">
-          {children}
-        </div>
-      </SheetContent>
-    </Sheet>
+    <SheetContent
+      side="left"
+      className={cn(
+        "bg-background pointer-events-auto",
+        "max-w-screen data-[side=left]:w-80 data-[side=right]:w-80 sm:max-w-md",
+        "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
+        className
+      )}
+      onPointerDownOutside={(e) => e.preventDefault()}
+      onInteractOutside={(e) => e.preventDefault()}
+      {...props}
+    >
+      <SheetContentClose />
+      <SheetHeader>
+        <SheetTitle className="flex gap-2">
+          <Palette />
+          Preset Picker
+        </SheetTitle>
+      </SheetHeader>
+      <div className="flex min-h-0 flex-1 flex-col gap-4 px-4">{children}</div>
+    </SheetContent>
   )
 }
 

@@ -75,6 +75,7 @@ function PresetDropdownPickerMenu({
   presets = PRESETS,
   defaultOpen = false,
   children,
+  onOpenChange,
   ...props
 }: PresetDropdownPickerMenuProps) {
   const [open, setOpen] = React.useState(defaultOpen)
@@ -82,19 +83,29 @@ function PresetDropdownPickerMenu({
 
   const toggleOpen = React.useCallback(() => setOpen((v) => !v), [])
 
+  const context = React.useMemo(
+    () => ({
+      open,
+      searchQuery,
+      presets,
+      setOpen,
+      toggleOpen,
+      setSearchQuery,
+    }),
+    [open, searchQuery, presets]
+  )
+
   return (
-    <PresetDropdownPickerContext.Provider
-      value={{
-        open,
-        setOpen,
-        toggleOpen,
-        searchQuery,
-        setSearchQuery,
-        presets,
-      }}
-    >
+    <PresetDropdownPickerContext.Provider value={context}>
       <TooltipProvider>
-        <DropdownMenu open={open} onOpenChange={setOpen} {...props}>
+        <DropdownMenu
+          {...props}
+          open={open}
+          onOpenChange={(open) => {
+            setOpen(open)
+            onOpenChange?.(open)
+          }}
+        >
           {children}
         </DropdownMenu>
       </TooltipProvider>
