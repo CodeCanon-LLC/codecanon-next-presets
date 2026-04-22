@@ -119,7 +119,6 @@ function PresetDropdownPickerTrigger({
   return (
     <DropdownMenuTrigger asChild>
       <Button
-        variant="outline"
         size="sm"
         className={cn("gap-2", className)}
         disabled={!mounted}
@@ -144,7 +143,7 @@ function PresetDropdownPickerContent({
   return (
     <DropdownMenuContent
       align="end"
-      className={cn("bg-background w-70 p-0", className)}
+      className={cn("w-70 p-0", className)}
       {...props}
     >
       {children}
@@ -268,7 +267,7 @@ function PresetDropdownPickerToolbar({
             </PresetDropdownPickerToolbarButton>
           </TooltipTrigger>
           <TooltipContent>
-            Theme: ${getThemeName(activeTheme)} (click to switch)
+            Theme: {getThemeName(activeTheme)} (click to switch)
           </TooltipContent>
         </Tooltip>
 
