@@ -51,9 +51,7 @@ function PresetPreviewCard({
         "hover:bg-accent hover:text-accent-foreground group/theme-preset-card m-2 cursor-pointer overflow-hidden rounded-md border transition-all hover:shadow-xl",
         highlighted && "bg-accent text-accent-foreground shadow-xl",
         active && "ring-primary ring-3",
-        highlighted &&
-          !active &&
-          "ring-accent-foreground ring-.5 ring-offset-1",
+        highlighted && !active && "ring-accent ring-3",
         "h-49 w-67 max-w-11/12",
         "flex flex-col",
         className

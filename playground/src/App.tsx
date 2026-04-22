@@ -1,32 +1,12 @@
 import {
   ThemeProvider,
   PresetProvider,
-  PresetPicker,
-  usePresetPicker,
-  useTheme,
-  usePreset,
-  PresetPickerSheet,
-  PresetPickerThemeToggleGroup,
-  PresetPickerContent,
   type PresetTuple,
   PRESETS,
-  PresetPickerToggleButton,
+  PresetDropdownPicker,
+  PresetPicker,
 } from "@codecanon/next-presets"
 import { Palette } from "lucide-react"
-
-function OpenPickerButton() {
-  const { colorScheme } = useTheme()
-  const { preset } = usePreset()
-
-  return (
-    <PresetPickerToggleButton size="lg">
-      <Palette />
-      {preset ?? "default"}
-      <span className="text-primary-foreground/60">·</span>
-      {colorScheme}
-    </PresetPickerToggleButton>
-  )
-}
 
 function ColorSwatch({ label, variable }: { label: string; variable: string }) {
   return (
@@ -70,7 +50,7 @@ function DemoContent() {
               50+ shadcn theme presets, one click away
             </p>
           </div>
-          <OpenPickerButton />
+          <PresetDropdownPicker size="lg" presets={CUSTOM_PRESETS} />
         </div>
       </header>
 
@@ -304,12 +284,13 @@ function App() {
       defaultTheme="system"
     >
       <PresetProvider storageKey="next-presets-plaground-preset">
-        <PresetPicker>
-          <DemoContent />
-          <PresetPickerSheet>
-            <PresetPickerThemeToggleGroup />
-            <PresetPickerContent presets={CUSTOM_PRESETS} />
-          </PresetPickerSheet>
+        <DemoContent />
+        <PresetPicker
+          size="icon-lg"
+          className="fixed right-4 bottom-4 size-11 rounded-full"
+          presets={CUSTOM_PRESETS}
+        >
+          <Palette className="size-4.5" />
         </PresetPicker>
       </PresetProvider>
     </ThemeProvider>

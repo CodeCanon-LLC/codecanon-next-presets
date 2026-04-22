@@ -12,6 +12,7 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "verbatimModuleSyntax": true,
+    "exactOptionalPropertyTypes": false,
     "paths": {
       "~/*": ["./src/*"]
     }
