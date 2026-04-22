@@ -21,10 +21,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group"
 import { PRESETS, type PresetTuple } from "~/config"
 import { cn } from "~/lib/utils"
-import {
-  PresetPreviewCard,
-  type PresetPreviewCardVariant,
-} from "./preset-preview-card"
+import { PresetPreviewCard } from "./preset-preview-card"
 import { Button } from "./ui/button"
 import { DEFAULT_THEME } from "~/lib/constants"
 import {
@@ -189,13 +186,11 @@ function PresetPickerThemeToggleGroup({
 // ---------------------------------------------------------------------------
 
 interface PresetPickerListProps extends React.ComponentProps<"div"> {
-  variant?: PresetPreviewCardVariant
   card?: typeof PresetPreviewCard
 }
 
 function PresetPickerList({
   card: Card = PresetPreviewCard,
-  variant,
   className,
   ...props
 }: PresetPickerListProps) {
@@ -322,7 +317,6 @@ function PresetPickerList({
             filteredPresets.map(([id, label], index) => (
               <Card
                 key={id}
-                variant={variant}
                 highlighted={index === highlightedIndex}
                 preset={id}
                 label={label}
@@ -371,13 +365,11 @@ function PresetPickerToggleButton(props: PresetPickerToggleButtonProps) {
 
 interface PresetPickerProps {
   presets?: readonly PresetTuple[]
-  variant?: PresetPreviewCardVariant
   card?: typeof PresetPreviewCard
 }
 
 function PresetPicker({
   presets,
-  variant,
   card,
   ...props
 }: PresetPickerProps & PresetPickerToggleButtonProps) {
@@ -386,7 +378,7 @@ function PresetPicker({
       <PresetPickerToggleButton {...props} />
       <PresetPickerContent>
         <PresetPickerThemeToggleGroup />
-        <PresetPickerList variant={variant} card={card} />
+        <PresetPickerList card={card} />
       </PresetPickerContent>
     </PresetPickerSheet>
   )

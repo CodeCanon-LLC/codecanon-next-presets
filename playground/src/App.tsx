@@ -5,6 +5,8 @@ import {
   PRESETS,
   PresetDropdownPicker,
   PresetPicker,
+  PresetPreviewCard,
+  PresetDockPreviewCard,
 } from "@codecanon/next-presets"
 import { Palette } from "lucide-react"
 
