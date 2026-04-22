@@ -31,6 +31,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "~/components/ui/input-group"
 
 // ---------------------------------------------------------------------------
 // Context
@@ -163,7 +168,6 @@ interface PresetDropdownPickerSearchProps extends React.ComponentProps<
 
 function PresetDropdownPickerSearch({
   containerClassName,
-  className,
   ...props
 }: PresetDropdownPickerSearchProps) {
   const { searchQuery, setSearchQuery } = usePresetDropdownPicker(
@@ -171,18 +175,19 @@ function PresetDropdownPickerSearch({
   )
 
   return (
-    <div className={cn("border-border border-b p-2", containerClassName)}>
-      <div className="relative">
-        <Search className="text-muted-foreground absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2" />
-        <Input
+    <div className={cn("p-2", containerClassName)}>
+      <InputGroup>
+        <InputGroupAddon align="inline-start">
+          <Search />
+        </InputGroupAddon>
+        <InputGroupInput
           placeholder="Search presets..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className={cn("h-8 pl-8 text-sm", className)}
           onClick={(e) => e.stopPropagation()}
           {...props}
         />
-      </div>
+      </InputGroup>
     </div>
   )
 }

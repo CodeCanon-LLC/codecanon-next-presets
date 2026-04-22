@@ -1,4 +1,4 @@
-import { Laptop, Moon, Palette, Shuffle, Sun, X } from "lucide-react"
+import { Laptop, Moon, Palette, Search, Shuffle, Sun, X } from "lucide-react"
 import {
   createContext,
   useContext,
@@ -10,7 +10,6 @@ import {
 import { useBoolean } from "~/hooks/use-boolean"
 
 import { usePreset, useTheme, type Theme } from "~/providers"
-import { Input } from "~/components/ui/input"
 import { Scroller } from "~/components/ui/scroller"
 import {
   Sheet,
@@ -251,6 +250,9 @@ function PresetPickerList({
   return (
     <>
       <InputGroup>
+        <InputGroupAddon align="inline-start">
+          <Search />
+        </InputGroupAddon>
         <InputGroupInput
           type="text"
           placeholder="Search presets..."
