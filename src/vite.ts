@@ -22,12 +22,13 @@ const PRESET_IDS = Object.keys(PRESET_BY_ID)
  * nextPresetsPlugin({
  *  include: ['claude', 'anew', 'rose']
  *  exclude: ['rose']
+ *  add: [['my-brand', 'My Brand']]
  * })
  */
 export interface NextPresetsPluginOptions {
-  presets?: string[]
   include?: string[]
   exclude?: string[]
+  add?: PresetTuple[]
 }
 
 function hashConfig(config: NextPresetsPluginOptions) {
@@ -39,9 +40,9 @@ function hashConfig(config: NextPresetsPluginOptions) {
 
 function patchBundledPresetsModule(
   code: string,
-  filteredPresets: PresetTuple[]
+  NEXT_PRESETS: PresetTuple[]
 ): string {
-  const replacement = `const PRESETS = ${JSON.stringify(filteredPresets)};`
+  const replacement = `const PRESETS = ${JSON.stringify(NEXT_PRESETS)};`
   return code.replace(/const PRESETS = \[[\s\S]*?\];/, replacement)
 }
 
@@ -58,7 +59,7 @@ function resolveRuntimeDistDir(): string {
 
 function validatePresets(
   requested: string[],
-  fallback: PresetTuple[] = PRESETS
+  fallback: PresetTuple[]
 ): PresetTuple[] {
   const valid: PresetTuple[] = []
 
@@ -92,10 +93,11 @@ function toUrl(p: string) {
 }
 
 export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
-  const hasInclude = !!(options.include?.length || options.presets?.length)
+  const hasInclude = !!options.include?.length
   const hasExclude = !!options.exclude?.length
+  const hasAdd = !!options.add?.length
 
-  if (!hasInclude && !hasExclude) {
+  if (!hasInclude && !hasExclude && !hasAdd) {
     return { name: "codecanon-presets" }
   }
 
@@ -103,8 +105,10 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
     validatePresets(options.exclude || [], [])
   )
   const includePresets = validatePresets(
-    options.include || options.presets || []
+    options.include || [],
+    !options.include?.length ? [] : PRESETS
   ).filter(([id]) => !excludePresets[id])
+  const addPresets = (options.add || []).filter(([id]) => !excludePresets[id])
 
   const hash = hashConfig(options)
 
@@ -156,10 +160,10 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
   // Patched dist/index.js with PRESETS filtered to the selected subset.
   writeFileSync(
     filteredJsPath,
-    patchBundledPresetsModule(
-      readFileSync(distIndexPath, "utf8"),
-      includePresets
-    ),
+    patchBundledPresetsModule(readFileSync(distIndexPath, "utf8"), [
+      ...addPresets,
+      ...includePresets,
+    ]),
     "utf8"
   )
 

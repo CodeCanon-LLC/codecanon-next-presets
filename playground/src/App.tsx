@@ -292,18 +292,13 @@ function DemoContent() {
   )
 }
 
-const CUSTOM_PRESETS: PresetTuple[] = [["brown", "Brown"], ...PRESETS]
-
 function App() {
   return (
     <ThemeProvider
       storageKey="next-presets-plaground-theme"
       defaultTheme="system"
     >
-      <PresetProvider
-        storageKey="next-presets-plaground-preset"
-        presets={CUSTOM_PRESETS}
-      >
+      <PresetProvider storageKey="next-presets-plaground-preset">
         <DemoContent />
         <PresetPicker>
           <PresetPickerTrigger
