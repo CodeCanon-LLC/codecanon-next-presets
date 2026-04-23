@@ -244,7 +244,7 @@ export function Page() {
 | Export            | Type                                                                                   | Description                                              |
 | ----------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `PRESETS`         | `readonly [string, string][]`                                                          | All 50+ built-in preset tuples `[id, label]`             |
-| `PRESETS_BY_NAME` | `Readonly<{ [preset: string]: string }>`                                               | Preset id to label key:value pair                        |
+| `PRESET_BY_ID`    | `Readonly<{ [preset: string]: string }>`                                               | Preset id to label key:value pair                        |
 | `filterPresets`   | `(ids: string[]) => PresetTuple[]`                                                     | Returns a subset of `PRESETS` in canonical order         |
 | `getPresetName`   | `(preset?: string, {presets?: PresetTuple[]; defaultValue?: string}) => PresetTuple[]` | Returns preset label/name                                |
 | `PresetKeys`      | `type`                                                                                 | Union of all built-in preset IDs                         |
@@ -294,11 +294,17 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [
     nextPresetsPlugin({
-      presets: ["claude", "anew", "rose"],
+      include: ["claude", "anew", "rose"],
     }),
   ],
 })
 ```
+
+| Option    | Type            | Description                                                                           |
+| --------- | --------------- | ------------------------------------------------------------------------------------- |
+| `include` | `string[]`      | Preset IDs to include. All unlisted built-in presets are excluded.                    |
+| `exclude` | `string[]`      | Preset IDs to exclude from the built-in list. Ignored when `include` is also set.     |
+| `add`     | `PresetTuple[]` | Custom preset tuples `[id, label]` to add alongside the filtered built-in presets.    |
 
 The plugin:
 
