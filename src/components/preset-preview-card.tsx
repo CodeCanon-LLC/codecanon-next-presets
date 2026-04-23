@@ -1,18 +1,8 @@
 import { usePreset, useTheme } from "~/providers"
 import { Card } from "~/components/ui/card"
-import { titleCase } from "~/lib/format"
 import { EM_DASH } from "~/lib/symbols"
 import { cn } from "~/lib/utils"
-import { PRESET_BY_ID } from "../config"
-
-// --- Shared helpers ---
-
-function resolveLabel(preset?: string, labelProp?: string) {
-  return (
-    labelProp ||
-    (preset ? PRESET_BY_ID[preset] || titleCase(preset || "") : "Preset")
-  )
-}
+import { usePresetName } from "~/hooks/use-preset-name"
 
 function ActiveBadge() {
   return (
@@ -27,8 +17,6 @@ function ActiveBadge() {
 
 type PresetCardBaseProps = {
   preset?: string
-  label?: string
-  active?: boolean
   highlighted?: boolean
   ref?: React.Ref<HTMLDivElement>
 } & Omit<React.ComponentProps<typeof Card>, "ref">
@@ -37,18 +25,16 @@ type PresetCardBaseProps = {
 
 function PresetPreviewCard({
   preset,
-  label: labelProp,
-  active: activeProp,
   highlighted,
   ref,
   className,
   ...props
 }: PresetCardBaseProps) {
-  const { preset: activePreset } = usePreset()
+  const { preset: activePreset } = usePreset("PresetPreviewCard")
   const { colorScheme = "light" } = useTheme()
+  const label = usePresetName(preset)
 
-  const active = preset ? preset === activePreset : activeProp
-  const label = resolveLabel(preset, labelProp)
+  const active = preset === activePreset
 
   return (
     <div
@@ -125,18 +111,16 @@ function PresetPreviewCard({
 
 function PresetDockPreviewCard({
   preset,
-  label: labelProp,
-  active: activeProp,
   highlighted,
   ref,
   className,
   ...props
 }: PresetCardBaseProps) {
-  const { preset: activePreset } = usePreset()
+  const { preset: activePreset } = usePreset("PresetDockPreviewCard")
   const { colorScheme = "light" } = useTheme()
+  const label = usePresetName(preset)
 
-  const active = preset ? preset === activePreset : activeProp
-  const label = resolveLabel(preset, labelProp)
+  const active = preset === activePreset
 
   return (
     <div

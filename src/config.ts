@@ -1,4 +1,4 @@
-export const PRESETS = [
+const PRESETS = [
   ["nuteral", "Nuteral"],
   ["nuteral-accent", "Nuteral (Accent)"],
   ["codecanon", "CodeCanon"],
@@ -54,14 +54,17 @@ export const PRESETS = [
   ["sage-garden", "Sage Garden"],
 ] as const satisfies [string, string][]
 
-export const PRESET_BY_ID = Object.fromEntries(PRESETS)
+const PRESET_BY_ID = Object.fromEntries(PRESETS)
 
 /**
  * ---------------------------------------------------------
  * Type Definitions
  * ---------------------------------------------------------
  */
-export type PresetKeys = (typeof PRESETS)[number][0]
+type PresetKeys = (typeof PRESETS)[number][0]
 
 /** A tuple of [id, label] describing a single preset — built-in or custom. */
-export type PresetTuple = readonly [string, string]
+type PresetTuple = readonly [string, string]
+
+export { PRESETS, PRESET_BY_ID }
+export type { PresetKeys, PresetTuple }

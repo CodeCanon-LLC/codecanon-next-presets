@@ -19,10 +19,8 @@ import {
 } from "~/components/ui/dropdown-menu"
 import { Input } from "~/components/ui/input"
 import { cn } from "~/lib/utils"
-import { PRESETS, type PresetTuple } from "~/config"
 import { PresetPreviewDots } from "~/components/preset-preview-dots"
 import { getNextTheme } from "~/helpers/get-next-theme"
-import { getPresetName } from "~/helpers/get-preset-name"
 import { DEFAULT_THEME } from "~/lib/constants"
 import { getThemeName } from "~/helpers/get-theme-name"
 import {
@@ -36,6 +34,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "~/components/ui/input-group"
+import { usePresetName } from "~/hooks/use-preset-name"
 
 // ---------------------------------------------------------------------------
 // Context
@@ -47,17 +46,19 @@ interface PresetDropdownPickerContextValue {
   toggleOpen: () => void
   searchQuery: string
   setSearchQuery: (query: string) => void
-  presets: readonly PresetTuple[]
 }
 
 const PresetDropdownPickerContext =
   React.createContext<PresetDropdownPickerContextValue | null>(null)
 
 function usePresetDropdownPicker(caller = "usePresetDropdownPicker") {
-  const ctx = React.useContext(PresetDropdownPickerContext)
-  if (!ctx)
+  const context = React.useContext(PresetDropdownPickerContext)
+
+  if (!context) {
     throw new Error(`${caller} must be used within <PresetDropdownPickerMenu>`)
-  return ctx
+  }
+
+  return context
 }
 
 // ---------------------------------------------------------------------------
@@ -67,12 +68,10 @@ function usePresetDropdownPicker(caller = "usePresetDropdownPicker") {
 type PresetDropdownPickerMenuProps = React.ComponentProps<
   typeof DropdownMenu
 > & {
-  presets?: readonly PresetTuple[]
   defaultOpen?: boolean
 }
 
 function PresetDropdownPickerMenu({
-  presets = PRESETS,
   defaultOpen = false,
   children,
   onOpenChange,
@@ -87,12 +86,11 @@ function PresetDropdownPickerMenu({
     () => ({
       open,
       searchQuery,
-      presets,
       setOpen,
       toggleOpen,
       setSearchQuery,
     }),
-    [open, searchQuery, presets]
+    [open, searchQuery]
   )
 
   return (
@@ -124,24 +122,17 @@ function PresetDropdownPickerTrigger({
   children,
   ...props
 }: PresetDropdownPickerTriggerProps) {
-  const { preset: activePreset } = usePreset()
-
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
+  const { presetName } = usePreset("PresetDropdownPickerTrigger")
 
   return (
     <DropdownMenuTrigger asChild>
-      <Button
-        size="sm"
-        className={cn("gap-2", className)}
-        disabled={!mounted}
-        {...props}
-      >
-        <Palette className="h-4 w-4" />
-        {mounted ? (children ?? getPresetName(activePreset)) : "Loading..."}
+      <Button className={cn("gap-2", className)} {...props}>
+        {children ?? (
+          <>
+            <Palette className="size-4" />
+            {presetName}
+          </>
+        )}
       </Button>
     </DropdownMenuTrigger>
   )
@@ -238,10 +229,13 @@ function PresetDropdownPickerToolbar({
   className,
   ...props
 }: PresetDropdownPickerToolbarProps) {
-  const { preset: activePreset, setPreset: setActivePreset } = usePreset()
+  const {
+    presets,
+    preset: activePreset,
+    setPreset: setActivePreset,
+  } = usePreset("PresetDropdownPickerToolbar")
   const { theme: activeTheme = DEFAULT_THEME, setTheme: setActiveTheme } =
     useTheme()
-  const { presets } = usePresetDropdownPicker("PresetDropdownPickerToolbar")
 
   const handleThemeToggle = () => {
     setActiveTheme(getNextTheme(activeTheme))
@@ -325,16 +319,18 @@ function PresetDropdownPickerToolbar({
 
 type PresetDropdownPickerItemProps = React.ComponentProps<"div"> & {
   preset: string
-  label?: string
 }
 
 function PresetDropdownPickerItem({
   preset,
-  label = getPresetName(preset),
   className,
   ...props
 }: PresetDropdownPickerItemProps) {
-  const { preset: activePreset, setPreset: setActivePreset } = usePreset()
+  const label = usePresetName(preset)
+  const { preset: activePreset, setPreset: setActivePreset } = usePreset(
+    "PresetDropdownPickerItem"
+  )
+
   const isSelected = activePreset === preset
 
   return (
@@ -370,9 +366,8 @@ function PresetDropdownPickerList({
   className,
   ...props
 }: PresetDropdownPickerListProps) {
-  const { searchQuery, presets } = usePresetDropdownPicker(
-    "PresetDropdownPickerList"
-  )
+  const { presets } = usePreset("PresetDropdownPickerList")
+  const { searchQuery } = usePresetDropdownPicker("PresetDropdownPickerList")
 
   const filtered = presets.filter(([, name]) =>
     name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -389,12 +384,8 @@ function PresetDropdownPickerList({
         className={cn("max-h-75 overflow-y-auto pb-1", className)}
         {...props}
       >
-        {filtered.map(([preset, presetName]) => (
-          <PresetDropdownPickerItem
-            key={presetName}
-            preset={preset}
-            label={presetName}
-          />
+        {filtered.map(([preset]) => (
+          <PresetDropdownPickerItem key={preset} preset={preset} />
         ))}
       </div>
     </>
@@ -405,16 +396,11 @@ function PresetDropdownPickerList({
 // Recipe
 // ---------------------------------------------------------------------------
 
-type PresetDropdownPickerProps = PresetDropdownPickerTriggerProps & {
-  presets?: readonly PresetTuple[]
-}
+type PresetDropdownPickerProps = PresetDropdownPickerTriggerProps
 
-function PresetDropdownPicker({
-  presets = PRESETS,
-  ...props
-}: PresetDropdownPickerProps) {
+function PresetDropdownPicker({ ...props }: PresetDropdownPickerProps) {
   return (
-    <PresetDropdownPickerMenu presets={presets}>
+    <PresetDropdownPickerMenu>
       <PresetDropdownPickerTrigger {...props} />
       <PresetDropdownPickerContent>
         <PresetDropdownPickerSearch />

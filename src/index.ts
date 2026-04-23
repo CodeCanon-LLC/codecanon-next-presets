@@ -6,6 +6,8 @@ export * from "./helpers/get-preset-name"
 export * from "./helpers/get-theme-name"
 export * from "./helpers/get-next-theme"
 
+export * from "./hooks/use-preset-name"
+
 export * from "./components/preset-picker"
 export * from "./components/preset-dropdown-picker"
 

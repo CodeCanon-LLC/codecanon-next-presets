@@ -1,6 +1,7 @@
 # @codecanon/next-presets
 
 50+ shadcn design-system presets with light/dark mode support for React apps.
+
 <p>
   <a href="https://codecanon.dev/next-presets/demo">
     <img src="https://img.shields.io/badge/%F0%9F%9A%80%20%20Checkout%20Live%20Demo%20%20%E2%86%92-0d9488?style=for-the-badge&labelColor=0d9488&color=0d9488" alt="Checkout Demo" height="50" />
@@ -91,7 +92,7 @@ import {
   PresetPicker,
   PresetPickerSheet,
   PresetPickerContent,
-  PresetPickerToggleButton,
+  PresetPickerTrigger,
   PresetPickerThemeToggleGroup,
 } from "@codecanon/next-presets"
 
@@ -99,7 +100,7 @@ export default function Page() {
   return (
     <PresetPicker>
       <main>
-        <PresetPickerToggleButton>Open Preset Picker</PresetPickerToggleButton>
+        <PresetPickerTrigger>Open Preset Picker</PresetPickerTrigger>
         {/* your page content */}
       </main>
 

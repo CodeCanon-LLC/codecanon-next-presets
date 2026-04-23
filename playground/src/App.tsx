@@ -5,8 +5,6 @@ import {
   PRESETS,
   PresetDropdownPicker,
   PresetPicker,
-  PresetPreviewCard,
-  PresetDockPreviewCard,
 } from "@codecanon/next-presets"
 import { Palette } from "lucide-react"
 
@@ -52,7 +50,7 @@ function DemoContent() {
               50+ shadcn theme presets, one click away
             </p>
           </div>
-          <PresetDropdownPicker size="lg" presets={CUSTOM_PRESETS} />
+          <PresetDropdownPicker />
         </div>
       </header>
 
@@ -285,14 +283,16 @@ function App() {
       storageKey="next-presets-plaground-theme"
       defaultTheme="system"
     >
-      <PresetProvider storageKey="next-presets-plaground-preset">
+      <PresetProvider
+        storageKey="next-presets-plaground-preset"
+        presets={CUSTOM_PRESETS}
+      >
         <DemoContent />
         <PresetPicker
           size="icon-lg"
           className="fixed right-4 bottom-4 size-11 rounded-full"
-          presets={CUSTOM_PRESETS}
         >
-          <Palette className="size-4.5" />
+          <Palette className="size-5" />
         </PresetPicker>
       </PresetProvider>
     </ThemeProvider>

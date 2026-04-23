@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from "react"
-import { useBoolean } from "~/hooks/use-boolean"
 
 import { usePreset, useTheme, type Theme } from "~/providers"
 import { Scroller } from "~/components/ui/scroller"
@@ -17,9 +16,9 @@ import {
   SheetContentClose,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from "~/components/ui/sheet"
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group"
-import { PRESETS, type PresetTuple } from "~/config"
 import { cn } from "~/lib/utils"
 import { PresetPreviewCard } from "./preset-preview-card"
 import { Button } from "./ui/button"
@@ -35,6 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip"
+import type { PresetTuple } from "~/config"
 
 // ---------------------------------------------------------------------------
 // Context
@@ -43,17 +43,24 @@ import {
 type PresetPickerContextValue = {
   open: boolean
   modal: boolean
-  presets: readonly PresetTuple[]
+  query: string
+  highlightedIndex: number
+  filteredPresets: PresetTuple[]
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   toggleOpen: () => void
+  setQuery: React.Dispatch<React.SetStateAction<string>>
+  setHighlightedIndex: React.Dispatch<React.SetStateAction<number>>
 }
 
 const PresetPickerContext = createContext<PresetPickerContextValue | null>(null)
 
 function usePresetPicker(caller = "usePresetPicker") {
   const context = useContext(PresetPickerContext)
-  if (!context)
+
+  if (!context) {
     throw new Error(`${caller} must be used within a <PresetPickerSheet>`)
+  }
+
   return context
 }
 
@@ -63,20 +70,38 @@ function usePresetPicker(caller = "usePresetPicker") {
 
 function PresetPickerSheet({
   children,
-  presets = PRESETS,
   onOpenChange,
   modal = false,
   ...props
 }: {
   children: React.ReactNode
-  presets?: readonly PresetTuple[]
 } & Omit<React.ComponentProps<typeof Sheet>, "open">) {
+  const { presets } = usePreset("PresetPickerSheet")
+  const [query, setQuery] = useState("")
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
   const [open, setOpen] = useState(false)
+
   const toggleOpen = () => setOpen((v) => !v)
 
+  const queryLower = query.toLowerCase()
+  const filteredPresets = useMemo(
+    () => presets.filter(([, t]) => t?.toLowerCase().includes(queryLower)),
+    [queryLower, presets]
+  )
+
   const context = useMemo<PresetPickerContextValue>(
-    () => ({ open, modal, presets, setOpen, toggleOpen }),
-    [open, modal, presets]
+    () => ({
+      open,
+      modal,
+      query,
+      highlightedIndex,
+      filteredPresets,
+      setOpen,
+      toggleOpen,
+      setQuery,
+      setHighlightedIndex,
+    }),
+    [open, query, highlightedIndex, filteredPresets, modal]
   )
 
   return (
@@ -182,31 +207,26 @@ function PresetPickerThemeToggleGroup({
 }
 
 // ---------------------------------------------------------------------------
-// PresetPickerList
+// PresetPickerSearch
 // ---------------------------------------------------------------------------
 
-interface PresetPickerListProps extends React.ComponentProps<"div"> {
-  card?: typeof PresetPreviewCard
-}
+type PresetPickerSearchProps = React.ComponentProps<typeof InputGroupInput>
 
-function PresetPickerList({
-  card: Card = PresetPreviewCard,
-  className,
+function PresetPickerSearch({
+  onChange,
+  onKeyDown,
   ...props
-}: PresetPickerListProps) {
-  const { open, presets } = usePresetPicker("PresetPickerList")
-  const { preset, setPreset } = usePreset()
-  const [mounted, setMounted] = useBoolean(false)
-  const [highlightedIndex, setHighlightedIndex] = useState(-1)
-  const [query, setQuery] = useState("")
+}: PresetPickerSearchProps) {
+  const {
+    open,
+    query,
+    highlightedIndex,
+    filteredPresets,
+    setHighlightedIndex,
+    setQuery,
+  } = usePresetPicker("PresetPickerList")
+  const { presets, preset, setPreset } = usePreset("PresetPickerList")
   const queryLower = query.trim().toLowerCase()
-  const scrollerRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map())
-
-  const filteredPresets = useMemo(
-    () => presets.filter(([, t]) => t?.toLowerCase().includes(queryLower)),
-    [queryLower, presets]
-  )
 
   useEffect(() => {
     if (queryLower.trim()) {
@@ -220,22 +240,9 @@ function PresetPickerList({
     if (!open) setQuery("")
   }, [open])
 
-  useEffect(() => {
-    const highlightedElement = itemRefs.current.get(highlightedIndex)
-    if (highlightedElement && scrollerRef.current) {
-      const parent = scrollerRef.current
-      const parentRect = parent.getBoundingClientRect()
-      const elementRect = highlightedElement.getBoundingClientRect()
-
-      if (elementRect.top < parentRect.top + 20) {
-        parent.scrollTop -= parentRect.top + 20 - elementRect.top
-      } else if (elementRect.bottom > parentRect.bottom - 20) {
-        parent.scrollTop += elementRect.bottom - (parentRect.bottom - 20)
-      }
-    }
-  }, [highlightedIndex])
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    onKeyDown?.(e)
+
     if (filteredPresets.length === 0) return
 
     if (e.key === "ArrowDown") {
@@ -262,101 +269,158 @@ function PresetPickerList({
   }
 
   return (
-    <>
-      <InputGroup>
-        <InputGroupAddon align="inline-start">
-          <Search />
-        </InputGroupAddon>
-        <InputGroupInput
-          type="text"
-          placeholder="Search presets..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
-          autoFocus
-        />
-        <InputGroupAddon align="inline-end">
-          {preset && handleClear && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={handleClear}
-                  title="Clear preset"
-                  aria-label="Clear current preset"
-                >
-                  <X />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Clear preset</TooltipContent>
-            </Tooltip>
-          )}
+    <InputGroup>
+      <InputGroupAddon align="inline-start">
+        <Search />
+      </InputGroupAddon>
+      <InputGroupInput
+        autoFocus
+        type="text"
+        placeholder="Search presets..."
+        {...props}
+        value={query}
+        onKeyDown={handleKeyDown}
+        onChange={(e) => {
+          setQuery(e.target.value)
+          onChange?.(e)
+        }}
+      />
+      <InputGroupAddon align="inline-end">
+        {preset && handleClear && (
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon-sm"
-                onClick={handleRandom}
-                title="Random preset"
-                aria-label="Randomize preset"
+                onClick={handleClear}
+                title="Clear preset"
+                aria-label="Clear current preset"
               >
-                <Shuffle />
+                <X />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Random preset</TooltipContent>
+            <TooltipContent>Clear preset</TooltipContent>
           </Tooltip>
-        </InputGroupAddon>
-      </InputGroup>
-      <Scroller className="min-h-0 flex-1" ref={scrollerRef}>
-        <div
-          className={cn("flex flex-col gap-1 overflow-y-auto", className)}
-          {...props}
-        >
-          {filteredPresets.length > 0 ? (
-            filteredPresets.map(([id, label], index) => (
-              <Card
-                key={id}
-                highlighted={index === highlightedIndex}
-                preset={id}
-                label={label}
-                onClick={() => {
-                  setPreset(id)
-                  setHighlightedIndex(index)
-                }}
-                ref={(el) => {
-                  if (!mounted && preset === id) {
-                    setMounted(true)
-                    el?.scrollIntoView({ block: "center", behavior: "instant" })
-                  }
-                  if (el) {
-                    itemRefs.current.set(index, el)
-                  } else {
-                    itemRefs.current.delete(index)
-                  }
-                }}
-              />
-            ))
-          ) : (
-            <div className="text-muted-foreground py-8 text-center text-sm">
-              No presets found
-            </div>
-          )}
-        </div>
-      </Scroller>
-    </>
+        )}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={handleRandom}
+              title="Random preset"
+              aria-label="Randomize preset"
+            >
+              <Shuffle />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Random preset</TooltipContent>
+        </Tooltip>
+      </InputGroupAddon>
+    </InputGroup>
   )
 }
 
 // ---------------------------------------------------------------------------
-// PresetPickerToggleButton
+// PresetPickerList
 // ---------------------------------------------------------------------------
 
-type PresetPickerToggleButtonProps = React.ComponentProps<typeof Button>
+interface PresetPickerListProps extends React.ComponentProps<"div"> {
+  card?: typeof PresetPreviewCard
+}
 
-function PresetPickerToggleButton(props: PresetPickerToggleButtonProps) {
-  const { toggleOpen } = usePresetPicker("PresetPickerToggleButton")
-  return <Button {...props} onClick={toggleOpen} />
+function PresetPickerList({
+  card: Card = PresetPreviewCard,
+  className,
+  ...props
+}: PresetPickerListProps) {
+  const { filteredPresets, highlightedIndex, setHighlightedIndex } =
+    usePresetPicker("PresetPickerList")
+  const { preset, setPreset } = usePreset("PresetPickerList")
+
+  const [mounted, setMounted] = useState(false)
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map())
+
+  useEffect(() => {
+    const highlightedElement = itemRefs.current.get(highlightedIndex)
+    if (highlightedElement && scrollerRef.current) {
+      const parent = scrollerRef.current
+      const parentRect = parent.getBoundingClientRect()
+      const elementRect = highlightedElement.getBoundingClientRect()
+
+      if (elementRect.top < parentRect.top + 20) {
+        parent.scrollTop -= parentRect.top + 20 - elementRect.top
+      } else if (elementRect.bottom > parentRect.bottom - 20) {
+        parent.scrollTop += elementRect.bottom - (parentRect.bottom - 20)
+      }
+    }
+  }, [highlightedIndex])
+
+  return (
+    <Scroller className="min-h-0 flex-1" ref={scrollerRef}>
+      <div
+        className={cn("flex flex-col gap-1 overflow-y-auto", className)}
+        {...props}
+      >
+        {filteredPresets.length > 0 ? (
+          filteredPresets.map(([id], index) => (
+            <Card
+              key={id}
+              highlighted={index === highlightedIndex}
+              preset={id}
+              onClick={() => {
+                setPreset(id)
+                setHighlightedIndex(index)
+              }}
+              ref={(el) => {
+                if (!mounted && preset === id) {
+                  setMounted(true)
+                  el?.scrollIntoView({ block: "center", behavior: "instant" })
+                }
+                if (el) {
+                  itemRefs.current.set(index, el)
+                } else {
+                  itemRefs.current.delete(index)
+                }
+              }}
+            />
+          ))
+        ) : (
+          <div className="text-muted-foreground py-8 text-center text-sm">
+            No presets found
+          </div>
+        )}
+      </div>
+    </Scroller>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// PresetPickerTrigger
+// ---------------------------------------------------------------------------
+
+type PresetPickerTriggerProps = React.ComponentProps<typeof Button>
+
+function PresetPickerTrigger({
+  className,
+  children,
+  ...props
+}: PresetPickerTriggerProps) {
+  const { presetName } = usePreset("PresetPickerTrigger")
+
+  return (
+    <SheetTrigger asChild>
+      <Button className={cn("gap-2", className)} {...props}>
+        {children ?? (
+          <>
+            <Palette className="size-4" />
+            {presetName}
+          </>
+        )}
+      </Button>
+    </SheetTrigger>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -364,20 +428,19 @@ function PresetPickerToggleButton(props: PresetPickerToggleButtonProps) {
 // ---------------------------------------------------------------------------
 
 interface PresetPickerProps {
-  presets?: readonly PresetTuple[]
   card?: typeof PresetPreviewCard
 }
 
 function PresetPicker({
-  presets,
   card,
   ...props
-}: PresetPickerProps & PresetPickerToggleButtonProps) {
+}: PresetPickerProps & PresetPickerTriggerProps) {
   return (
-    <PresetPickerSheet presets={presets}>
-      <PresetPickerToggleButton {...props} />
+    <PresetPickerSheet>
+      <PresetPickerTrigger {...props} />
       <PresetPickerContent>
         <PresetPickerThemeToggleGroup />
+        <PresetPickerSearch />
         <PresetPickerList card={card} />
       </PresetPickerContent>
     </PresetPickerSheet>
@@ -387,9 +450,10 @@ function PresetPicker({
 export {
   PresetPicker,
   PresetPickerSheet,
+  PresetPickerTrigger,
   PresetPickerContent,
   PresetPickerThemeToggleGroup,
+  PresetPickerSearch,
   PresetPickerList,
-  PresetPickerToggleButton,
   usePresetPicker,
 }

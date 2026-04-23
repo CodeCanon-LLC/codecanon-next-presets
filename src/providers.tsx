@@ -24,6 +24,8 @@ import {
   type Theme,
   DEFAULT_COLOR_SCHEME,
 } from "./lib/constants"
+import { PRESETS, type PresetTuple } from "~/config"
+import { getPresetName } from "~/helpers/get-preset-name"
 
 type PresetProviderProps = {
   children: ReactNode
@@ -45,17 +47,27 @@ type PresetProviderProps = {
    * independently of this callback.
    */
   onPresetChange?: (preset: string | undefined) => void
+  /**
+   * Override the default list of presets to may include your brand presets or
+   * exclude presets you don't want
+   */
+  presets?: PresetTuple[]
 }
 
 type PresetState = {
   /** The currently active preset ID. */
   preset?: string | undefined
+  // List of presets defaults to `PRESETS`
+  presets: PresetTuple[]
+  presetName: string
   resetPreset: () => void
   /** Switch to any preset by ID — built-in or custom. */
   setPreset: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 const initialState: PresetState = {
+  presets: PRESETS,
+  presetName: "Preset",
   setPreset: () => null,
   resetPreset: () => null,
 }
@@ -68,6 +80,7 @@ function PresetProvider({
   attribute = DEFAULT_PRESET_ATTR,
   preset: controlledPreset,
   onPresetChange,
+  presets = PRESETS,
 }: PresetProviderProps) {
   const [localPreset, setLocalPreset, resetLocalPreset] = useLocalStorage<
     string | undefined
@@ -101,6 +114,8 @@ function PresetProvider({
 
   const presetContext: PresetState = {
     preset: activePreset,
+    presets,
+    presetName: getPresetName(activePreset, { presets }),
     resetPreset: () => {
       resetLocalPreset()
       onPresetChange?.(undefined)
@@ -120,11 +135,11 @@ function PresetProvider({
   )
 }
 
-function usePreset() {
+function usePreset(caller = "usePreset") {
   const context = useContext(PresetContext)
 
   if (context === undefined)
-    throw new Error("usePreset must be used within a PresetProvider")
+    throw new Error(`${caller} must be used within a PresetProvider`)
 
   return context
 }
