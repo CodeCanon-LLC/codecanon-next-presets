@@ -58,17 +58,17 @@ function usePresetPicker(caller = "usePresetPicker") {
   const context = useContext(PresetPickerContext)
 
   if (!context) {
-    throw new Error(`${caller} must be used within a <PresetPickerSheet>`)
+    throw new Error(`${caller} must be used within a <PresetPicker>`)
   }
 
   return context
 }
 
 // ---------------------------------------------------------------------------
-// PresetPickerSheet (context provider)
+// PresetPicker (context provider)
 // ---------------------------------------------------------------------------
 
-function PresetPickerSheet({
+function PresetPicker({
   children,
   onOpenChange,
   modal = false,
@@ -76,7 +76,7 @@ function PresetPickerSheet({
 }: {
   children: React.ReactNode
 } & Omit<React.ComponentProps<typeof Sheet>, "open">) {
-  const { presets } = usePreset("PresetPickerSheet")
+  const { presets } = usePreset("PresetPicker")
   const [query, setQuery] = useState("")
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
   const [open, setOpen] = useState(false)
@@ -423,33 +423,18 @@ function PresetPickerTrigger({
   )
 }
 
-// ---------------------------------------------------------------------------
-// PresetPicker (recipe)
-// ---------------------------------------------------------------------------
-
-interface PresetPickerProps {
-  card?: typeof PresetPreviewCard
-}
-
-function PresetPicker({
-  card,
-  ...props
-}: PresetPickerProps & PresetPickerTriggerProps) {
-  return (
-    <PresetPickerSheet>
-      <PresetPickerTrigger {...props} />
-      <PresetPickerContent>
-        <PresetPickerThemeToggleGroup />
-        <PresetPickerSearch />
-        <PresetPickerList card={card} />
-      </PresetPickerContent>
-    </PresetPickerSheet>
-  )
-}
-
+/**
+<PresetPicker>
+  <PresetPickerTrigger />
+  <PresetPickerContent>
+    <PresetPickerThemeToggleGroup />
+    <PresetPickerSearch />
+    <PresetPickerList />
+  </PresetPickerContent>
+</PresetPicker>
+ */
 export {
   PresetPicker,
-  PresetPickerSheet,
   PresetPickerTrigger,
   PresetPickerContent,
   PresetPickerThemeToggleGroup,

@@ -16,7 +16,7 @@ function ActiveBadge() {
 // --- Shared props ---
 
 type PresetCardBaseProps = {
-  preset?: string
+  preset: string
   highlighted?: boolean
   ref?: React.Ref<HTMLDivElement>
 } & Omit<React.ComponentProps<typeof Card>, "ref">

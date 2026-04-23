@@ -5,6 +5,16 @@ import {
   PRESETS,
   PresetDropdownPicker,
   PresetPicker,
+  PresetDropdownPickerContent,
+  PresetDropdownPickerList,
+  PresetDropdownPickerSearch,
+  PresetDropdownPickerToolbar,
+  PresetDropdownPickerTrigger,
+  PresetPickerTrigger,
+  PresetPickerContent,
+  PresetPickerList,
+  PresetPickerSearch,
+  PresetPickerThemeToggleGroup,
 } from "@codecanon/next-presets"
 import { Palette } from "lucide-react"
 
@@ -50,7 +60,14 @@ function DemoContent() {
               50+ shadcn theme presets, one click away
             </p>
           </div>
-          <PresetDropdownPicker />
+          <PresetDropdownPicker>
+            <PresetDropdownPickerTrigger />
+            <PresetDropdownPickerContent>
+              <PresetDropdownPickerSearch />
+              <PresetDropdownPickerToolbar />
+              <PresetDropdownPickerList />
+            </PresetDropdownPickerContent>
+          </PresetDropdownPicker>
         </div>
       </header>
 
@@ -288,11 +305,18 @@ function App() {
         presets={CUSTOM_PRESETS}
       >
         <DemoContent />
-        <PresetPicker
-          size="icon-lg"
-          className="fixed right-4 bottom-4 size-11 rounded-full"
-        >
-          <Palette className="size-5" />
+        <PresetPicker>
+          <PresetPickerTrigger
+            size="icon-lg"
+            className="fixed right-4 bottom-4 size-11 rounded-full"
+          >
+            <Palette className="size-5" />
+          </PresetPickerTrigger>
+          <PresetPickerContent>
+            <PresetPickerThemeToggleGroup />
+            <PresetPickerSearch />
+            <PresetPickerList />
+          </PresetPickerContent>
         </PresetPicker>
       </PresetProvider>
     </ThemeProvider>

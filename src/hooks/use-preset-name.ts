@@ -1,10 +1,10 @@
 import { getPresetName } from "~/helpers/get-preset-name"
 import { usePreset } from "~/providers"
 
-function usePresetName(preset?: string) {
-  const { preset: activePreset, presets } = usePreset("usePresetName")
+function usePresetName(preset: string) {
+  const { presets } = usePreset("usePresetName")
 
-  return getPresetName(preset || activePreset, { presets })
+  return getPresetName(preset, { presets })
 }
 
 export { usePresetName }

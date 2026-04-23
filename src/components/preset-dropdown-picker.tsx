@@ -17,7 +17,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
-import { Input } from "~/components/ui/input"
 import { cn } from "~/lib/utils"
 import { PresetPreviewDots } from "~/components/preset-preview-dots"
 import { getNextTheme } from "~/helpers/get-next-theme"
@@ -42,10 +41,10 @@ import { usePresetName } from "~/hooks/use-preset-name"
 
 interface PresetDropdownPickerContextValue {
   open: boolean
-  setOpen: (open: boolean) => void
+  query: string
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   toggleOpen: () => void
-  searchQuery: string
-  setSearchQuery: (query: string) => void
+  setQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
 const PresetDropdownPickerContext =
@@ -55,7 +54,7 @@ function usePresetDropdownPicker(caller = "usePresetDropdownPicker") {
   const context = React.useContext(PresetDropdownPickerContext)
 
   if (!context) {
-    throw new Error(`${caller} must be used within <PresetDropdownPickerMenu>`)
+    throw new Error(`${caller} must be used within <PresetDropdownPicker>`)
   }
 
   return context
@@ -65,32 +64,30 @@ function usePresetDropdownPicker(caller = "usePresetDropdownPicker") {
 // PresetDropdownPicker (root / context provider)
 // ---------------------------------------------------------------------------
 
-type PresetDropdownPickerMenuProps = React.ComponentProps<
-  typeof DropdownMenu
-> & {
+type PresetDropdownPickerProps = React.ComponentProps<typeof DropdownMenu> & {
   defaultOpen?: boolean
 }
 
-function PresetDropdownPickerMenu({
+function PresetDropdownPicker({
   defaultOpen = false,
   children,
   onOpenChange,
   ...props
-}: PresetDropdownPickerMenuProps) {
+}: PresetDropdownPickerProps) {
   const [open, setOpen] = React.useState(defaultOpen)
-  const [searchQuery, setSearchQuery] = React.useState("")
+  const [query, setQuery] = React.useState("")
 
   const toggleOpen = React.useCallback(() => setOpen((v) => !v), [])
 
   const context = React.useMemo(
     () => ({
       open,
-      searchQuery,
+      query,
       setOpen,
       toggleOpen,
-      setSearchQuery,
+      setQuery,
     }),
-    [open, searchQuery]
+    [open, query]
   )
 
   return (
@@ -163,7 +160,7 @@ function PresetDropdownPickerContent({
 // ---------------------------------------------------------------------------
 
 interface PresetDropdownPickerSearchProps extends React.ComponentProps<
-  typeof Input
+  typeof InputGroupInput
 > {
   containerClassName?: string
 }
@@ -172,7 +169,7 @@ function PresetDropdownPickerSearch({
   containerClassName,
   ...props
 }: PresetDropdownPickerSearchProps) {
-  const { searchQuery, setSearchQuery } = usePresetDropdownPicker(
+  const { query, setQuery } = usePresetDropdownPicker(
     "PresetDropdownPickerSearch"
   )
 
@@ -184,8 +181,8 @@ function PresetDropdownPickerSearch({
         </InputGroupAddon>
         <InputGroupInput
           placeholder="Search presets..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           onClick={(e) => e.stopPropagation()}
           {...props}
         />
@@ -357,63 +354,42 @@ function PresetDropdownPickerItem({
 // PresetDropdownPickerList
 // ---------------------------------------------------------------------------
 
-type PresetDropdownPickerListProps = React.ComponentProps<"div"> & {
-  sectionLabel?: string
-}
+type PresetDropdownPickerListProps = React.ComponentProps<"div">
 
 function PresetDropdownPickerList({
-  sectionLabel = "Built-in Themes",
   className,
   ...props
 }: PresetDropdownPickerListProps) {
   const { presets } = usePreset("PresetDropdownPickerList")
-  const { searchQuery } = usePresetDropdownPicker("PresetDropdownPickerList")
+  const { query } = usePresetDropdownPicker("PresetDropdownPickerList")
+  const queryLower = query.toLowerCase()
 
-  const filtered = presets.filter(([, name]) =>
-    name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPresets = React.useMemo(
+    () => presets.filter(([, name]) => name.toLowerCase().includes(queryLower)),
+    [presets, queryLower]
   )
 
   return (
-    <>
-      <div className="px-2 py-1.5">
-        <p className="text-muted-foreground mb-1 px-1 text-xs font-medium">
-          {sectionLabel}
-        </p>
-      </div>
-      <div
-        className={cn("max-h-75 overflow-y-auto pb-1", className)}
-        {...props}
-      >
-        {filtered.map(([preset]) => (
-          <PresetDropdownPickerItem key={preset} preset={preset} />
-        ))}
-      </div>
-    </>
+    <div className={cn("max-h-75 overflow-y-auto pb-1", className)} {...props}>
+      {filteredPresets.map(([preset]) => (
+        <PresetDropdownPickerItem key={preset} preset={preset} />
+      ))}
+    </div>
   )
 }
 
-// ---------------------------------------------------------------------------
-// Recipe
-// ---------------------------------------------------------------------------
-
-type PresetDropdownPickerProps = PresetDropdownPickerTriggerProps
-
-function PresetDropdownPicker({ ...props }: PresetDropdownPickerProps) {
-  return (
-    <PresetDropdownPickerMenu>
-      <PresetDropdownPickerTrigger {...props} />
-      <PresetDropdownPickerContent>
-        <PresetDropdownPickerSearch />
-        <PresetDropdownPickerToolbar />
-        <PresetDropdownPickerList />
-      </PresetDropdownPickerContent>
-    </PresetDropdownPickerMenu>
-  )
-}
-
+/**
+<PresetDropdownPicker>
+  <PresetDropdownPickerTrigger/>
+  <PresetDropdownPickerContent>
+    <PresetDropdownPickerSearch />
+    <PresetDropdownPickerToolbar />
+    <PresetDropdownPickerList />
+  </PresetDropdownPickerContent>
+</PresetDropdownPicker>
+ */
 export {
   PresetDropdownPicker,
-  PresetDropdownPickerMenu,
   PresetDropdownPickerContent,
   PresetDropdownPickerItem,
   PresetDropdownPickerList,

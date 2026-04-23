@@ -83,17 +83,18 @@ export default function RootLayout({
 
 ## Basic Usage
 
-Wrap a section of your app with `PresetPicker`, then place `PresetPickerSheet` (the slide-out panel) anywhere inside it:
+Wrap a section of your app with `PresetPicker`, then place `PresetPickerContent` (the slide-out panel) anywhere inside it:
 
 ```tsx
 "use client"
 
 import {
   PresetPicker,
-  PresetPickerSheet,
   PresetPickerContent,
   PresetPickerTrigger,
   PresetPickerThemeToggleGroup,
+  PresetPickerSearch,
+  PresetPickerList,
 } from "@codecanon/next-presets"
 
 export default function Page() {
@@ -104,18 +105,20 @@ export default function Page() {
         {/* your page content */}
       </main>
 
-      <PresetPickerSheet>
+      <PresetPickerContent>
         {/* optional: light / dark / system toggle */}
         <PresetPickerThemeToggleGroup />
+        {/* search input to filter presets */}
+        <PresetPickerSearch />
         {/* scrollable list of presets */}
-        <PresetPickerContent />
-      </PresetPickerSheet>
+        <PresetPickerList />
+      </PresetPickerContent>
     </PresetPicker>
   )
 }
 ```
 
-`PresetPickerSheet` is a non-modal slide-out panel. Open/close state is managed by `PresetPicker` context and exposed via `usePresetPicker()`.
+`PresetPickerContent` is a non-modal slide-out panel. Open/close state is managed by `PresetPicker` context and exposed via `usePresetPicker()`.
 
 ---
 
@@ -164,6 +167,40 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ---
 
+## Dropdown Picker
+
+```tsx
+import {
+  PresetDropdownPicker,
+  PresetDropdownPickerTrigger,
+  PresetDropdownPickerContent,
+  PresetDropdownPickerSearch,
+  PresetDropdownPickerToolbar,
+  PresetDropdownPickerList,
+} from "@codecanon/next-presets"
+
+export function Page() {
+  return (
+    <div>
+      <nav>
+        <MyAppLogo />
+
+        {/* Usage */}
+        <PresetDropdownPicker>
+          <PresetDropdownPickerTrigger />
+          <PresetDropdownPickerContent>
+            <PresetDropdownPickerSearch />
+            <PresetDropdownPickerToolbar />
+            <PresetDropdownPickerList />
+          </PresetDropdownPickerContent>
+        </PresetDropdownPicker>
+      </nav>
+      <main>{/* My app content... */}</main>
+    <div>
+  )
+}
+```
+
 ## API Reference
 
 ### Providers
@@ -171,34 +208,47 @@ export function Providers({ children }: { children: React.ReactNode }) {
 | Component        | Props                                                               | Description                                                  |
 | ---------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ |
 | `ThemeProvider`  | `defaultTheme`, `storageKey`, `attribute`, …(all next-themes props) | Wraps next-themes; always adds `data-preset-theme` attribute |
-| `PresetProvider` | `storageKey`, `attribute`, `preset`, `onPresetChange`               | Persists selected preset; sets `data-preset` on `<html>`     |
+| `PresetProvider` | `storageKey`, `attribute`, `preset`, `onPresetChange`, `presets`    | Persists selected preset; sets `data-preset` on `<html>`     |
 
 ### Picker Components
 
-| Component                      | Key Props                                             | Description                                |
-| ------------------------------ | ----------------------------------------------------- | ------------------------------------------ |
-| `PresetPicker`                 | —                                                     | Context provider for open/close state      |
-| `PresetPickerSheet`            | —                                                     | Slide-out panel (wraps Radix Dialog)       |
-| `PresetPickerContent`          | `presets`, `card`, `variant`                          | Searchable, keyboard-navigable preset list |
-| `PresetPickerThemeToggleGroup` | —                                                     | Light / Dark / System toggle buttons       |
-| `PresetPreviewCard`            | `preset`, `label`, `active`, `highlighted`, `variant` | Miniature app preview shown per preset     |
+| Component                      | Key Props                          | Description                                      |
+| ------------------------------ | ---------------------------------- | ------------------------------------------------ |
+| `PresetPicker`                 | shadcn sheet props                 | Picker sheet and context                         |
+| `PresetPickerTrigger`          | shadcn sheet trigger props         | Picker trigger                                   |
+| `PresetPickerContent`          | shadcn sheet content props         | Picker content                                   |
+| `PresetPickerSearch`           | —                                  | Picker search to filter preset list              |
+| `PresetPickerList`             | `card`                             | Picker preset list                               |
+| `PresetPickerThemeToggleGroup` | —                                  | Light / Dark / System toggle buttons             |
+| `PresetPreviewCard`            | `preset`, `highlighted`            | Miniature app preview shown per preset (sidebar) |
+| `PresetDockPreviewCard`        | `preset`, `highlighted`            | Miniature app preview shown per preset (dock)    |
+| `PresetDropdownPicker`         | shadcn dropdown menu props         | Dropdown picker menu and context                 |
+| `PresetDropdownPickerTrigger`  | shadcn dropdown menu trigger props | Dropdown picker Trigger                          |
+| `PresetDropdownPickerContent`  | shadcn dropdown menu content props | Dropdown picker content                          |
+| `PresetDropdownPickerSearch`   | shadcn input group input props     | Dropdown picker search to filter preset list     |
+| `PresetDropdownPickerToolbar`  | button props                       | Dropdown picker toolbar button                   |
+| `PresetDropdownPickerList`     | div props                          | Dropdown picker preset list                      |
 
 ### Hooks
 
-| Hook                | Returns                                                                     | Description                                               |
-| ------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------- |
-| `useTheme()`        | `{ theme, setTheme, colorScheme, isDarkTheme, resolvedTheme, systemTheme }` | Active theme state                                        |
-| `usePreset()`       | `{ preset, setPreset, resetPreset }`                                        | Active preset state                                       |
-| `usePresetPicker()` | `{ open, setOpen, toggleOpen }`                                             | Picker open/close state (must be inside `<PresetPicker>`) |
+| Hook                            | Returns                                                                                                       | Description                                                             |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `useTheme()`                    | `{ theme, setTheme, colorScheme, isDarkTheme, resolvedTheme, systemTheme }`                                   | Active theme state                                                      |
+| `usePreset()`                   | `{ preset, presetName, presets setPreset, resetPreset }`                                                      | Active preset state                                                     |
+| `usePresetPicker()`             | `{open, query, highlightedIndex, filteredPresets, modal, setOpen, toggleOpen, setQuery, setHighlightedIndex}` | Picker context state (must be inside `<PresetPicker>`)                  |
+| `usePresetDropdownPicker()`     | `{open, query, setOpen, toggleOpen, setQuery}`                                                                | Dropdown Picker context state (must be inside `<PresetDropdownPicker>`) |
+| `usePresetName(preset: string)` | `string`                                                                                                      | Preset name                                                             |
 
 ### Exports
 
-| Export          | Type                                | Description                                              |
-| --------------- | ----------------------------------- | -------------------------------------------------------- |
-| `PRESETS`       | `readonly [string, string][]`       | All 50+ built-in preset tuples `[id, label]`             |
-| `filterPresets` | `(ids: string[]) => typeof PRESETS` | Returns a subset of `PRESETS` in canonical order         |
-| `PresetKeys`    | `type`                              | Union of all built-in preset IDs                         |
-| `PresetTuple`   | `type`                              | `readonly [string, string]` — describes one preset entry |
+| Export            | Type                                                                                   | Description                                              |
+| ----------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `PRESETS`         | `readonly [string, string][]`                                                          | All 50+ built-in preset tuples `[id, label]`             |
+| `PRESETS_BY_NAME` | `Readonly<{ [preset: string]: string }>`                                               | Preset id to label key:value pair                        |
+| `filterPresets`   | `(ids: string[]) => PresetTuple[]`                                                     | Returns a subset of `PRESETS` in canonical order         |
+| `getPresetName`   | `(preset?: string, {presets?: PresetTuple[]; defaultValue?: string}) => PresetTuple[]` | Returns preset label/name                                |
+| `PresetKeys`      | `type`                                                                                 | Union of all built-in preset IDs                         |
+| `PresetTuple`     | `type`                                                                                 | `readonly [string, string]` — describes one preset entry |
 
 ---
 
@@ -282,12 +332,11 @@ Skip `styles.css` entirely and import only what you need. `components.css` is pr
 Then filter the `PRESETS` array so `PresetPicker` shows only those presets:
 
 ```tsx
-import { filterPresets, PresetPickerContent } from "@codecanon/next-presets"
+import { filterPresets, PresetProvider } from "@codecanon/next-presets"
 
 const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
 
-// Inside your picker:
-<PresetPickerContent presets={MY_PRESETS} />
+<PresetProvider presets={MY_PRESETS} />
 ```
 
 `filterPresets` returns the matching entries in their original canonical order.
@@ -390,18 +439,17 @@ If you want your brand preset to be the default, add `:root` to the selector and
 @import "@codecanon/next-presets/styles.css";
 ```
 
-**3. Pass your preset to `PresetPickerContent`**
+**3. Pass your preset to `PresetProvider`**
 
 ```tsx
-import { PRESETS, PresetPickerContent } from "@codecanon/next-presets"
+import { PRESETS, PresetProvider } from "@codecanon/next-presets"
 
 const MY_PRESETS = [
   ["my-brand", "My Brand"] as const,
   ...PRESETS,
 ]
 
-// Inside your picker:
-<PresetPickerContent presets={MY_PRESETS} />
+<PresetProvider presets={MY_PRESETS} />
 ```
 
 Clicking "My Brand" in the picker sets `data-preset="my-brand"` on `<html>`, which activates your CSS variables.
