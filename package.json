@@ -60,7 +60,7 @@
     "typecheck": "tsc --noEmit",
     "build:registry": "shadcn build",
     "release:lib": "bumpp && pnpm publish",
-    "release:registry": "bun run build:registry && bun run scripts/upload-registry.ts",
+    "release:registry": "bun run build:registry && bun run scripts/upload-registry.ts --",
     "release": "bun run release:lib && bun run release:registry",
     "prepublishOnly": "pnpm run build",
     "format": "prettier --write .",
