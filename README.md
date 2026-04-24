@@ -31,6 +31,29 @@ npm install @codecanon/next-presets
 yarn add @codecanon/next-presets
 ```
 
+### Picker Components (shadcn registry)
+
+The visual picker components are not bundled with the npm package — they live in a shadcn registry and get copied directly into your project, just like any other shadcn component.
+
+```bash
+# Slide-out sheet picker (includes preset-preview-card as a dependency)
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-picker
+
+# Compact dropdown picker (includes preset-preview-dots as a dependency)
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-dropdown-picker
+
+# Application preview card with sidebar
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-card
+
+# Application preview card with dock
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-dock-preview-card
+
+# Tweakcn like preset preview color dots
+pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-preview-dots
+```
+
+This copies the component files into your project (e.g. `components/ui/preset-picker.tsx`) along with any shadcn dependencies (button, sheet, input-group, etc.).
+
 ---
 
 ## Setup
@@ -95,7 +118,7 @@ import {
   PresetPickerThemeToggleGroup,
   PresetPickerSearch,
   PresetPickerList,
-} from "@codecanon/next-presets"
+} from "@/components/ui/preset-picker"
 
 export default function Page() {
   return (
@@ -177,7 +200,7 @@ import {
   PresetDropdownPickerSearch,
   PresetDropdownPickerToolbar,
   PresetDropdownPickerList,
-} from "@codecanon/next-presets"
+} from "@/components/ui/preset-dropdown-picker"
 
 export function Page() {
   return (
@@ -212,43 +235,66 @@ export function Page() {
 
 ### Picker Components
 
-| Component                      | Key Props                          | Description                                      |
-| ------------------------------ | ---------------------------------- | ------------------------------------------------ |
-| `PresetPicker`                 | shadcn sheet props                 | Picker sheet and context                         |
-| `PresetPickerTrigger`          | shadcn sheet trigger props         | Picker trigger                                   |
-| `PresetPickerContent`          | shadcn sheet content props         | Picker content                                   |
-| `PresetPickerSearch`           | —                                  | Picker search to filter preset list              |
-| `PresetPickerList`             | `card`                             | Picker preset list                               |
-| `PresetPickerThemeToggleGroup` | —                                  | Light / Dark / System toggle buttons             |
-| `PresetPreviewCard`            | `preset`, `highlighted`            | Miniature app preview shown per preset (sidebar) |
-| `PresetDockPreviewCard`        | `preset`, `highlighted`            | Miniature app preview shown per preset (dock)    |
-| `PresetDropdownPicker`         | shadcn dropdown menu props         | Dropdown picker menu and context                 |
-| `PresetDropdownPickerTrigger`  | shadcn dropdown menu trigger props | Dropdown picker Trigger                          |
-| `PresetDropdownPickerContent`  | shadcn dropdown menu content props | Dropdown picker content                          |
-| `PresetDropdownPickerSearch`   | shadcn input group input props     | Dropdown picker search to filter preset list     |
-| `PresetDropdownPickerToolbar`  | button props                       | Dropdown picker toolbar button                   |
-| `PresetDropdownPickerList`     | div props                          | Dropdown picker preset list                      |
+> Installed via the shadcn registry — not exported from the npm package.
+> Run `pnpm shadcn@latest add https://registry.codecanon.dev/r/preset-picker` first.
+
+**`@/components/ui/preset-picker`**
+
+| Component                      | Key Props                  | Description                          |
+| ------------------------------ | -------------------------- | ------------------------------------ |
+| `PresetPicker`                 | shadcn sheet props         | Picker sheet and context             |
+| `PresetPickerTrigger`          | shadcn sheet trigger props | Picker trigger                       |
+| `PresetPickerContent`          | shadcn sheet content props | Picker content                       |
+| `PresetPickerSearch`           | —                          | Picker search to filter preset list  |
+| `PresetPickerList`             | `card`                     | Picker preset list                   |
+| `PresetPickerThemeToggleGroup` | —                          | Light / Dark / System toggle buttons |
+
+**`@/components/ui/preset-dropdown-picker`**
+
+| Component                     | Key Props                          | Description                                  |
+| ----------------------------- | ---------------------------------- | -------------------------------------------- |
+| `PresetDropdownPicker`        | shadcn dropdown menu props         | Dropdown picker menu and context             |
+| `PresetDropdownPickerTrigger` | shadcn dropdown menu trigger props | Dropdown picker Trigger                      |
+| `PresetDropdownPickerContent` | shadcn dropdown menu content props | Dropdown picker content                      |
+| `PresetDropdownPickerSearch`  | shadcn input group input props     | Dropdown picker search to filter preset list |
+| `PresetDropdownPickerToolbar` | button props                       | Dropdown picker toolbar button               |
+| `PresetDropdownPickerList`    | div props                          | Dropdown picker preset list                  |
+
+**`@/components/ui/preset-preview-card`** · **`@/components/ui/preset-preview-dots`**
+
+| Component               | Key Props               | Description                                      |
+| ----------------------- | ----------------------- | ------------------------------------------------ |
+| `PresetPreviewCard`     | `preset`, `highlighted` | Miniature app preview shown per preset (sidebar) |
+| `PresetDockPreviewCard` | `preset`, `highlighted` | Miniature app preview shown per preset (dock)    |
+| `PresetPreviewDots`     | `preset`                | Four color-swatch dots for a preset              |
 
 ### Hooks
 
-| Hook                            | Returns                                                                                                       | Description                                                             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `useTheme()`                    | `{ theme, setTheme, colorScheme, isDarkTheme, resolvedTheme, systemTheme }`                                   | Active theme state                                                      |
-| `usePreset()`                   | `{ preset, presetName, presets setPreset, resetPreset }`                                                      | Active preset state                                                     |
-| `usePresetPicker()`             | `{open, query, highlightedIndex, filteredPresets, modal, setOpen, toggleOpen, setQuery, setHighlightedIndex}` | Picker context state (must be inside `<PresetPicker>`)                  |
-| `usePresetDropdownPicker()`     | `{open, query, setOpen, toggleOpen, setQuery}`                                                                | Dropdown Picker context state (must be inside `<PresetDropdownPicker>`) |
-| `usePresetName(preset: string)` | `string`                                                                                                      | Preset name                                                             |
+**From `@codecanon/next-presets` (npm package)**
+
+| Hook                            | Returns                                                                     | Description         |
+| ------------------------------- | --------------------------------------------------------------------------- | ------------------- |
+| `useTheme()`                    | `{ theme, setTheme, colorScheme, isDarkTheme, resolvedTheme, systemTheme }` | Active theme state  |
+| `usePreset()`                   | `{ preset, presetName, presets, setPreset, resetPreset }`                   | Active preset state |
+| `usePresetName(preset: string)` | `string`                                                                    | Preset display name |
+
+**From installed registry components**
+
+| Hook                        | Source file                              | Returns                                                                                                       | Description                                                             |
+| --------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `usePresetPicker()`         | `@/components/ui/preset-picker`          | `{open, query, highlightedIndex, filteredPresets, modal, setOpen, toggleOpen, setQuery, setHighlightedIndex}` | Picker context state (must be inside `<PresetPicker>`)                  |
+| `usePresetDropdownPicker()` | `@/components/ui/preset-dropdown-picker` | `{open, query, setOpen, toggleOpen, setQuery}`                                                                | Dropdown Picker context state (must be inside `<PresetDropdownPicker>`) |
 
 ### Exports
 
-| Export            | Type                                                                                   | Description                                              |
-| ----------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `PRESETS`         | `readonly [string, string][]`                                                          | All 50+ built-in preset tuples `[id, label]`             |
-| `PRESET_BY_ID`    | `Readonly<{ [preset: string]: string }>`                                               | Preset id to label key:value pair                        |
-| `filterPresets`   | `(ids: string[]) => PresetTuple[]`                                                     | Returns a subset of `PRESETS` in canonical order         |
-| `getPresetName`   | `(preset?: string, {presets?: PresetTuple[]; defaultValue?: string}) => PresetTuple[]` | Returns preset label/name                                |
-| `PresetKeys`      | `type`                                                                                 | Union of all built-in preset IDs                         |
-| `PresetTuple`     | `type`                                                                                 | `readonly [string, string]` — describes one preset entry |
+| Export          | Type                                                                                   | Description                                              |
+| --------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `PRESETS`       | `readonly [string, string][]`                                                          | All 50+ built-in preset tuples `[id, label]`             |
+| `PRESET_BY_ID`  | `Readonly<{ [preset: string]: string }>`                                               | Preset id to label key:value pair                        |
+| `filterPresets` | `(ids: string[]) => PresetTuple[]`                                                     | Returns a subset of `PRESETS` in canonical order         |
+| `getPresetName` | `(preset?: string, {presets?: PresetTuple[]; defaultValue?: string}) => PresetTuple[]` | Returns preset label/name                                |
+| `PresetKeys`    | `type`                                                                                 | Union of all built-in preset IDs                         |
+| `PresetTuple`   | `type`                                                                                 | `readonly [string, string]` — describes one preset entry |
 
 ---
 
@@ -300,11 +346,11 @@ export default defineConfig({
 })
 ```
 
-| Option    | Type            | Description                                                                           |
-| --------- | --------------- | ------------------------------------------------------------------------------------- |
-| `include` | `string[]`      | Preset IDs to include. All unlisted built-in presets are excluded.                    |
-| `exclude` | `string[]`      | Preset IDs to exclude from the built-in list. Ignored when `include` is also set.     |
-| `add`     | `PresetTuple[]` | Custom preset tuples `[id, label]` to add alongside the filtered built-in presets.    |
+| Option    | Type            | Description                                                                        |
+| --------- | --------------- | ---------------------------------------------------------------------------------- |
+| `include` | `string[]`      | Preset IDs to include. All unlisted built-in presets are excluded.                 |
+| `exclude` | `string[]`      | Preset IDs to exclude from the built-in list. Ignored when `include` is also set.  |
+| `add`     | `PresetTuple[]` | Custom preset tuples `[id, label]` to add alongside the filtered built-in presets. |
 
 The plugin:
 
