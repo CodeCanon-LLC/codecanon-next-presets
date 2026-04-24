@@ -1,21 +1,20 @@
+import { ThemeProvider, PresetProvider } from "@codecanon/next-presets"
 import {
-  ThemeProvider,
-  PresetProvider,
-  type PresetTuple,
-  PRESETS,
   PresetDropdownPicker,
-  PresetPicker,
   PresetDropdownPickerContent,
   PresetDropdownPickerList,
   PresetDropdownPickerSearch,
   PresetDropdownPickerToolbar,
   PresetDropdownPickerTrigger,
+} from "@/components/preset-dropdown-picker"
+import {
+  PresetPicker,
   PresetPickerTrigger,
   PresetPickerContent,
   PresetPickerList,
   PresetPickerSearch,
   PresetPickerThemeToggleGroup,
-} from "@codecanon/next-presets"
+} from "@/components/preset-picker"
 import { Palette } from "lucide-react"
 
 function ColorSwatch({ label, variable }: { label: string; variable: string }) {

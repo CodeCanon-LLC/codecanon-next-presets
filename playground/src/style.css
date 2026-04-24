@@ -5,7 +5,7 @@
 @import "@codecanon/next-presets/styles.css";
 @import "@codecanon/next-presets/custom-variants.css";
 
-@source "../../src";
+@source "../../registry";
 
 @custom-variant dark (&:is(.dark *));
 
