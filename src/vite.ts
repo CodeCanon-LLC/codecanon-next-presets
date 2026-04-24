@@ -125,7 +125,6 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
 
   const filteredJsPath = join(distDir, `_filtered.${hash}.js`)
 
-  const componentsPath = toUrl(join(distDir, "components.css"))
   const presetPaths = includePresets.map(([id]) =>
     toUrl(join(distDir, "presets", `${id}.css`))
   )
@@ -150,7 +149,7 @@ export function nextPresetsPlugin(options: NextPresetsPluginOptions): Plugin {
   // The alias in config() below points styles.css here.
   writeFileSync(
     filteredCssPath,
-    [componentsPath, ...presetPaths]
+    presetPaths
       .filter(existsSync)
       .map((p) => readFileSync(p, "utf8"))
       .join("\n"),

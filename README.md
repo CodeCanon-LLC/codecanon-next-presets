@@ -354,7 +354,7 @@ export default defineConfig({
 
 The plugin:
 
-- Replaces `styles.css` with a virtual bundle containing only `components.css` + the selected preset files
+- Replaces `styles.css` with a virtual bundle containing only the selected preset files
 - Overrides the `PRESETS` export so `PresetPicker` only shows the selected presets
 - Warns at startup if an unknown preset ID is passed; falls back to all presets if none are valid
 
@@ -368,12 +368,11 @@ Your existing CSS and JS imports stay unchanged:
 
 ### Option B — Manual selective imports (any bundler)
 
-Skip `styles.css` entirely and import only what you need. `components.css` is pre-compiled and does not require Tailwind to be installed on the consumer side.
+Skip `styles.css` entirely and import only what you need.
 
 ```css
 /* app/globals.css */
 @import "@codecanon/next-presets/default/nuteral.css";
-@import "@codecanon/next-presets/components.css";
 
 /* only the presets you want in the picker */
 @import "@codecanon/next-presets/presets/nuteral.css";
@@ -397,9 +396,7 @@ const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
 
 | Import path                                   | Contents                                                         |
 | --------------------------------------------- | ---------------------------------------------------------------- |
-| `@codecanon/next-presets/styles.css`          | All-in-one: components + all 50+ presets                         |
-| `@codecanon/next-presets/components.css`      | Pre-compiled Tailwind/shadcn/custom-variants only                |
-| `@codecanon/next-presets/presets.css`         | All 50+ presets combined - `[data-preset]` scoped (for switcher) |
+| `@codecanon/next-presets/styles.css`          | All 50+ presets combined - `[data-preset]` scoped (for switcher) |
 | `@codecanon/next-presets/default/{id}.css`    | Single preset — `:root` scoped (initial default)                 |
 | `@codecanon/next-presets/presets/{id}.css`    | Single preset — `[data-preset]` scoped (for switcher)            |
 | `@codecanon/next-presets/custom-variants.css` | `@custom-variant` definitions for preset authoring               |

@@ -27,14 +27,6 @@
       "style": "./dist/styles.css",
       "default": "./dist/styles.css"
     },
-    "./presets.css": {
-      "style": "./dist/presets.css",
-      "default": "./dist/presets.css"
-    },
-    "./components.css": {
-      "style": "./dist/components.css",
-      "default": "./dist/components.css"
-    },
     "./custom-variants.css": {
       "style": "./dist/custom-variants.css",
       "default": "./dist/custom-variants.css"
@@ -57,10 +49,10 @@
   },
   "scripts": {
     "build:presets": "bun run scripts/build-presets.ts",
-    "build:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css\" \"postcss src/styles/presets.css -o dist/presets.css\" \"postcss src/styles/components.css -o dist/components.css\" \"postcss '.presets-root/*.css' --dir dist/default\" \"postcss '.presets-scoped/*.css' --dir dist/presets\" \"cp src/styles/custom-variants.css dist/\"",
+    "build:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css\" \"postcss '.presets-root/*.css' --dir dist/default\" \"postcss '.presets-scoped/*.css' --dir dist/presets\" \"cp src/styles/custom-variants.css dist/\"",
     "build:js": "tsdown",
     "build": "pnpm run build:js && pnpm run build:css",
-    "dev:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css --watch\" \"postcss src/styles/presets.css -o dist/presets.css --watch\" \"postcss src/styles/components.css -o dist/components.css --watch\" \"postcss '.presets-root/*.css' --dir dist/default --watch\" \"postcss '.presets-scoped/*.css' --dir dist/presets --watch\" \"cp src/styles/custom-variants.css dist/\"",
+    "dev:css": "bun build:presets && concurrently \"postcss src/styles.css -o dist/styles.css --watch\" \"postcss '.presets-root/*.css' --dir dist/default --watch\" \"postcss '.presets-scoped/*.css' --dir dist/presets --watch\" \"cp src/styles/custom-variants.css dist/\"",
     "dev:js": "tsdown --watch",
     "dev": "concurrently \"pnpm run dev:js\" \"pnpm run dev:css\"",
     "play": "vite",
