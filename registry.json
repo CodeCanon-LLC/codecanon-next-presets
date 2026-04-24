@@ -1,0 +1,89 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "codecanon",
+  "homepage": "https://codecanon.dev",
+  "items": [
+    {
+      "name": "preset-preview-dots",
+      "type": "registry:component",
+      "title": "Preset Preview Dots",
+      "description": "Color dots previewing a preset's primary/secondary/accent/muted palette.",
+      "files": [
+        {
+          "path": "registry/components/preset-preview-dots.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "preset-preview-card",
+      "type": "registry:component",
+      "title": "Preset Preview Card",
+      "description": "Miniature app preview card for a preset (sidebar layout).",
+      "dependencies": ["@codecanon/next-presets"],
+      "registryDependencies": ["card"],
+      "files": [
+        {
+          "path": "registry/components/preset-preview-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "preset-dock-preview-card",
+      "type": "registry:component",
+      "title": "Preset Dock Preview Card",
+      "description": "Miniature app preview card for a preset (dock layout).",
+      "dependencies": ["@codecanon/next-presets"],
+      "registryDependencies": ["card"],
+      "files": [
+        {
+          "path": "registry/components/preset-dock-preview-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "preset-picker",
+      "type": "registry:component",
+      "title": "Preset Picker",
+      "description": "Slide-out sheet panel for browsing and selecting presets.",
+      "dependencies": ["@codecanon/next-presets"],
+      "registryDependencies": [
+        "button",
+        "sheet",
+        "toggle-group",
+        "tooltip",
+        "input-group",
+        "https://diceui.com/r/scroller",
+        "https://registry.codecanon.dev/r/preset-preview-card"
+      ],
+      "files": [
+        {
+          "path": "registry/components/preset-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "preset-dropdown-picker",
+      "type": "registry:component",
+      "title": "Preset Dropdown Picker",
+      "description": "Dropdown menu for browsing and selecting presets.",
+      "dependencies": ["@codecanon/next-presets"],
+      "registryDependencies": [
+        "button",
+        "dropdown-menu",
+        "tooltip",
+        "input-group",
+        "https://registry.codecanon.dev/r/preset-preview-dots"
+      ],
+      "files": [
+        {
+          "path": "registry/components/preset-dropdown-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

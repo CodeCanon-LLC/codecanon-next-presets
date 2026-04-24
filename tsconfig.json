@@ -14,8 +14,9 @@
     "verbatimModuleSyntax": true,
     "exactOptionalPropertyTypes": false,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@/*": ["./registry/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "registry"]
 }

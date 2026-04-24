@@ -1,4 +1,13 @@
-import { Laptop, Moon, Palette, Search, Shuffle, Sun, X } from "lucide-react"
+import {
+  Laptop,
+  Moon,
+  Palette,
+  Search,
+  Shuffle,
+  Sun,
+  X,
+  XIcon,
+} from "lucide-react"
 import {
   createContext,
   useContext,
@@ -8,33 +17,38 @@ import {
   useState,
 } from "react"
 
-import { usePreset, useTheme, type Theme } from "~/providers"
-import { Scroller } from "~/components/ui/scroller"
+import {
+  usePreset,
+  useTheme,
+  type Theme,
+  type PresetTuple,
+} from "@codecanon/next-presets"
+import { Scroller } from "@/components/ui/scroller"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
-  SheetContentClose,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "~/components/ui/sheet"
-import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group"
-import { cn } from "~/lib/utils"
-import { PresetPreviewCard } from "./preset-preview-card"
-import { Button } from "./ui/button"
-import { DEFAULT_THEME } from "~/lib/constants"
+} from "@/components/ui/sheet"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { cn } from "@/lib/utils"
+import { PresetPreviewCard } from "@/components/preset-preview-card"
+import { Button } from "@/components/ui/button"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "~/components/ui/input-group"
+} from "@/components/ui/input-group"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "~/components/ui/tooltip"
-import type { PresetTuple } from "~/config"
+} from "@/components/ui/tooltip"
+
+const DEFAULT_THEME = "system"
 
 // ---------------------------------------------------------------------------
 // Context
@@ -62,6 +76,19 @@ function usePresetPicker(caller = "usePresetPicker") {
   }
 
   return context
+}
+
+// ---------------------------------------------------------------------------
+// PresetPickerClose
+// ---------------------------------------------------------------------------
+
+function PresetPickerClose() {
+  return (
+    <SheetClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+      <XIcon className="size-4" />
+      <span className="sr-only">Close</span>
+    </SheetClose>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -151,7 +178,7 @@ function PresetPickerContent({
           })}
       {...props}
     >
-      <SheetContentClose />
+      <PresetPickerClose />
       <SheetHeader>
         <SheetTitle className="flex gap-2">
           <Palette />
@@ -423,16 +450,6 @@ function PresetPickerTrigger({
   )
 }
 
-/**
-<PresetPicker>
-  <PresetPickerTrigger />
-  <PresetPickerContent>
-    <PresetPickerThemeToggleGroup />
-    <PresetPickerSearch />
-    <PresetPickerList />
-  </PresetPickerContent>
-</PresetPicker>
- */
 export {
   PresetPicker,
   PresetPickerTrigger,

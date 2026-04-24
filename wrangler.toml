@@ -1,0 +1,6 @@
+name = "codecanon-next-presets-registry"
+main = "src/index.ts"
+
+[[kv_namespaces]]
+binding = "REGISTRY"
+id = "7fb2a9b08826496d876fc9dd3336e383"

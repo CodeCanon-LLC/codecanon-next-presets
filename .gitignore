@@ -4,3 +4,5 @@ dist
 .presets-scoped
 *.log
 .DS_Store
+public/
+.wrangler/

@@ -10,30 +10,34 @@ import {
   X,
 } from "lucide-react"
 
-import { usePreset, useTheme } from "~/providers"
-import { Button } from "~/components/ui/button"
+import {
+  usePreset,
+  useTheme,
+  usePresetName,
+  getNextTheme,
+  getThemeName,
+} from "@codecanon/next-presets"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { cn } from "~/lib/utils"
-import { PresetPreviewDots } from "~/components/preset-preview-dots"
-import { getNextTheme } from "~/helpers/get-next-theme"
-import { DEFAULT_THEME } from "~/lib/constants"
-import { getThemeName } from "~/helpers/get-theme-name"
+} from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
+import { PresetPreviewDots } from "@/components/preset-preview-dots"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "~/components/ui/tooltip"
+} from "@/components/ui/tooltip"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "~/components/ui/input-group"
-import { usePresetName } from "~/hooks/use-preset-name"
+} from "@/components/ui/input-group"
+
+const DEFAULT_THEME = "system"
 
 // ---------------------------------------------------------------------------
 // Context
@@ -378,16 +382,6 @@ function PresetDropdownPickerList({
   )
 }
 
-/**
-<PresetDropdownPicker>
-  <PresetDropdownPickerTrigger/>
-  <PresetDropdownPickerContent>
-    <PresetDropdownPickerSearch />
-    <PresetDropdownPickerToolbar />
-    <PresetDropdownPickerList />
-  </PresetDropdownPickerContent>
-</PresetDropdownPicker>
- */
 export {
   PresetDropdownPicker,
   PresetDropdownPickerContent,
