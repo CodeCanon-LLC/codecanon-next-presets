@@ -55,7 +55,7 @@
         "toggle-group",
         "tooltip",
         "input-group",
-        "https://diceui.com/r/scroller",
+        "@diceui/scroller",
         "https://registry.codecanon.dev/r/preset-preview-card"
       ],
       "files": [
