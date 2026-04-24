@@ -92,10 +92,6 @@ function PresetDockPreviewCard({
                 </div>
               ))}
             </div>
-            <div className="flex gap-2">
-              <div className="bg-secondary h-1.5 flex-1 rounded" />
-              <div className="bg-accent h-1.5 w-12 rounded" />
-            </div>
           </div>
         </div>
       </div>
