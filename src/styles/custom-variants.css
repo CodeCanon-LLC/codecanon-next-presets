@@ -45,3 +45,9 @@
     @slot;
   }
 }
+
+@custom-variant flat-sidebar {
+  @container style(--sidebar: var(--background)) {
+    @slot;
+  }
+}
