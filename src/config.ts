@@ -1,5 +1,6 @@
 const PRESETS = [
   ["codecanon", "CodeCanon"],
+  ["codecanon-mono", "CodeCanon Mono"],
   ["nuteral", "Nuteral"],
   ["nuteral-accent", "Nuteral (Accent)"],
   ["red", "Red"],
