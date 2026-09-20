@@ -8,7 +8,7 @@ import { PRESETS, type PresetTuple } from "~/config"
  * preset CSS selectively instead of the full `styles.css`.
  *
  * @example
- * <PresetPicker presets={filterPresets(['claude', 'anew', 'rose'])} />
+ * <PresetPicker presets={filterPresets(['claude', 'codecanon', 'rose'])} />
  */
 export function filterPresets(ids: string[]): PresetTuple[] {
   const set = new Set(ids)

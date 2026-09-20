@@ -20,7 +20,7 @@ const PRESET_IDS = Object.keys(PRESET_BY_ID)
  *
  * @example
  * nextPresetsPlugin({
- *  include: ['claude', 'anew', 'rose']
+ *  include: ['claude', 'codecanon', 'rose']
  *  exclude: ['rose']
  *  add: [['my-brand', 'My Brand']]
  * })

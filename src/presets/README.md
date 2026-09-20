@@ -67,7 +67,7 @@ This will:
 ## Files
 
 - **default.css** - The base/fallback theme (manually maintained)
-- **Individual theme files** (`anew.css`, `violet-bloom.css`, etc.) - CSS variables for each theme preset
+- **Individual theme files** (`codecanon.css`, `violet-bloom.css`, etc.) - CSS variables for each theme preset
 - **index.css** - Auto-generated file that imports all theme CSS files (including default.css)
 - **README.md** - This documentation file
 - **index.ts** - List of preset tuples

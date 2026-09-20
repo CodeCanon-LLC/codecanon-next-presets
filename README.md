@@ -340,7 +340,7 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [
     nextPresetsPlugin({
-      include: ["claude", "anew", "rose"],
+      include: ["claude", "codecanon", "rose"],
     }),
   ],
 })
@@ -377,7 +377,7 @@ Skip `styles.css` entirely and import only what you need.
 /* only the presets you want in the picker */
 @import "@codecanon/next-presets/presets/nuteral.css";
 @import "@codecanon/next-presets/presets/claude.css";
-@import "@codecanon/next-presets/presets/anew.css";
+@import "@codecanon/next-presets/presets/codecanon.css";
 ```
 
 Then filter the `PRESETS` array so `PresetPicker` shows only those presets:
@@ -385,7 +385,7 @@ Then filter the `PRESETS` array so `PresetPicker` shows only those presets:
 ```tsx
 import { filterPresets, PresetProvider } from "@codecanon/next-presets"
 
-const MY_PRESETS = filterPresets(["nuteral", "claude", "anew"])
+const MY_PRESETS = filterPresets(["nuteral", "claude", "codecanon"])
 
 <PresetProvider presets={MY_PRESETS} />
 ```
